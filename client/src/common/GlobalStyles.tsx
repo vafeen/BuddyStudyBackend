@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import { colors } from "./styleConstants";
+import { colors, fonts } from "./styleConstants";
 
 export const GlobalStyles = createGlobalStyle`
 *,
@@ -44,7 +44,6 @@ button {
 font: inherit;
 } 
 html {
-height: 100%;
 scroll-behavior: smooth;
 } 
 
@@ -60,8 +59,7 @@ transition-property: fill, stroke;
 
 body {
 font-family: "Montserrat", sans-serif;
-min-height: 100%;
-line-height: 1.5;
+font-size: ${fonts.sizes.main};
 color: ${colors.main};
 background-color: ${colors.totalWhite};
 -ms-overflow-style: none;
@@ -87,6 +85,18 @@ user-select: none;
 a {
 color: ${colors.main};
 text-decoration: none;
+}
+
+button {
+background-color: transparent;
+border-width: 0;
+font-family: inherit;
+font-size: inherit;
+font-style: inherit;
+font-weight: inherit;
+line-height: inherit;
+padding: 0;
+margin: auto 0;
 }
 
 `;
