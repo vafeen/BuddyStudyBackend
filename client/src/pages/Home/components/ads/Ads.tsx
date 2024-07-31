@@ -1,4 +1,4 @@
-import AdsCard from "../../../../common/components/ads-card/AdsCard";
+import AdsGrid from "../../../../common/components/ads-grid/AdsGrid";
 import { SubTitleChapter } from "../../../../common/styles";
 import { AdsHeader, AdsWrapper } from "./styles";
 
@@ -8,7 +8,7 @@ export default function Ads() {
             <AdsHeader>
                 <SubTitleChapter>Доступные обьявления</SubTitleChapter>
             </AdsHeader>
-            <AdsCard />
+            <AdsGrid />
         </AdsWrapper>
     )
 }
