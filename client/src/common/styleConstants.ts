@@ -32,6 +32,7 @@ export const fonts = {
         subTitle: "18px",
         main: "16px",
         small: "12px",
+        smallExtra: "10px",
     },
 
     weights: {

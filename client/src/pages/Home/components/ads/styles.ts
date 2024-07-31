@@ -8,4 +8,5 @@ export const AdsWrapper = styled('div')`
 export const AdsHeader = styled(DefaultFrame)`
 padding: 10px 20px;
 border-radius: ${borders.radius.medium};
+margin-bottom: 20px;
 `;
