@@ -4,7 +4,7 @@ import { borders, colors, fonts } from "../../styleConstants";
 
 export const SidePanelWrapper = styled(DefaultFrame)`
 width: 300px;
-padding: 20px;
+padding: 10px 20px;
 border-radius: ${borders.radius.big};
 `;
 
