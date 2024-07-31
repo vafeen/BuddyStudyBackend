@@ -2,6 +2,7 @@ export const colors = {
     grayAccent: "rgba(235, 235, 235, 1)",
     grayDark: "rgba(122, 122, 122, 1)",
     main: "rgba(0, 0, 0, 1)",
+    blue: "rgba(78, 121, 255, 1)",
     totalBlack: "rgba(0, 0, 0, 1)",
     totalWhite: "rgba(255, 255, 255, 1)",
 }
@@ -15,6 +16,7 @@ export const borders = {
     radius: {
         big: "30px",
         medium: "20px",
+        small: "5px",
         circle: "50%",
     }
 }
@@ -26,7 +28,9 @@ export const shadows = {
 export const fonts = {
     sizes: {
         logo: "25px",
-        main: "14px",
+        title: "20px",
+        subTitle: "18px",
+        main: "16px",
         small: "12px",
     },
 

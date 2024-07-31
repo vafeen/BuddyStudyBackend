@@ -24,3 +24,18 @@ transition: ${transitions.fast};
 
 ${defaultHover}
 `;
+
+export const SubTitleChapter = styled('p')`
+font-size: ${fonts.sizes.subTitle};
+font-weight: ${fonts.weights.semiBold};
+`;
+
+export const DefaultInput = styled('input')`
+padding: 5px;
+width: 50px;
+text-align: center;
+border: ${borders.border.defaultFrame};
+font-size: ${fonts.sizes.small};
+font-weight: ${fonts.weights.regular};
+border-radius: ${borders.radius.small};
+`;
