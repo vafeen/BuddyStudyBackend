@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { DefaultFrame } from "../../styles";
 import { borders, colors, fonts, transitions } from "../../styleConstants";
-import { defaultHover } from "../../mixins";
 
 
 export const HeaderWrapper = styled(DefaultFrame)`
@@ -10,6 +9,7 @@ display: flex;
 justify-content: space-between;
 padding: 0 20px;
 border-radius: ${borders.radius.big};
+margin-bottom: 20px;
 `;
 
 export const Logo = styled('p')`
