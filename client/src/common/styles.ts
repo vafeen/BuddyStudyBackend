@@ -11,6 +11,7 @@ padding: 15px 15px 0 15px;
 export const DefaultFrame = styled('div')`
 border: ${borders.border.defaultFrame};
 box-shadow: ${shadows.defaultFrame};
+background-color: ${colors.totalWhite};
 `;
 
 export const CreateButton = styled('button')`
