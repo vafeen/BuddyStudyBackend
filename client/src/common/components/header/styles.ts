@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { DefaultFrame } from "../../styles";
 import { borders, colors, fonts, transitions } from "../../styleConstants";
+import { Link } from "react-router-dom";
 
 
 export const HeaderWrapper = styled(DefaultFrame)`
@@ -28,7 +29,7 @@ display: flex;
 gap: 5px;
 `;
 
-export const HeaderAvatar = styled('div')`
+export const HeaderAvatar = styled(Link)`
 height: 30px;
 width: 30px;
 border: ${borders.border.defaultFrame};
