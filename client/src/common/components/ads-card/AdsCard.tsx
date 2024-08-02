@@ -1,3 +1,4 @@
+import Tags from "../tags/Tags";
 import { AdsCardAuthor, AdsCardAuthorName, AdsCardAvatar, AdsCardHeader, AdsCardLink, AdsCardTags, AdsCardTagsTitle, AdsCardTitle, AdsCardWrapper } from "./styles";
 
 const advLink = "/user/adv"
@@ -15,6 +16,7 @@ export default function AdsCard() {
                 </AdsCardHeader>
                 <AdsCardTags>
                     <AdsCardTagsTitle>Теги</AdsCardTagsTitle>
+                    <Tags />
                 </AdsCardTags>
             </AdsCardWrapper>
         </AdsCardLink>
