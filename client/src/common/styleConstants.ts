@@ -12,6 +12,7 @@ export const borders = {
         defaultFrame: `1px solid ${colors.grayAccent}`,
         borderGrayDark: `1px solid ${colors.grayDark}`,
         borderWhiteBig: `5px solid ${colors.totalWhite}`,
+        defaultFrameBig: `5px solid ${colors.grayAccent}`,
     },
 
     radius: {
