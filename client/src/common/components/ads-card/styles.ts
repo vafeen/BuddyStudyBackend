@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { DefaultFrame } from "../../styles";
 import { borders, colors, fonts } from "../../styleConstants";
+import { Link } from "react-router-dom";
+
+export const AdsCardLink = styled(Link)``;
 
 export const AdsCardWrapper = styled(DefaultFrame)`
 cursor: pointer;
