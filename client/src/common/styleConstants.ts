@@ -3,6 +3,7 @@ export const colors = {
     grayDark: "rgba(122, 122, 122, 1)",
     main: "rgba(0, 0, 0, 1)",
     blue: "rgba(78, 121, 255, 1)",
+    blackTransparent: "rgba(0, 0, 0, 0.5)",
     totalBlack: "rgba(0, 0, 0, 1)",
     totalWhite: "rgba(255, 255, 255, 1)",
 }
