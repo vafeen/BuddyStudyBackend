@@ -6,7 +6,7 @@ const tagsList = ["английский", "напарник", "скромный"
 export default function Tags() {
     return (
         <TagsWrapper>
-            {tagsList.slice(0,3).map((elem, i) => <Tag tagName={elem} />)}
+            {tagsList.slice(0,3).map((elem, i) => <Tag key={i} tagName={elem} />)}
         </TagsWrapper>
     )
 }

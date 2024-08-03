@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import { CreateButton, ProfileBlockContent, ProfileBlockHeader, ProfileBlockStill, ProfileBlockWrapper, SubTitleChapter } from '../../styles'
 import AdsCard from '../ads-card/AdsCard'
 
 export default function ProfileMyAds() {
+    const navigate = useNavigate();
     return (
         <ProfileBlockWrapper>
             <ProfileBlockHeader>
@@ -14,7 +16,7 @@ export default function ProfileMyAds() {
                 <AdsCard />
                 <AdsCard />
             </ProfileBlockContent>
-            <ProfileBlockStill>Показать все</ProfileBlockStill>
+            <ProfileBlockStill onClick={() => navigate("/user/all")}>Показать все</ProfileBlockStill>
         </ProfileBlockWrapper>
     )
 }

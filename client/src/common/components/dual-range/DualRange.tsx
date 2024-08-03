@@ -6,12 +6,12 @@ export default function DualRange() {
         <DualRangeWrapper>
             <DualRangeItem>
                 <DualRangeLabel>От</DualRangeLabel>
-                <DefaultInput value={0} />
+                <DefaultInput defaultValue={0} />
             </DualRangeItem>
 
             <DualRangeItem>
                 <DualRangeLabel>До</DualRangeLabel>
-                <DefaultInput value={100} />
+                <DefaultInput defaultValue={100} />
             </DualRangeItem>
         </DualRangeWrapper>
     )
