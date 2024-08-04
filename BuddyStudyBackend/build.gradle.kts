@@ -8,9 +8,8 @@ version = "1.0"
 repositories {
     mavenCentral()
 }
-val ktor_version: String by project
-val logback_version: String by project
-
+val ktor_version = "2.3.12"
+val logback_version = "1.5.6"
 dependencies {
     testImplementation(kotlin("test"))
     implementation("io.ktor:ktor-client-core:$ktor_version")
