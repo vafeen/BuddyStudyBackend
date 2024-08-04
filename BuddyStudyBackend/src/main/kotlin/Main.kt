@@ -1,13 +1,13 @@
 package ru.vafeen
 
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
 
-suspend fun main() {
-    val client = HttpClient(CIO)
-    val response: HttpResponse = client.get("https://ktor.io/")
-    println(response.status)
-    client.close()
+
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import ru.vafeen.plugins.configureRouting
+
+fun main() {
+    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
+        configureRouting()
+    }.start(wait = true)
 }
