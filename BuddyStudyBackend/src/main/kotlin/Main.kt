@@ -7,7 +7,7 @@ import io.ktor.server.netty.*
 import ru.vafeen.plugins.configureRouting
 
 fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
+    embeddedServer(Netty, port = 8080, host = "localhost") {
         configureRouting()
     }.start(wait = true)
 }
