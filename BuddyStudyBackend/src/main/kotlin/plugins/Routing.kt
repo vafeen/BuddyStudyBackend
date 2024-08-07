@@ -9,6 +9,7 @@ import io.ktor.server.routing.*
 import ru.vafeen.entities.User
 import ru.vafeen.utils.allArgsInNotDefaultStringArgValue
 import ru.vafeen.utils.defaultStringArgValue
+import ru.vafeen.utils.getParams
 import ru.vafeen.utils.handleRequestWithBadRequestError
 
 
@@ -22,11 +23,10 @@ fun Application.configureRouting() {
 
         get("/reg") {
             handleRequestWithBadRequestError(call = call) {
-                val params = call.parameters
+                val params = call.getParams()
 
                 val login = params["login"] ?: defaultStringArgValue
                 val password = params["password"] ?: defaultStringArgValue
-
 
                 if (allArgsInNotDefaultStringArgValue(login, password)) {
                     if (users.get(key = login) == null) {
@@ -45,7 +45,7 @@ fun Application.configureRouting() {
 
         get("/login") {
             handleRequestWithBadRequestError(call = call) {
-                val params = call.parameters
+                val params = call.getParams()
 
                 val login = params["login"] ?: defaultStringArgValue
                 val password = params["password"] ?: defaultStringArgValue
@@ -79,8 +79,5 @@ fun Application.configureRouting() {
                 } else false
             }
         }
-//        get("/{id}") {
-//            call.respondText("User ID: 1")
-//        }
     }
 }
