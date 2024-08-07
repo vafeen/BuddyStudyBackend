@@ -13,15 +13,9 @@ suspend fun handleRequestWithBadRequestError(call: ApplicationCall, block: suspe
 }
 
 suspend fun ApplicationCall.getParams(): Map<String, String> {
-    val map = receive<JsonObject>().toMap()
-    map.entries
-
-
-    val values = map.values.map { it.toString() }
-    val keys = map.keys.toList()
     val newMap = mutableMapOf<String, String>()
-    for (i in 0..values.lastIndex) {
-        newMap[keys[i]] = values[i]
+    receive<JsonObject>().toMap().entries.forEach {
+        newMap[it.key] = it.value.toString()
     }
     return newMap
 }
