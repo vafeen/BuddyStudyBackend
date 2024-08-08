@@ -1,11 +1,10 @@
 package ru.vafeen.plugins
 
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import ru.vafeen.entities.User
 import ru.vafeen.utils.allArgsInNotDefaultStringArgValue
 import ru.vafeen.utils.defaultStringArgValue
@@ -15,11 +14,12 @@ import ru.vafeen.utils.handleRequestWithBadRequestError
 
 fun Application.configureRouting() {
     val users = mutableMapOf<String, User>()
-    install(ContentNegotiation) {
-        json()
-    }
+    val user: User by inject()
 
     routing {
+        get("/test") {
+            call.respond(user.login)
+        }
 
         get("/reg") {
             handleRequestWithBadRequestError(call = call) {

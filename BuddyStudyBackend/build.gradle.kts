@@ -22,6 +22,13 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$ktor_version")
+    //db
+    implementation("io.realm.kotlin:library-base:1.0.0")
+    // koin
+    implementation("io.ktor:ktor-server-core:2.3.0")
+    implementation("io.ktor:ktor-server-netty:2.0.0")
+    implementation("io.insert-koin:koin-core:3.4.0")
+    implementation("io.insert-koin:koin-ktor:3.4.0")
 }
 application.mainClass = "ru.vafeen.MainKt"
 
