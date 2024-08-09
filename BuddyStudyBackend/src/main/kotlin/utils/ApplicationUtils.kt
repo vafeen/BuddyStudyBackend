@@ -4,21 +4,33 @@ import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.request.*
+import io.ktor.server.sessions.*
 import kotlinx.serialization.json.JsonObject
 import org.jetbrains.exposed.sql.Database
 import ru.vafeen.datastore.DatabaseInfo
+import ru.vafeen.web.UserSession
 
-suspend fun ApplicationCall.getParams(): Map<String, String> {
-    val newMap = mutableMapOf<String, String>()
-    receive<JsonObject>().toMap().entries.forEach {
-        newMap[it.key] = it.value.toString()
+suspend fun ApplicationCall.getParams(): Map<String, String>? {
+    return try {
+        val newMap = mutableMapOf<String, String>()
+        receive<JsonObject>().toMap().entries.forEach {
+            newMap[it.key] = it.value.toString()
+        }
+        newMap
+    } catch (e: Exception) {
+        null
     }
-    return newMap
 }
 
 fun Application.configureInstallations() {
     install(ContentNegotiation) {
         json()
+    }
+    install(Sessions) {
+        cookie<UserSession>("user_session") {
+            cookie.path = "/"
+            cookie.maxAgeInSeconds = 10
+        }
     }
 }
 

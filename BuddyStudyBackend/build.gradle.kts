@@ -33,6 +33,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:0.36.2")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.36.2")
     implementation("com.h2database:h2:1.4.200")
+    //sessions
+    implementation("io.ktor:ktor-server-sessions:2.0.0")
+
 }
 application.mainClass = "ru.vafeen.MainKt"
 
