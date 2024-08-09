@@ -27,12 +27,12 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$ktor_version")
 
     //db
-    implementation("io.ktor:ktor-server-core:2.0.0")
+    implementation("io.ktor:ktor-server-core:2.3.0")
     implementation("io.ktor:ktor-server-netty:2.0.0")
     implementation("org.jetbrains.exposed:exposed-core:0.36.2")
     implementation("org.jetbrains.exposed:exposed-dao:0.36.2")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.36.2")
-    implementation("com.h2database:h2:1.4.200")
+    implementation("com.h2database:h2:1.4.200") // dont update
     //sessions
     implementation("io.ktor:ktor-server-sessions:2.0.0")
 
