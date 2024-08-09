@@ -35,7 +35,7 @@ class DatabaseRepository {
         transaction {
             val query = UserTable.selectAll().toList()
             query.forEach {
-                users.add(UserTable.resultRowToUser(it = it))
+                users.add(UserTable.resultRowToUser(resultRow = it))
             }
         }
         return users

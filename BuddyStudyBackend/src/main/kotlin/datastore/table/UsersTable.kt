@@ -18,14 +18,14 @@ object UserTable : Table() {
     val vk = varchar("vk", 50).nullable()
     val wa = varchar("wa", 50).nullable()
 
-    fun resultRowToUser(it: ResultRow): User = User(
-        login = it[login],
-        password = it[password],
-        name = it[name],
-        gender = it[gender],
-        age = it[age],
-        tg = it[tg],
-        vk = it[vk],
-        wa = it[wa]
+    fun resultRowToUser(resultRow: ResultRow): User = User(
+        login = resultRow[login],
+        password = resultRow[password],
+        name = resultRow[name],
+        gender = resultRow[gender],
+        age = resultRow[age],
+        tg = resultRow[tg],
+        vk = resultRow[vk],
+        wa = resultRow[wa]
     )
 }
