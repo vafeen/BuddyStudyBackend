@@ -1,5 +1,5 @@
 package ru.vafeen.datastore
 
 object DatabaseInfo {
-    const val NAME = "test"
+    const val NAME = "BuddyStudyDatabase"
 }
