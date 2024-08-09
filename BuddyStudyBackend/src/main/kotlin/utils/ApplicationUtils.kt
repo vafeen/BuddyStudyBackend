@@ -24,7 +24,7 @@ fun Application.configureInstallations() {
 
 fun configureDB() {
     Database.connect(
-        url = "jdbc:h2:file:./${DatabaseInfo.NAME}",
+        url = "jdbc:h2:file:./db/${DatabaseInfo.NAME}",
         driver = "org.h2.Driver",
         user = "BuddyStudy",
         password = "admin"
