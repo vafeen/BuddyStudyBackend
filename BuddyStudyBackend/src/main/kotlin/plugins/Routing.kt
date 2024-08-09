@@ -4,21 +4,29 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.koin.ktor.ext.inject
-import ru.vafeen.entities.User
+import ru.vafeen.datastore.DatabaseRepository
+import ru.vafeen.datastore.entity.User
 import ru.vafeen.utils.allArgsInNotDefaultStringArgValue
 import ru.vafeen.utils.defaultStringArgValue
-import ru.vafeen.utils.getParams
 import ru.vafeen.utils.handleRequestWithBadRequestError
+import utils.getParams
 
 
 fun Application.configureRouting() {
     val users = mutableMapOf<String, User>()
-    val user: User by inject()
+    val databaseRepository = DatabaseRepository()
 
     routing {
-        get("/test") {
-            call.respond(user.login)
+        get("/put") {
+            databaseRepository.insertUser(User(login = "testLogin"))
+
+            call.respond(true)
+        }
+        get("/get") {
+            val usersDB = databaseRepository.selectAllUsers()
+            if (usersDB.isNotEmpty()) {
+                call.respond(usersDB)
+            } else call.respond("no users")
         }
 
         get("/reg") {
