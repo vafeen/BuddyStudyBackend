@@ -4,6 +4,7 @@ import Ads from "./components/ads/Ads";
 import { HomeContent, HomeWrapper } from "./styles";
 
 export default function Home() {
+
     return (
         <HomeWrapper>
             <Header />
