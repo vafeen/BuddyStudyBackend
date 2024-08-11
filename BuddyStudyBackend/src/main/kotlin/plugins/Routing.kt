@@ -36,7 +36,7 @@ fun Application.configureRouting() {
             } else call.respond("unauthorized")
         }
 
-        get("/reg") {
+        post("/reg") {
             handleRequestWithBadRequestError(call = call) {
                 val params = call.getParams()
                 val login = params?.get("login") ?: defaultStringArgValue
@@ -55,7 +55,7 @@ fun Application.configureRouting() {
 
         }
 
-        get("/login") {
+        post("/login") {
             handleRequestWithBadRequestError(call = call) {
                 val params = call.getParams()
 
