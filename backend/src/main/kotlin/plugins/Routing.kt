@@ -20,21 +20,6 @@ fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
     routing {
-        get("/put") {
-            databaseRepository.insertUser(User(login = "testLogin"))
-            val filters = User()
-            call.respond(true)
-        }
-
-        get("/get") {
-            val userSession = call.sessions.get<UserSession>()
-            if (userSession != null) {
-                val usersDB = databaseRepository.selectAllUsers()
-                if (usersDB.isNotEmpty()) {
-                    call.respond(usersDB)
-                } else call.respond("no users")
-            } else call.respond("unauthorized")
-        }
 
         post("/reg") {
             handleRequestWithBadRequestError(call = call) {
