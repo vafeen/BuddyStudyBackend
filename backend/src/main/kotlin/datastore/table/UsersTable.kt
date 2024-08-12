@@ -9,8 +9,8 @@ object UserTable : Table() {
     override val primaryKey = PrimaryKey(id, name = "PK_User_ID")
 
     // fields
-    val login = varchar("login", 50).nullable()
-    val password = varchar("password", 50).nullable()
+    val login = varchar("login", 50)
+    val password = varchar("password", 50)
     val name = varchar("name", 50).nullable()
     val gender = varchar("gender", 50).nullable()
     val age = integer("age").nullable()

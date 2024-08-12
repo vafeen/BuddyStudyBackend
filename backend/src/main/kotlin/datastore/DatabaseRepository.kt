@@ -30,12 +30,13 @@ class DatabaseRepository {
         }
     }
 
-    fun selectAllUsers(): List<User> {
-        val users = mutableListOf<User>()
+    fun selectAllUsers(): MutableMap<String, User> {
+        val users = mutableMapOf<String, User>()
         transaction {
             val query = UserTable.selectAll().toList()
             query.forEach {
-                users.add(UserTable.resultRowToUser(resultRow = it))
+                val user = UserTable.resultRowToUser(resultRow = it)
+                users.set(key = user.login, value = user)
             }
         }
         return users

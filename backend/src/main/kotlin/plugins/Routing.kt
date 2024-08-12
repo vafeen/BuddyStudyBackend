@@ -15,8 +15,8 @@ import utils.getParams
 
 
 fun Application.configureRouting() {
-    val users = mutableMapOf<String, User>()
     val databaseRepository = DatabaseRepository()
+    val users = databaseRepository.selectAllUsers()
 
     routing {
 
@@ -29,7 +29,9 @@ fun Application.configureRouting() {
                 if (allArgsInNotDefaultStringArgValue(login, password)) {
                     call.sessions.set(UserSession(userId = login))
                     if (users.get(key = login) == null) {
-                        users.set(key = login, value = User(login = login, password = password))
+                        val newUser = User(login = login, password = password)
+                        users.set(key = login, value = newUser)
+                        databaseRepository.insertUser(user = newUser)
                         call.respond(RequestStatus.SuccessfulSignUP)
                     } else
                         call.respond(RequestStatus.UserLoginExists)
