@@ -10,8 +10,15 @@ import io.ktor.server.sessions.*
 import kotlinx.serialization.json.JsonObject
 import org.jetbrains.exposed.sql.Database
 import ru.vafeen.datastore.DatabaseInfo
+import ru.vafeen.errors.RequestStatus
+import ru.vafeen.errors.respond
 import ru.vafeen.web.HostInfo
 import ru.vafeen.web.UserSession
+
+suspend fun <T> T?.callIfNull(call: ApplicationCall, message: String): T? = also {
+    if (it == null)
+        call.respond(RequestStatus.BadParameter(message = message))
+}
 
 suspend fun ApplicationCall.getParams(): Map<String, String>? {
     return try {
@@ -24,6 +31,8 @@ suspend fun ApplicationCall.getParams(): Map<String, String>? {
         null
     }
 }
+
+
 
 fun Application.configureInstallations() {
     install(CORS) {
@@ -45,7 +54,7 @@ fun Application.configureInstallations() {
 
 fun configureDB() {
     Database.connect(
-        url = "jdbc:h2:file:./db/${DatabaseInfo.NAME}",
+        url = "jdbc:h2:file:./db/${DatabaseInfo.NAME};DB_CLOSE_DELAY=-1;",
         driver = "org.h2.Driver",
         user = "BuddyStudy",
         password = "admin"

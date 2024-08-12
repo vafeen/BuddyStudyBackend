@@ -33,7 +33,8 @@ dependencies {
     implementation("com.h2database:h2:1.4.200") // dont update
     //sessions
     implementation("io.ktor:ktor-server-sessions:2.0.0")
-
+    //gson
+    implementation("com.google.code.gson:gson:2.8.7")
 }
 application.mainClass = "ru.vafeen.MainKt"
 
