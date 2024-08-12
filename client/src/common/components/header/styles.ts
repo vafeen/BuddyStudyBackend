@@ -13,11 +13,6 @@ border-radius: ${borders.radius.big};
 margin-bottom: 20px;
 `;
 
-export const Logo = styled('p')`
-margin: auto 0;
-font-size: ${fonts.sizes.logo};
-`;
-
 export const HeaderDetails = styled('div')`
 display: flex;
 gap: 30px;
