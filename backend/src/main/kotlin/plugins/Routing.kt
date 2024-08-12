@@ -1,7 +1,6 @@
 package ru.vafeen.plugins
 
 import io.ktor.server.application.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import ru.vafeen.datastore.DatabaseRepository
@@ -60,6 +59,7 @@ fun Application.configureRouting() {
                         }
 
                         user != null && user.password == password -> {
+                            call.sessions.set(UserSession(userId = login))
                             call.respond(RequestStatus.SuccessfulSignIN)
                         }
                     }
