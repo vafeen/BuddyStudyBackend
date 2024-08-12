@@ -1,20 +1,14 @@
 import { useState } from 'react';
 import { useActions } from '../../../../store/actions';
 import { FormButton, FormInput, FormItem, FormLabel, FormTitle } from '../../../styles';
-import { useSendNewUserMutation } from '../../../../store/reducers/user/userApi';
 
 export default function Reg() {
     const { setAuthStatus } = useActions();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [rPassword, setRPassword] = useState('');
-    const [sendUser] = useSendNewUserMutation();
 
     const handleClick = () => {
-        sendUser({
-            login: login,
-            password: password
-        });
         setAuthStatus()
     }
 
