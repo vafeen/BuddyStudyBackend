@@ -20,6 +20,14 @@ box-shadow: ${shadows.defaultFrame};
 background-color: ${colors.totalWhite};
 `;
 
+export const CloseWindowButton = styled('img')`
+position: absolute;
+width: 20px;
+height: 20px;
+right: 5px;
+top: 5px;
+`;
+
 export const CreateButton = styled('button')`
 padding: 5px 15px;
 background-color: ${colors.totalWhite};
