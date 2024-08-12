@@ -1,13 +1,16 @@
 package utils
 
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.sessions.*
 import kotlinx.serialization.json.JsonObject
 import org.jetbrains.exposed.sql.Database
 import ru.vafeen.datastore.DatabaseInfo
+import ru.vafeen.web.HostInfo
 import ru.vafeen.web.UserSession
 
 suspend fun ApplicationCall.getParams(): Map<String, String>? {
@@ -23,6 +26,12 @@ suspend fun ApplicationCall.getParams(): Map<String, String>? {
 }
 
 fun Application.configureInstallations() {
+    install(CORS) {
+        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
+        allowHeader(HttpHeaders.ContentType)
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Post)
+    }
     install(ContentNegotiation) {
         json()
     }

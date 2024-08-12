@@ -22,6 +22,8 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
 
+    // cors for allowing request from some host
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
     //db
     implementation("io.ktor:ktor-server-core:2.3.0")
     implementation("io.ktor:ktor-server-netty:2.0.0")
