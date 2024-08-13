@@ -1,6 +1,7 @@
 import { SubTitleChapter } from "../../styles";
 import DualRange from "../dual-range/DualRange";
-import { SidePanelAddTag, SidePanelClear, SidePanelFilter, SidePanelFilterTitle, SidePanelHeader, SidePanelInputTag, SidePanelOption, SidePanelSelect, SidePanelTags, SidePanelWrapper } from "./styles";
+import TagsComponent from "../tags/TagsComponent";
+import { SidePanelClear, SidePanelFilter, SidePanelFilterTitle, SidePanelHeader, SidePanelOption, SidePanelSelect, SidePanelWrapper } from "./styles";
 
 export default function SidePanel() {
     return (
@@ -22,14 +23,7 @@ export default function SidePanel() {
                 <SidePanelFilterTitle>Возраст</SidePanelFilterTitle>
                 <DualRange />
             </SidePanelFilter>
-
-            <SidePanelFilter>
-                <SidePanelFilterTitle>Теги</SidePanelFilterTitle>
-                <SidePanelTags>
-                    <SidePanelInputTag placeholder="Введите тег..." />
-                    <SidePanelAddTag>Добавить</SidePanelAddTag>
-                </SidePanelTags>
-            </SidePanelFilter>
+            <TagsComponent />
         </SidePanelWrapper>
     )
 }

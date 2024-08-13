@@ -16,7 +16,7 @@ export default function AdsCard() {
                 </AdsCardHeader>
                 <AdsCardTags>
                     <AdsCardTagsTitle>Теги</AdsCardTagsTitle>
-                    <Tags />
+                    <Tags tags={[]} />
                 </AdsCardTags>
             </AdsCardWrapper>
         </AdsCardLink>
