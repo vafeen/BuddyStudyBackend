@@ -20,6 +20,7 @@ fun Application.configureRouting() {
     val advertisements = databaseRepository.selectAllAdvertisements()
 
     routing {
+
         post("/adv/create") {
             val userLogin = call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")
             val params = call.getParams().callIfNull(call = call, message = "No body")

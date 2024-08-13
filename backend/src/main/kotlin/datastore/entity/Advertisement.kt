@@ -8,4 +8,8 @@ data class Advertisement(
     val title: String,
     val text: String,
     val tags: List<String>? = null,
-)
+) {
+    override fun toString(): String {
+        return "Advertisement(login=$login, title=$title, text=$text, tags=$tags)"
+    }
+}

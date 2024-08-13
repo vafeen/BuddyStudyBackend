@@ -8,8 +8,6 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.sessions.*
 import kotlinx.serialization.json.JsonObject
-import org.jetbrains.exposed.sql.Database
-import ru.vafeen.datastore.DatabaseInfo
 import ru.vafeen.errors.RequestStatus
 import ru.vafeen.errors.respond
 import ru.vafeen.web.HostInfo
@@ -50,13 +48,4 @@ fun Application.configureInstallations() {
             cookie.maxAgeInSeconds = 86400
         }
     }
-}
-
-fun configureDB() {
-    Database.connect(
-        url = "jdbc:h2:file:./db/${DatabaseInfo.NAME};DB_CLOSE_DELAY=-1;",
-        driver = "org.h2.Driver",
-        user = "BuddyStudy",
-        password = "admin"
-    )
 }
