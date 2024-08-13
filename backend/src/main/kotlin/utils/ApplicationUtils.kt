@@ -31,10 +31,11 @@ suspend fun ApplicationCall.getParams(): Map<String, String>? {
 }
 
 
-
 fun Application.configureInstallations() {
     install(CORS) {
-        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
+        anyHost()
+//        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
+//        allowHost(HostInfo.ADDRESS2, schemes = listOf("http", "https"))
         allowHeader(HttpHeaders.ContentType)
         allowMethod(HttpMethod.Get)
         allowMethod(HttpMethod.Post)

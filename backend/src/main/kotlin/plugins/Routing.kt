@@ -1,6 +1,7 @@
 package ru.vafeen.plugins
 
 import io.ktor.server.application.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import ru.vafeen.datastore.DatabaseRepository
@@ -20,13 +21,16 @@ fun Application.configureRouting() {
     val advertisements = databaseRepository.selectAllAdvertisements()
 
     routing {
-
+        post("/test") {
+            call.respondText("Success")
+        }
         post("/adv/create") {
             val userLogin = call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")
             val params = call.getParams().callIfNull(call = call, message = "No body")
             val title = params?.get(key = "title").callIfNull(call = call, message = "Invalid parameter: title")
             val text = params?.get(key = "text").callIfNull(call = call, message = "Invalid parameter: text")
-            val tags = params?.get(key = "tags").callIfNull(call = call, message = "Invalid parameter: tags")?.parseJsonArrayToList()
+            val tags = params?.get(key = "tags").callIfNull(call = call, message = "Invalid parameter: tags")
+                ?.parseJsonArrayToList()
             if (userLogin != null && title != null && text != null && tags != null) {
                 val newAdv =
                     Advertisement(login = userLogin.userId, title = title, text = text, tags = tags)
