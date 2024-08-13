@@ -19,8 +19,7 @@ class Database {
 
 class DatabaseRepository {
     var database = Database()
-
-    val file = File("./db/file.json")
+    val file = File("file.json")
 
     init {
         file.createNewFile()
