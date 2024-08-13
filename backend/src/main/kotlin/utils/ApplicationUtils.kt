@@ -8,10 +8,15 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.sessions.*
 import kotlinx.serialization.json.JsonObject
-import org.jetbrains.exposed.sql.Database
-import ru.vafeen.datastore.DatabaseInfo
+import ru.vafeen.errors.RequestStatus
+import ru.vafeen.errors.respond
 import ru.vafeen.web.HostInfo
 import ru.vafeen.web.UserSession
+
+suspend fun <T> T?.callIfNull(call: ApplicationCall, message: String): T? = also {
+    if (it == null)
+        call.respond(RequestStatus.BadParameter(message = message))
+}
 
 suspend fun ApplicationCall.getParams(): Map<String, String>? {
     return try {
@@ -25,9 +30,12 @@ suspend fun ApplicationCall.getParams(): Map<String, String>? {
     }
 }
 
+
 fun Application.configureInstallations() {
     install(CORS) {
-        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
+        anyHost()
+//        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
+//        allowHost(HostInfo.ADDRESS2, schemes = listOf("http", "https"))
         allowHeader(HttpHeaders.ContentType)
         allowMethod(HttpMethod.Get)
         allowMethod(HttpMethod.Post)
@@ -41,13 +49,4 @@ fun Application.configureInstallations() {
             cookie.maxAgeInSeconds = 86400
         }
     }
-}
-
-fun configureDB() {
-    Database.connect(
-        url = "jdbc:h2:file:./db/${DatabaseInfo.NAME}",
-        driver = "org.h2.Driver",
-        user = "BuddyStudy",
-        password = "admin"
-    )
 }

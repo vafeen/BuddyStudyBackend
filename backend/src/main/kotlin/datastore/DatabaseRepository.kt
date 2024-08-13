@@ -1,50 +1,59 @@
 package ru.vafeen.datastore
 
-import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.jetbrains.exposed.sql.SchemaUtils.drop
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import ru.vafeen.datastore.entity.Advertisement
 import ru.vafeen.datastore.entity.User
-import ru.vafeen.datastore.table.UserTable
+import java.io.File
+
+@Serializable
+class Database {
+    var users: MutableMap<String, User> = mutableMapOf()
+    var advertisements: MutableList<Advertisement> = mutableListOf()
+    override fun toString(): String {
+        return "Database(users = $users, advs = $advertisements)"
+    }
+}
+
 
 class DatabaseRepository {
+    var database = Database()
+
+    val file = File("./db/file.json")
+
     init {
-        transaction {
-            create(UserTable)
-        }
+        file.createNewFile()
+    }
+
+    private fun saveDatabase() {
+        file.writeText(Json.encodeToString<Database>(database))
+    }
+
+    private fun getDatabaseAsDB(): Database = try {
+        Json.decodeFromString<Database>(file.readText())
+    } catch (e: Exception) {
+        Database()
+    }
+
+
+    fun selectAllUsers(): MutableMap<String, User> {
+        database = getDatabaseAsDB()
+        return database.users
+    }
+
+    fun selectAllAdvertisements(): MutableList<Advertisement> {
+        database = getDatabaseAsDB()
+        return database.advertisements
     }
 
     fun insertUser(user: User) {
-        transaction {
-            UserTable.insert {
-                it[login] = user.login
-                it[password] = user.password
-                it[name] = user.name
-                it[gender] = user.gender
-                it[age] = user.age
-                it[tg] = user.tg
-                it[vk] = user.vk
-                it[wa] = user.wa
-            }
-        }
+        database.users[user.login] = user
+        saveDatabase()
     }
 
-    fun selectAllUsers(): List<User> {
-        val users = mutableListOf<User>()
-        transaction {
-            val query = UserTable.selectAll().toList()
-            query.forEach {
-                users.add(UserTable.resultRowToUser(resultRow = it))
-            }
-        }
-        return users
+    fun insertAdvertisement(advertisement: Advertisement) {
+        database.advertisements.add(advertisement)
+        saveDatabase()
     }
-
-    fun dropUsers() {
-        transaction {
-            drop(UserTable)
-        }
-    }
-
 }
