@@ -1,26 +1,15 @@
 package ru.vafeen.datastore
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.vafeen.datastore.entity.Advertisement
 import ru.vafeen.datastore.entity.User
 import java.io.File
 
-@Serializable
-class Database {
-    var users: MutableMap<String, User> = mutableMapOf()
-    var advertisements: MutableList<Advertisement> = mutableListOf()
-    override fun toString(): String {
-        return "Database(users = $users, advs = $advertisements)"
-    }
-}
-
 
 class DatabaseRepository {
-    var database = Database()
-
-    val file = File("./db/file.json")
+    private var database = Database()
+    private val file = File("database.json")
 
     init {
         file.createNewFile()

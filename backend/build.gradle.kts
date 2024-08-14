@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "2.0.0"
     id("application")
     kotlin("plugin.serialization") version "1.8.0"
+    id("io.ktor.plugin") version "2.3.5"
 }
 
 group = "ru.vafeen"
@@ -28,10 +29,9 @@ dependencies {
 }
 application.mainClass = "ru.vafeen.MainKt"
 
-
 tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(17)
 }

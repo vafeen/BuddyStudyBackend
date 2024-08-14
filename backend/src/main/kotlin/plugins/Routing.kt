@@ -4,6 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import ru.vafeen.cryptography.PasswordHasher
 import ru.vafeen.datastore.DatabaseRepository
 import ru.vafeen.datastore.entity.Advertisement
 import ru.vafeen.datastore.entity.User
@@ -48,7 +49,8 @@ fun Application.configureRouting() {
             if (login != null && password != null) {
                 call.sessions.set(UserSession(userId = login))
                 if (users.get(key = login) == null) {
-                    val newUser = User(login = login, password = password)
+                    val newUser =
+                        User(login = login, password = PasswordHasher(salt = login).passwordToHash(password = password))
                     users.set(key = login, value = newUser)
                     databaseRepository.insertUser(user = newUser)
                     call.respond(RequestStatus.SuccessfulSignUP())
@@ -68,11 +70,11 @@ fun Application.configureRouting() {
                         call.respond(RequestStatus.UserNotFound())
                     }
 
-                    user != null && user.password != password -> {
+                    user != null && user.password != PasswordHasher(salt = login).passwordToHash(password = password) -> {
                         call.respond(RequestStatus.InvalidPassword())
                     }
 
-                    user != null && user.password == password -> {
+                    user != null && user.password == PasswordHasher(salt = login).passwordToHash(password = password) -> {
                         call.sessions.set(UserSession(userId = login))
                         call.respond(RequestStatus.SuccessfulSignIN())
                     }

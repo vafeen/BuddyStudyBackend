@@ -5,10 +5,10 @@ import java.security.MessageDigest
 
 /**
  * Class for generating password HASH-code with using salt
- * @param userName [Name of user for generating salt for HASH]
+ * @param salt [Name of user for generating salt for HASH]
  */
 class PasswordHasher(
-    private val userName: String
+    private val salt: String
 ) {
 
     /**
@@ -23,7 +23,7 @@ class PasswordHasher(
      * The algorithm of generating 'salt', that used for make password more complex
      */
     private fun String.addSaltToMessage(): String {
-        return "${userName}${this}${userName}"
+        return "${salt}${this}${salt}"
     }
 
     /**
