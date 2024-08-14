@@ -9,11 +9,13 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.sessions.*
 import ru.vafeen.plugins.configureRouting
+import ru.vafeen.utils.findAvailablePort
 import ru.vafeen.web.UserSession
 
 
 fun main() {
-    embeddedServer(Netty, port = 8080, host = "localhost") {
+    val port = findAvailablePort(8080)
+    embeddedServer(Netty, port = port, host = "localhost") {
         install(CORS) {
             anyHost()
 //        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
