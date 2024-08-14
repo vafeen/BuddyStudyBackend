@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../../client/
+cd ../client/
 npm i 
 npm i react-redux
 npm i @reduxjs/toolkit
