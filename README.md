@@ -4,11 +4,13 @@
 
 %root% - root dir with project
 
-In dir `%root%/buildConfig/` + yourSystemName:
+If you're using windows, run .sh files in git bash, it's simple.
 
 ## Method 1: Building with Intellij IDEA
 
 ## Method 2: Building with binaries
+
+In dir `%root%/buildConfig/`:
 
 `buildBackend` - build release in dir `%root%/backend/build/install/`
 
