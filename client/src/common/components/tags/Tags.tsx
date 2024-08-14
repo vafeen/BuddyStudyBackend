@@ -1,12 +1,14 @@
-import { TagsWrapper } from "./styles";
-import Tag from "./Tag";
+import { TagsEnumeration } from './styles'
+import Tag from './Tag'
 
-const tagsList = ["английский", "напарник", "скромный","Воронеж"];
+interface TagsProps {
+    tags: string[]
+}
 
-export default function Tags() {
+export default function Tags({tags}: TagsProps) {
     return (
-        <TagsWrapper>
-            {tagsList.slice(0,3).map((elem, i) => <Tag key={i} tagName={elem} />)}
-        </TagsWrapper>
+        <TagsEnumeration>
+            {tags.map((elem, i) => <Tag key={i} tagName={elem} />)}
+        </TagsEnumeration>
     )
 }
