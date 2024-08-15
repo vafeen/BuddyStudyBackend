@@ -49,7 +49,7 @@ fun Application.configureRouting() {
         }
 
         post("/user/info/fill") {
-            call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")?.let { userLogin ->
+            call.getSessionOrCallUnauthorized()?.let { userLogin ->
                 var user: User? = users.get(key = userLogin.userId)
                 val params = call.getParams().callIfNull(call = call, message = "No body")
                 val name = call.getOrInvalidParameter(key = UserKey.name, params = params)
@@ -70,17 +70,18 @@ fun Application.configureRouting() {
         }
 
         post("/adv/create") {
-            val userLogin = call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")
-            val params = call.getParams().callIfNull(call = call, message = "No body")
-            val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
-            val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
-            val tags =
-                call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
-            if (userLogin != null && title != null && text != null && tags != null) {
-                val newAdv = Advertisement(login = userLogin.userId, title = title, text = text, tags = tags)
-                advertisements.add(newAdv)
-                databaseRepository.insertAdvertisement(advertisement = newAdv)
-                call.respondStatus(RequestStatus.AdvertisementIsAddedSuccessful())
+            call.getSessionOrCallUnauthorized()?.let { userLogin ->
+                val params = call.getParams().callIfNull(call = call, message = "No body")
+                val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
+                val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
+                val tags =
+                    call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
+                if (title != null && text != null && tags != null) {
+                    val newAdv = Advertisement(login = userLogin.userId, title = title, text = text, tags = tags)
+                    advertisements.add(newAdv)
+                    databaseRepository.insertAdvertisement(advertisement = newAdv)
+                    call.respondStatus(RequestStatus.AdvertisementIsAddedSuccessful())
+                }
             }
         }
 
