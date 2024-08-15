@@ -1,15 +1,33 @@
 import { useState } from 'react';
 import { useActions } from '../../../../store/actions';
-import { FormButton, FormInput, FormItem, FormLabel, FormTitle } from '../../../styles';
+import { ErrorMessage, FormButton, FormInput, FormItem, FormLabel, FormTitle } from '../../../styles';
+import { useSendNewUserMutation } from '../../../../store/reducers/user/userApi';
+import { validationAll } from '../../../helpers/validation';
 
 export default function Reg() {
     const { setAuthStatus } = useActions();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [rPassword, setRPassword] = useState('');
+    const [error, setError] = useState<string | null>(null);
+
+    const [sendNewUser, { isLoading }] = useSendNewUserMutation();
 
     const handleClick = () => {
-        setAuthStatus()
+        const validError = validationAll(login, password, rPassword);
+        if (validError) {
+            setError(validError);
+        } else {
+            sendNewUser({ login, password }).then(res => {
+                if (res?.error && 'originalStatus' in res.error) {
+                    if (res.error.originalStatus !== 200) {
+                        setError(res.error.data);
+                    } else {
+                        setAuthStatus(login);
+                    }
+                }
+            });
+        }
     }
 
     return (
@@ -45,7 +63,8 @@ export default function Reg() {
                     onChange={(e) => setRPassword(e.target.value)}
                     placeholder="Введите свой пароль..." />
             </FormItem>
-            <FormButton onClick={handleClick}>Зарегистрироваться</FormButton>
+            <ErrorMessage>{error}</ErrorMessage>
+            {isLoading ? "Загрузка..." : <FormButton onClick={handleClick}>Зарегистрироваться</FormButton>}
         </>
     )
 }

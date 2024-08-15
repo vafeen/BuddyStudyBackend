@@ -146,3 +146,9 @@ width: 20px;
 height: 20px;
 margin: auto 0;
 `;
+
+export const ErrorMessage = styled('p')`
+font-size: ${fonts.sizes.smallExtra};
+font-weight: ${fonts.weights.regular};
+color: ${colors.red};
+`;

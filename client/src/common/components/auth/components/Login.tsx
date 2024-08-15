@@ -1,15 +1,26 @@
 import { useState } from "react";
 import { useActions } from "../../../../store/actions";
-import { FormButton, FormInput, FormItem, FormLabel, FormTitle } from "../../../styles";
+import { ErrorMessage, FormButton, FormInput, FormItem, FormLabel, FormTitle } from "../../../styles";
+import { useIsUserMutation } from "../../../../store/reducers/user/userApi";
 
 export default function Login() {
     const { setAuthStatus, setStartInfo } = useActions();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
+    const [isUser] = useIsUserMutation();
+    const [error, setError] = useState<string | null>(null);
 
     const handleClick = () => {
-        setAuthStatus();
-        setStartInfo();
+        isUser({login, password}).then(res => {
+            if (res?.error && 'originalStatus' in res.error) {
+                if (res.error.originalStatus !== 200) {
+                    setError(res.error.data);
+                } else {
+                    setAuthStatus(login);
+                    setStartInfo();
+                }
+            }
+        })
     }
 
     return (
@@ -37,6 +48,7 @@ export default function Login() {
                     placeholder="Введите свой пароль..."
                 />
             </FormItem>
+            <ErrorMessage>{error}</ErrorMessage>
             <FormButton onClick={() => handleClick()}>Войти</FormButton>
         </>
     )
