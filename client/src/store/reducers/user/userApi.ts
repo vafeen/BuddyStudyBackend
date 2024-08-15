@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // потом убрать в отдельный файл
-const baseUrl: string = "http://localhost:8080/";
+const baseUrl: string = "http://localhost:8080";
 
 export interface UserAuthProps {
     login: string,
@@ -10,19 +10,19 @@ export interface UserAuthProps {
 
 export const userApi = createApi({
     reducerPath: "userApi",
-    baseQuery: fetchBaseQuery({ baseUrl: baseUrl, credentials: "include", mode: "no-cors" }),
+    baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
     endpoints: (build) => ({
-        sendNewUser: build.mutation<string, UserAuthProps>({
+        sendNewUser: build.mutation<void, UserAuthProps>({
             query: (user) => ({
-                url: 'reg',
+                url: '/reg',
                 method: 'POST',
                 body: user,
-            }),                
+            }),
         }),
-        isUser: build.mutation<string, UserAuthProps>({
+        isUser: build.mutation<void, UserAuthProps>({
             query: (user) => ({
-                url: 'login',
-                method:'POST',
+                url: '/login',
+                method: 'POST',
                 body: user
             }),
         })
