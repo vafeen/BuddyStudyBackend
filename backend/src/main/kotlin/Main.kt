@@ -32,7 +32,7 @@ fun main() {
         install(Sessions) {
             cookie<UserSession>("user_session") {
                 cookie.path = "/"
-                cookie.maxAgeInSeconds = 20
+                cookie.maxAgeInSeconds = 86400
             }
         }
         configureRouting()
