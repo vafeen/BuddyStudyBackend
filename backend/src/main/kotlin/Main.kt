@@ -20,6 +20,8 @@ fun main() {
             anyHost()
 //        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
 //        allowHost(HostInfo.ADDRESS2, schemes = listOf("http", "https"))
+            allowCredentials = true
+            allowNonSimpleContentTypes = true
             allowHeader(HttpHeaders.ContentType)
             allowMethod(HttpMethod.Get)
             allowMethod(HttpMethod.Post)
