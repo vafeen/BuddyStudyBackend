@@ -19,7 +19,11 @@ import utils.callIfNull
 import utils.getParams
 
 suspend fun ApplicationCall.getOrInvalidParameter(key: String, params: Map<String, String>?): String? =
-    params?.get(key = key).callIfNull(call = this, message = "Invalid parameter: $key")
+    params?.get(key = key).callIfNull(call = this, message = "Invalid parameter: $key")?.replace("\"", "")
+
+suspend fun ApplicationCall.getSessionOrCallUnauthorized(): UserSession? = sessions.get<UserSession>().also {
+    if (it == null) respondStatus(RequestStatus.Unauthorized())
+}
 
 fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
@@ -35,9 +39,17 @@ fun Application.configureRouting() {
             call.respond(params.toString())
         }
 
+        get("/user/info/get") {
+            call.getSessionOrCallUnauthorized()?.let { userLogin ->
+                users.get(key = userLogin.userId).let { user ->
+                    if (user != null) call.respond(user)
+                    else call.respondStatus(RequestStatus.UserNotFound())
+                }
+            }
+        }
+
         post("/user/info/fill") {
-            val userLogin = call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")
-            if (userLogin != null) {
+            call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")?.let { userLogin ->
                 var user: User? = users.get(key = userLogin.userId)
                 val params = call.getParams().callIfNull(call = call, message = "No body")
                 val name = call.getOrInvalidParameter(key = UserKey.name, params = params)
@@ -48,7 +60,8 @@ fun Application.configureRouting() {
                 val vk = params?.get(key = UserKey.vk)
                 val wa = params?.get(key = UserKey.wa)
                 if (user != null && name != null && gender != null && date != null && city != null) {
-                    user = user.copy(name = name, gender = gender, date = date, city = city, tg = tg, wa = wa, vk = vk)
+                    user =
+                        user.copy(name = name, gender = gender, date = date, city = city, tg = tg, wa = wa, vk = vk)
                     users.set(key = userLogin.userId, value = user)
                     databaseRepository.insertUser(user = user)
                     call.respondStatus(RequestStatus.UserUpdateSuccessful())
@@ -61,30 +74,13 @@ fun Application.configureRouting() {
             val params = call.getParams().callIfNull(call = call, message = "No body")
             val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
             val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
-            val tags = call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)
-                ?.parseJsonArrayToList()
+            val tags =
+                call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
             if (userLogin != null && title != null && text != null && tags != null) {
                 val newAdv = Advertisement(login = userLogin.userId, title = title, text = text, tags = tags)
                 advertisements.add(newAdv)
                 databaseRepository.insertAdvertisement(advertisement = newAdv)
                 call.respondStatus(RequestStatus.AdvertisementIsAddedSuccessful())
-            }
-        }
-
-        post("/reg") {
-            val params = call.getParams().callIfNull(call = call, message = "No body")
-            val login = call.getOrInvalidParameter(key = UserKey.login, params = params)
-            val password = call.getOrInvalidParameter(key = UserKey.password, params = params)
-
-            if (login != null && password != null) {
-                if (users.get(key = login) == null) {
-                    call.sessions.set(UserSession(userId = login))
-                    val newUser =
-                        User(login = login, password = PasswordHasher(salt = login).passwordToHash(password = password))
-                    users.set(key = login, value = newUser)
-                    databaseRepository.insertUser(user = newUser)
-                    call.respondStatus(RequestStatus.SuccessfulSignUP())
-                } else call.respondStatus(RequestStatus.UserLoginExists())
             }
         }
 
@@ -108,6 +104,25 @@ fun Application.configureRouting() {
                         call.respondStatus(RequestStatus.SuccessfulSignIN())
                     }
                 }
+            }
+        }
+        post("/reg") {
+            val params = call.getParams().callIfNull(call = call, message = "No body")
+            val login = call.getOrInvalidParameter(key = UserKey.login, params = params)
+            val password = call.getOrInvalidParameter(key = UserKey.password, params = params)
+
+            if (login != null && password != null) {
+                if (users.get(key = login) == null) {
+                    call.sessions.set(UserSession(userId = login))
+                    val newUser =
+                        User(
+                            login = login,
+                            password = PasswordHasher(salt = login).passwordToHash(password = password)
+                        )
+                    users.set(key = login, value = newUser)
+                    databaseRepository.insertUser(user = newUser)
+                    call.respondStatus(RequestStatus.SuccessfulSignUP())
+                } else call.respondStatus(RequestStatus.UserLoginExists())
             }
         }
     }
