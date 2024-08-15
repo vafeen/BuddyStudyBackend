@@ -1,9 +1,5 @@
 package ru.vafeen.utils
 
-import io.ktor.server.application.*
-import ru.vafeen.errors.RequestStatus
-import ru.vafeen.errors.respond
-
 const val defaultStringArgValue = "defaultStringArgValue"
 
 fun String.parseJsonArrayToList(): List<String>? = try {
