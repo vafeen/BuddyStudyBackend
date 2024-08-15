@@ -20,6 +20,8 @@ fun main() {
             anyHost()
 //        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
 //        allowHost(HostInfo.ADDRESS2, schemes = listOf("http", "https"))
+            allowCredentials = true
+            allowNonSimpleContentTypes = true
             allowHeader(HttpHeaders.ContentType)
             allowMethod(HttpMethod.Get)
             allowMethod(HttpMethod.Post)
@@ -30,7 +32,7 @@ fun main() {
         install(Sessions) {
             cookie<UserSession>("user_session") {
                 cookie.path = "/"
-                cookie.maxAgeInSeconds = 86400
+                cookie.maxAgeInSeconds = 20
             }
         }
         configureRouting()

@@ -36,6 +36,16 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
         status: HttpStatusCode = HttpStatusCode.BadRequest,
         message: String
     ) : RequestStatus(status = status, message = message)
+
+    class UserUpdateSuccessful(
+        status: HttpStatusCode = HttpStatusCode.OK,
+        message: String = "Данные пользователя обновлены успешно"
+    ) : RequestStatus(status = status, message = message)
+
+    class Unauthorized(
+        status: HttpStatusCode = HttpStatusCode.Unauthorized,
+        message: String = "Unauthorized"
+    ) : RequestStatus(status = status, message = message)
 }
 
 
