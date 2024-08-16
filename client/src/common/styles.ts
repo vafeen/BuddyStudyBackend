@@ -21,6 +21,7 @@ background-color: ${colors.totalWhite};
 `;
 
 export const CloseWindowButton = styled('img')`
+cursor: pointer;
 position: absolute;
 width: 20px;
 height: 20px;
@@ -144,4 +145,10 @@ export const FormContactImg = styled('img')`
 width: 20px;
 height: 20px;
 margin: auto 0;
-`
+`;
+
+export const ErrorMessage = styled('p')`
+font-size: ${fonts.sizes.smallExtra};
+font-weight: ${fonts.weights.regular};
+color: ${colors.red};
+`;
