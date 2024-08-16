@@ -15,3 +15,5 @@ fun String.removeSubStr(vararg strs: String): String {
     }
     return result
 }
+
+fun String?.removeAngryQoutes(): String? = this?.replace("\"", "")

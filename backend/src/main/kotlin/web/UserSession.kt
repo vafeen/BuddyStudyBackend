@@ -1,3 +1,3 @@
 package ru.vafeen.web
 
-data class UserSession(val userId: String)
+data class UserSession(val session: String)
