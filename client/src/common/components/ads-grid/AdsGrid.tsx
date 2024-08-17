@@ -1,7 +1,7 @@
 import AdsCard from "../ads-card/AdsCard";
 import { AdsGridWrapper } from "./styles";
 
-const list = [...Array(10).keys()]
+const list = [...Array(40).keys()]
 
 export default function AdsGrid() {
     return (
