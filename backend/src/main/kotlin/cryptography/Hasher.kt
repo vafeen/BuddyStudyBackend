@@ -3,11 +3,14 @@ package ru.vafeen.cryptography
 import java.security.MessageDigest
 
 
+fun String.createSaltedHash(): String = Hasher(salt = "salt").passwordToHash(password = this)
+
+
 /**
  * Class for generating password HASH-code with using salt
  * @param salt [Name of user for generating salt for HASH]
  */
-class PasswordHasher(
+private class Hasher(
     private val salt: String
 ) {
 

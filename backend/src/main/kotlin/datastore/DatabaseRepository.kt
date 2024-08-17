@@ -8,8 +8,8 @@ import java.io.File
 
 
 class DatabaseRepository {
-    private var database = Database()
     private val file = File("database.json")
+    private var database = getDatabaseAsDB()
 
     init {
         file.createNewFile()
@@ -26,23 +26,28 @@ class DatabaseRepository {
     }
 
 
-    fun selectAllUsers(): MutableMap<String, User> {
+    private fun selectAllUsers(): MutableMap<String, User> {
         database = getDatabaseAsDB()
         return database.users
     }
 
-    fun selectAllAdvertisements(): MutableList<Advertisement> {
+    private fun selectAllAdvertisements(): MutableList<Advertisement> {
         database = getDatabaseAsDB()
         return database.advertisements
     }
 
-    fun insertUser(user: User) {
-        database.users[user.login] = user
+    fun insertUser(key: String, user: User) {
+        database.users[key] = user
         saveDatabase()
     }
+
+    fun getUserByHashedKey(key: String): User? = database.users.get(key = key)
+
 
     fun insertAdvertisement(advertisement: Advertisement) {
         database.advertisements.add(advertisement)
         saveDatabase()
     }
+
+    fun getAdvertisements(): List<Advertisement> = database.advertisements
 }
