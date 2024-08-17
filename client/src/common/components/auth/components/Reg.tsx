@@ -23,7 +23,7 @@ export default function Reg() {
                     if (res.error.originalStatus !== 200) {
                         setError(res.error.data);
                     } else {
-                        setAuthStatus(login);
+                        setAuthStatus({isAuth: true, isInfo: false});
                     }
                 }
             });

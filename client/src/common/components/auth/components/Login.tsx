@@ -10,13 +10,13 @@ export default function Login() {
     const [isUser] = useIsUserMutation();
     const [error, setError] = useState<string | null>(null);
 
-    const handleClick = () => {
-        isUser({login, password}).then(res => {
+    const handleClick = async () => {
+        await isUser({ login, password }).then(res => {
             if (res?.error && 'originalStatus' in res.error) {
                 if (res.error.originalStatus !== 200) {
                     setError(res.error.data);
                 } else {
-                    setAuthStatus(login);
+                    setAuthStatus();
                     setStartInfo();
                 }
             }

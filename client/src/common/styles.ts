@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const Container = styled('div')`
 margin: 0 auto;
-width: 1152px;
+max-width: 1152px;
 padding: 15px;
 `;
 
