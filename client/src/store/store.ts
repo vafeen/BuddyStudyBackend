@@ -11,7 +11,7 @@ const rememberedReducers = [
 const rootReducer = combineReducers({
     userReducer,
     userInfoReducer,
-    [userApi.reducerPath]: userApi.reducer
+    [userApi.reducerPath]: userApi.reducer,
 });
 
 const rememberedReducer = rememberReducer(rootReducer);
