@@ -40,7 +40,7 @@ fun main() {
             }
         }
         print(
-            "Server state: $state; Adress - ${
+            "\nServer state: $state; Adress - ${
                 ServerInfo.let {
                     "${it.PROTOCOL}//${it.HOST}:${it.PORT}/info"
                 }
