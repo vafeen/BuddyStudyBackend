@@ -24,6 +24,9 @@ fun Application.configureRouting() {
 
 
     routing {
+        get("/info") {
+            call.respondText { "Сервер для бэка, какой браузер!?" }
+        }
         post("/test/body") {
             call.respond(call.receiveText())
         }

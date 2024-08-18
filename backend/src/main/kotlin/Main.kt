@@ -1,40 +1,66 @@
 package ru.vafeen
 
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.sessions.*
-import ru.vafeen.plugins.configureRouting
-import ru.vafeen.utils.findAvailablePort
-import ru.vafeen.web.UserSession
+import ru.vafeen.server.ServerInfo
+import ru.vafeen.server.ServerState
+import ru.vafeen.server.server
+import ru.vafeen.utils.nextServerState
 
 
 fun main() {
-    val port = findAvailablePort(8080)
-    embeddedServer(Netty, port = port, host = "localhost") {
-        install(CORS) {
-            anyHost()
-//        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
-//        allowHost(HostInfo.ADDRESS2, schemes = listOf("http", "https"))
-            allowCredentials = true
-            allowNonSimpleContentTypes = true
-            allowHeader(HttpHeaders.ContentType)
-            allowMethod(HttpMethod.Get)
-            allowMethod(HttpMethod.Post)
-        }
-        install(ContentNegotiation) {
-            json()
-        }
-        install(Sessions) {
-            cookie<UserSession>("user_session") {
-                cookie.path = "/"
-                cookie.maxAgeInSeconds = 86400
+    var server: NettyApplicationEngine? = null
+    var state = ServerState.Running
+    do {
+        when (state) {
+            ServerState.Paused -> {
+                if (server != null) {
+                    println("Wait...")
+                    server.stop(1000, 1000)
+                    server = null
+                    println("Server stopped")
+                } else {
+                    println("Server is not running")
+                }
+            }
+
+            ServerState.Running -> {
+                if (server == null) {
+                    println("Wait...")
+                    server = server()
+                    server.start(wait = false)
+                } else {
+                    println("Server is already running")
+                }
+            }
+
+            ServerState.TurnedOff -> {
+                server?.stop(1000, 1000)
+                println("Exit and turning off")
+                break
             }
         }
-        configureRouting()
-    }.start(wait = true)
+        print(
+            "\nServer state: $state; Adress - ${
+                ServerInfo.let {
+                    "${it.PROTOCOL}//${it.HOST}:${it.PORT}/info"
+                }
+            }\n" +
+                    when (state) {
+                        ServerState.Running -> {
+                            "Enter for switch state of server:\n" +
+                                    "\t${ServerState.Paused.value} - pause running\n" +
+                                    "\t${ServerState.TurnedOff.value} - turn off\n->"
+                        }
+
+                        ServerState.Paused -> {
+                            "Enter for switch state of server:\n" +
+                                    "\t${ServerState.Running.value} - resume running\n" +
+                                    "\t${ServerState.TurnedOff.value} - turn off\n->"
+                        }
+
+                        else -> null
+                    }
+        )
+        state = nextServerState()
+    } while (state != ServerState.TurnedOff)
 }
