@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { DefaultFrame } from "../../styles";
 import { borders, fonts } from "../../styleConstants";
-import { absCenter } from "../../mixins";
+import { absCenter, defaultScroll } from "../../mixins";
 
 export const UserInfoWindowWrapper = styled(DefaultFrame)`
 ${absCenter}
@@ -9,6 +9,12 @@ width: 400px;
 text-align: center;
 border-radius: ${borders.radius.medium};
 padding: 20px;
+`;
+
+export const UserInfoWindowContent = styled('div')`
+max-height: 300px;
+overflow-y: scroll;
+${defaultScroll}
 `;
 
 export const UserInfoSelectTitle = styled('p')`
