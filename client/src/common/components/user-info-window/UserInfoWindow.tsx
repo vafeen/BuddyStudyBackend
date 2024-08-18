@@ -4,9 +4,10 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { BlackTransparentBg, ErrorMessage, FormButton, FormInput, FormItem, FormLabel, FormTitle } from '../../styles';
 import ContactsInput from './components/ContactsInput';
 import GenderInput from './components/GenderInput';
-import { UserInfoWindowWrapper } from './styles';
+import { UserInfoWindowContent, UserInfoWindowWrapper } from './styles';
 import { ContactsLinks, GenderType } from '../../../store/reducers/user/userInfoSlice';
 import { useSendUserInfoMutation } from '../../../store/reducers/user/userApi';
+import ChoiseAvatars from '../choice-avatars/ChoiseAvatars';
 
 
 export default function UserInfoWindow() {
@@ -49,20 +50,26 @@ export default function UserInfoWindow() {
                 <BlackTransparentBg>
                     <UserInfoWindowWrapper>
                         <FormTitle>Информация о себе</FormTitle>
-                        <FormItem>
-                            <FormLabel htmlFor='name'>Имя</FormLabel>
-                            <FormInput id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} type='text' placeholder='Введите ваше имя...' />
-                        </FormItem>
-                        <FormItem>
-                            <FormLabel htmlFor='date'>Введите дату рождения</FormLabel>
-                            <FormInput id="date" name="date" value={date} onChange={(e) => setDate(e.target.value)} type='date' />
-                        </FormItem>
-                        <FormItem>
-                            <FormLabel htmlFor='location'>Место проживания</FormLabel>
-                            <FormInput id="location" name="location" value={location} onChange={(e) => setLocation(e.target.value)} type='text' placeholder='Введите место проживания...' />
-                        </FormItem>
-                        <GenderInput gender={gender} setGender={setGender} />
-                        <ContactsInput contacts={contacts} setContacts={setContacts} />
+                        <UserInfoWindowContent>
+                            <FormItem>
+                                <FormLabel htmlFor='name'>Имя</FormLabel>
+                                <FormInput id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} type='text' placeholder='Введите ваше имя...' />
+                            </FormItem>
+                            <FormItem>
+                                <FormLabel htmlFor='date'>Введите дату рождения</FormLabel>
+                                <FormInput id="date" name="date" value={date} onChange={(e) => setDate(e.target.value)} type='date' />
+                            </FormItem>
+                            <FormItem>
+                                <FormLabel htmlFor='location'>Место проживания</FormLabel>
+                                <FormInput id="location" name="location" value={location} onChange={(e) => setLocation(e.target.value)} type='text' placeholder='Введите место проживания...' />
+                            </FormItem>
+                            <GenderInput gender={gender} setGender={setGender} />
+                            <ContactsInput contacts={contacts} setContacts={setContacts} />
+                            <FormItem>
+                                <FormLabel htmlFor='avatar'>Выберите аватарку</FormLabel>
+                                <ChoiseAvatars />
+                            </FormItem>
+                        </UserInfoWindowContent>
                         <ErrorMessage>{error}</ErrorMessage>
                         <FormButton onClick={() => handleClick()}>Сохранить</FormButton>
                     </UserInfoWindowWrapper>

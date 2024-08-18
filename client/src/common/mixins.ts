@@ -14,6 +14,12 @@ export const defaultHover = css`
 }
 `;
 
+export const resetScroll = css`
+&::-webkit-scrollbar {
+    width: 0;
+}
+`;
+
 export const defaultScroll = css`
 &::-webkit-scrollbar {
     height: 4px;
