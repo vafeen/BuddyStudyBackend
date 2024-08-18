@@ -1,40 +1,45 @@
 package ru.vafeen
 
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.sessions.*
-import ru.vafeen.plugins.configureRouting
-import ru.vafeen.utils.findAvailablePort
-import ru.vafeen.web.UserSession
+import ru.vafeen.server.server
+import java.util.*
 
 
 fun main() {
-    val port = findAvailablePort(8080)
-    embeddedServer(Netty, port = port, host = "localhost") {
-        install(CORS) {
-            anyHost()
-//        allowHost(HostInfo.ADDRESS, schemes = listOf("http", "https"))
-//        allowHost(HostInfo.ADDRESS2, schemes = listOf("http", "https"))
-            allowCredentials = true
-            allowNonSimpleContentTypes = true
-            allowHeader(HttpHeaders.ContentType)
-            allowMethod(HttpMethod.Get)
-            allowMethod(HttpMethod.Post)
-        }
-        install(ContentNegotiation) {
-            json()
-        }
-        install(Sessions) {
-            cookie<UserSession>("user_session") {
-                cookie.path = "/"
-                cookie.maxAgeInSeconds = 86400
+    val scanner = Scanner(System.`in`)
+    var server: NettyApplicationEngine? = null
+    var x = 1
+    while (true) {
+        when (x) {
+            1 -> {
+                if (server == null) {
+                    server = server()
+                    server.start(wait = false)
+                    println("Сервер запущен на порту 8080")
+                } else {
+                    println("Сервер уже запущен")
+                }
             }
+
+            2 -> {
+                if (server != null) {
+                    server.stop(1000, 1000)
+                    server = null
+                    println("Server остановлен")
+                } else {
+                    println("Сервер не запущен")
+                }
+            }
+
+            0 -> {
+                server?.stop(1000, 1000)
+                println("Выход")
+                break
+            }
+
+            else -> println("Неверный ввод, попробуйте снова")
         }
-        configureRouting()
-    }.start(wait = true)
+        println("Введите 1 для запуска сервера, 2 для остановки сервера, 0 для выхода:")
+        x = scanner.nextInt()
+    }
 }
