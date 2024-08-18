@@ -5,11 +5,15 @@ import java.util.*
 
 fun nextServerState(): ServerState {
     while (true) {
-        val newState = when (Scanner(System.`in`).nextInt()) {
-            ServerState.Running.value -> ServerState.Running
-            ServerState.Paused.value -> ServerState.Paused
-            ServerState.TurnedOff.value -> ServerState.TurnedOff
-            else -> null
+        val newState = try {
+            when (Scanner(System.`in`).nextInt()) {
+                ServerState.Running.value -> ServerState.Running
+                ServerState.Paused.value -> ServerState.Paused
+                ServerState.TurnedOff.value -> ServerState.TurnedOff
+                else -> null
+            }
+        } catch (e: Exception) {
+            null
         }
         if (newState != null) return newState
     }
