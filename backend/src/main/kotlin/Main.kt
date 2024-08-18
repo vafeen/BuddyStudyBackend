@@ -1,45 +1,66 @@
 package ru.vafeen
 
 import io.ktor.server.netty.*
+import ru.vafeen.server.ServerInfo
+import ru.vafeen.server.ServerState
 import ru.vafeen.server.server
-import java.util.*
+import ru.vafeen.utils.nextServerState
 
 
 fun main() {
-    val scanner = Scanner(System.`in`)
     var server: NettyApplicationEngine? = null
-    var x = 1
-    while (true) {
-        when (x) {
-            1 -> {
-                if (server == null) {
-                    server = server()
-                    server.start(wait = false)
-                    println("Сервер запущен на порту 8080")
-                } else {
-                    println("Сервер уже запущен")
-                }
-            }
-
-            2 -> {
+    var state = ServerState.Running
+    do {
+        when (state) {
+            ServerState.Paused -> {
                 if (server != null) {
+                    println("Wait...")
                     server.stop(1000, 1000)
                     server = null
-                    println("Server остановлен")
+                    println("Server stopped")
                 } else {
-                    println("Сервер не запущен")
+                    println("Server is not running")
                 }
             }
 
-            0 -> {
-                server?.stop(1000, 1000)
-                println("Выход")
-                break
+            ServerState.Running -> {
+                if (server == null) {
+                    println("Wait...")
+                    server = server()
+                    server.start(wait = false)
+                } else {
+                    println("Server is already running")
+                }
             }
 
-            else -> println("Неверный ввод, попробуйте снова")
+            ServerState.TurnedOff -> {
+                server?.stop(1000, 1000)
+                println("Exit and turning off")
+                break
+            }
         }
-        println("Введите 1 для запуска сервера, 2 для остановки сервера, 0 для выхода:")
-        x = scanner.nextInt()
-    }
+        print(
+            "Server state: $state; Adress - ${
+                ServerInfo.let {
+                    "${it.PROTOCOL}//${it.HOST}:${it.PORT}/info"
+                }
+            }\n" +
+                    when (state) {
+                        ServerState.Running -> {
+                            "Enter for switch state of server:\n" +
+                                    "\t${ServerState.Paused.value} - pause running\n" +
+                                    "\t${ServerState.TurnedOff.value} - turn off\n->"
+                        }
+
+                        ServerState.Paused -> {
+                            "Enter for switch state of server:\n" +
+                                    "\t${ServerState.Running.value} - resume running\n" +
+                                    "\t${ServerState.TurnedOff.value} - turn off\n->"
+                        }
+
+                        else -> null
+                    }
+        )
+        state = nextServerState()
+    } while (state != ServerState.TurnedOff)
 }

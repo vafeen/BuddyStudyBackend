@@ -13,9 +13,9 @@ import ru.vafeen.utils.findAvailablePort
 import ru.vafeen.web.UserSession
 
 fun server(): NettyApplicationEngine {
-    val port = findAvailablePort(8080)
+   ServerInfo.PORT = findAvailablePort(8080)
     return embeddedServer(
-        Netty, port = port, host = "localhost",
+        Netty, port = ServerInfo.PORT, host = ServerInfo.HOST,
         watchPaths = listOf("classes", "resources")
     ) {
         install(CORS) {
