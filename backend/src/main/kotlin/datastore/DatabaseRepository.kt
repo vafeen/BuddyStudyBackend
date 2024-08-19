@@ -8,7 +8,7 @@ import java.io.File
 
 
 class DatabaseRepository {
-    private val file = File("database.json")
+    private val file = File("${DatabaseInfo.NAME}.json")
     private var database = getDatabaseAsDB()
 
     init {
