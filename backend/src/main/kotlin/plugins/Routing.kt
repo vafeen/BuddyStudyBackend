@@ -49,15 +49,25 @@ fun Application.configureRouting() {
                 var user: User? = databaseRepository.getUserByHashedKey(key = userLogin.session)
                 val params = call.getParams().callIfNull(call = call, message = "No body")
                 val name = call.getOrInvalidParameter(key = UserKey.name, params = params)
+                val avatarId = call.getOrInvalidParameter(key = UserKey.avatarId, params = params)
                 val gender = call.getOrInvalidParameter(key = UserKey.gender, params = params)
                 val date = call.getOrInvalidParameter(key = UserKey.date, params = params)
                 val city = call.getOrInvalidParameter(key = UserKey.city, params = params)
                 val tg = params?.get(key = UserKey.tg).removeAngryQoutes()
                 val vk = params?.get(key = UserKey.vk).removeAngryQoutes()
                 val wa = params?.get(key = UserKey.wa).removeAngryQoutes()
-                if (user != null && name != null && gender != null && date != null && city != null) {
+                if (user != null && avatarId != null && name != null && gender != null && date != null && city != null) {
                     user =
-                        user.copy(name = name, gender = gender, date = date, city = city, tg = tg, wa = wa, vk = vk)
+                        user.copy(
+                            name = name,
+                            avatarId = avatarId,
+                            gender = gender,
+                            date = date,
+                            city = city,
+                            tg = tg,
+                            wa = wa,
+                            vk = vk
+                        )
                     databaseRepository.insertUser(key = user.login, user = user)
                     call.respondStatus(RequestStatus.UserUpdateSuccessful())
                 }
