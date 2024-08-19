@@ -39,27 +39,27 @@ fun Application.configureRouting() {
         get("/ads/all") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
-                val params = call.getParams()//.callIfNull(call = call, message = "No body")
-                val gender = params?.get(key = UserKey.GENDER)
-                    .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
-                val city = params?.get(key = UserKey.CITY)
-                    .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.CITY, params = params)
-                val substr = params?.get(key = AdsGettingKey.SUBSTR).removeAngryQuotes()
-                val filteredUsers = databaseRepository.getAllUsers().filter {
-                    (if (gender != null) it.gender == gender else true) &&
-                            (if (city != null) it.city == city else true)
-                }.map { it.login }
-                val filteredAds = databaseRepository.getAdvertisements().filter { adv ->
-                    adv.login in filteredUsers &&
-                            (if (substr != null) {
-                                adv.title.contains(other = substr) || adv.text.contains(other = substr) ||
-                                        adv.tags?.let { tags ->
-                                            substr in tags
-                                        } == true
-                            } else true)
+                    val params = call.getParams()//.callIfNull(call = call, message = "No body")
+                    val gender = params?.get(key = UserKey.GENDER)
+                        .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
+                    val city = params?.get(key = UserKey.CITY)
+                        .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.CITY, params = params)
+                    val substr = params?.get(key = AdsGettingKey.SUBSTR).removeAngryQuotes()
+                    val filteredUsers = databaseRepository.getAllUsers().filter {
+                        (if (gender != null) it.gender == gender else true) &&
+                                (if (city != null) it.city == city else true)
+                    }.map { it.login }
+                    val filteredAds = databaseRepository.getAdvertisements().filter { adv ->
+                        adv.login in filteredUsers &&
+                                (if (substr != null) {
+                                    adv.title.contains(other = substr) || adv.text.contains(other = substr) ||
+                                            adv.tags?.let { tags ->
+                                                substr in tags
+                                            } == true
+                                } else true)
+                    }
+                    call.respond(filteredAds)
                 }
-                call.respond(filteredAds)
-            }
         }
 
 
@@ -113,14 +113,22 @@ fun Application.configureRouting() {
                     val params = call.getParams().callIfNull(call = call, message = "No body")
                     val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
                     val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
+                    val colorHeader = call.getOrInvalidParameter(key = AdvertisementKey.colorHeader, params = params)
                     val tags =
                         call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
                     if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null &&
                         title != null &&
                         text != null &&
+                        colorHeader != null &&
                         tags != null
                     ) {
-                        val newAdv = Advertisement(login = userLogin.session, title = title, text = text, tags = tags)
+                        val newAdv = Advertisement(
+                            login = userLogin.session,
+                            title = title,
+                            text = text,
+                            colorHeader = colorHeader,
+                            tags = tags
+                        )
                         databaseRepository.insertAdvertisement(advertisement = newAdv)
                         call.respondStatus(RequestStatus.AdvertisementIsAddedSuccessful())
                     }
