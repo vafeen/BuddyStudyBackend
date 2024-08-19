@@ -10,11 +10,12 @@ import ru.vafeen.utils.nextServerState
 fun main() {
     var server: NettyApplicationEngine? = null
     var state = ServerState.Running
+    val wait = "\nWait...\n"
     do {
         when (state) {
             ServerState.Paused -> {
                 if (server != null) {
-                    println("Wait...")
+                    println(wait)
                     server.stop(0, 0)
                     server = null
                     println("Server stopped")
@@ -23,20 +24,16 @@ fun main() {
 
             ServerState.Running -> {
                 if (server == null) {
-                    println("Wait...")
+                    println(wait)
                     server = server()
                     server.start(wait = false)
                 } else println("Server is already running")
             }
 
-            ServerState.TurnedOff -> {
-                server?.stop(0, 0)
-                server = null
-                println("Exit and turning off")
-            }
+            ServerState.TurnedOff -> null
         }
         print(
-            "\nServer state: $state; Adress - ${ServerInfo.let { "${it.PROTOCOL}//${it.HOST}:${it.PORT}/info" }}\n" +
+            "Server state: $state; Adress - ${ServerInfo.let { "${it.PROTOCOL}//${it.HOST}:${it.PORT}/info" }}\n" +
                     when (state) {
                         ServerState.Running -> "Enter for switch state of server:\n" +
                                 "\t${ServerState.Paused.value} - pause running\n" +
@@ -51,4 +48,7 @@ fun main() {
         )
         state = nextServerState()
     } while (state != ServerState.TurnedOff)
+    println(wait)
+    server?.stop(0, 0)
+    println("Turning off and exit")
 }
