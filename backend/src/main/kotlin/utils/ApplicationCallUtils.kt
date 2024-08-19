@@ -8,7 +8,7 @@ import ru.vafeen.web.UserSession
 import utils.callIfNull
 
 suspend fun ApplicationCall.getOrInvalidParameter(key: String, params: Map<String, String>?): String? =
-    params?.get(key = key).callIfNull(call = this, message = "Invalid parameter: $key").removeAngryQoutes()
+    params?.get(key = key).callIfNull(call = this, message = "Invalid parameter: $key").removeAngryQuotes()
 
 suspend fun ApplicationCall.getSessionOrCallUnauthorized(): UserSession? = sessions.get<UserSession>().also {
     if (it == null) respondStatus(RequestStatus.Unauthorized())
