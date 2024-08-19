@@ -48,14 +48,14 @@ fun Application.configureRouting() {
             call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")?.let { userLogin ->
                 var user: User? = databaseRepository.getUserByHashedKey(key = userLogin.session)
                 val params = call.getParams().callIfNull(call = call, message = "No body")
-                val name = call.getOrInvalidParameter(key = UserKey.name, params = params)
-                val avatarId = call.getOrInvalidParameter(key = UserKey.avatarId, params = params)
-                val gender = call.getOrInvalidParameter(key = UserKey.gender, params = params)
-                val date = call.getOrInvalidParameter(key = UserKey.date, params = params)
-                val city = call.getOrInvalidParameter(key = UserKey.city, params = params)
-                val tg = params?.get(key = UserKey.tg).removeAngryQoutes()
-                val vk = params?.get(key = UserKey.vk).removeAngryQoutes()
-                val wa = params?.get(key = UserKey.wa).removeAngryQoutes()
+                val name = call.getOrInvalidParameter(key = UserKey.NAME, params = params)
+                val avatarId = call.getOrInvalidParameter(key = UserKey.AVATAR_ID, params = params)
+                val gender = call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
+                val date = call.getOrInvalidParameter(key = UserKey.DATE, params = params)
+                val city = call.getOrInvalidParameter(key = UserKey.CITY, params = params)
+                val tg = params?.get(key = UserKey.TG).removeAngryQoutes()
+                val vk = params?.get(key = UserKey.VK).removeAngryQoutes()
+                val wa = params?.get(key = UserKey.WA).removeAngryQoutes()
                 if (user != null && avatarId != null && name != null && gender != null && date != null && city != null) {
                     user =
                         user.copy(
@@ -95,8 +95,8 @@ fun Application.configureRouting() {
 
         post("/login") {
             val params = call.getParams().callIfNull(call = call, message = "No body")
-            val login = call.getOrInvalidParameter(key = UserKey.login, params = params)
-            val password = call.getOrInvalidParameter(key = UserKey.password, params = params)
+            val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
+            val password = call.getOrInvalidParameter(key = UserKey.PASSWORD, params = params)
             if (login != null && password != null) {
                 val user = databaseRepository.getUserByHashedKey(key = login.createSaltedHash())
                 when {
@@ -118,8 +118,8 @@ fun Application.configureRouting() {
 
         post("/reg") {
             val params = call.getParams().callIfNull(call = call, message = "No body")
-            val login = call.getOrInvalidParameter(key = UserKey.login, params = params)
-            val password = call.getOrInvalidParameter(key = UserKey.password, params = params)
+            val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
+            val password = call.getOrInvalidParameter(key = UserKey.PASSWORD, params = params)
 
             if (login != null && password != null) {
                 if (databaseRepository.getUserByHashedKey(key = login.createSaltedHash()) == null) {
