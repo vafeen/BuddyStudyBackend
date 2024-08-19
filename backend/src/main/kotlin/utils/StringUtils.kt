@@ -1,9 +1,8 @@
 package ru.vafeen.utils
 
-const val defaultStringArgValue = "defaultStringArgValue"
 
 fun String.parseJsonArrayToList(): List<String>? = try {
-    this.removeSubStr("[", "]", "\n", " ").split(",")
+    this.removeSubStr("[", "]", "\n", " ").replaceAngryQuotes()?.split(",")
 } catch (e: Exception) {
     null
 }
@@ -11,9 +10,17 @@ fun String.parseJsonArrayToList(): List<String>? = try {
 fun String.removeSubStr(vararg strs: String): String {
     var result = this
     for (str in strs) {
-        result = result.replace(str, "");
+        result = result.replace(str, "")
     }
     return result
 }
 
-fun String?.removeAngryQoutes(): String? = this?.replace("\"", "")
+fun String?.removeAngryQuotes(): String? {
+    var result = this
+    if (result != null) if (result.startsWith("\"")) result = result.substring(startIndex = 1)
+    if (result != null) if (result.endsWith("\"")) result =
+        result.substring(startIndex = 0, endIndex = result.lastIndex)
+    return result
+}
+
+fun String?.replaceAngryQuotes(): String? = this?.removeSubStr("\"")

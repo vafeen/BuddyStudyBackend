@@ -9,6 +9,7 @@ import ru.vafeen.cryptography.createSaltedHash
 import ru.vafeen.datastore.DatabaseRepository
 import ru.vafeen.datastore.entity.Advertisement
 import ru.vafeen.datastore.entity.User
+import ru.vafeen.datastore.keys.AdsGettingKey
 import ru.vafeen.datastore.keys.AdvertisementKey
 import ru.vafeen.datastore.keys.UserKey
 import ru.vafeen.errors.RequestStatus
@@ -35,58 +36,109 @@ fun Application.configureRouting() {
             call.respond(params.toString())
         }
 
-        get("/user/info/get") {
-            call.getSessionOrCallUnauthorized()?.let { userLogin ->
-                databaseRepository.getUserByHashedKey(key = userLogin.session).let { user ->
-                    if (user != null) call.respond(user.createResponseUserData())
-                    else call.respondStatus(RequestStatus.UserNotFound())
+        get("/ads/all") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
+                    val params = call.getParams()//.callIfNull(call = call, message = "No body")
+                    val gender = params?.get(key = UserKey.GENDER)
+                        .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
+                    val city = params?.get(key = UserKey.CITY)
+                        .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.CITY, params = params)
+                    val substr = params?.get(key = AdsGettingKey.SUBSTR).removeAngryQuotes()
+                    val filteredUsers = databaseRepository.getAllUsers().filter {
+                        (if (gender != null) it.gender == gender else true) &&
+                                (if (city != null) it.city == city else true)
+                    }.map { it.login }
+                    val filteredAds = databaseRepository.getAdvertisements().filter { adv ->
+                        adv.login in filteredUsers &&
+                                (if (substr != null) {
+                                    adv.title.contains(other = substr) || adv.text.contains(other = substr) ||
+                                            adv.tags?.let { tags ->
+                                                substr in tags
+                                            } == true
+                                } else true)
+                    }
+                    call.respond(filteredAds)
                 }
-            }
+        }
+
+
+        get("/user/info/get") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
+                ?.let { userLogin ->
+                    databaseRepository.getUserByHashedKey(key = userLogin.session).let { user ->
+                        if (user != null) call.respond(user.createResponseUserData())
+                        else call.respondStatus(RequestStatus.UserNotFound())
+                    }
+                }
         }
 
         post("/user/info/fill") {
-            call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")?.let { userLogin ->
-                var user: User? = databaseRepository.getUserByHashedKey(key = userLogin.session)
-                val params = call.getParams().callIfNull(call = call, message = "No body")
-                val name = call.getOrInvalidParameter(key = UserKey.name, params = params)
-                val gender = call.getOrInvalidParameter(key = UserKey.gender, params = params)
-                val date = call.getOrInvalidParameter(key = UserKey.date, params = params)
-                val city = call.getOrInvalidParameter(key = UserKey.city, params = params)
-                val tg = params?.get(key = UserKey.tg).removeAngryQoutes()
-                val vk = params?.get(key = UserKey.vk).removeAngryQoutes()
-                val wa = params?.get(key = UserKey.wa).removeAngryQoutes()
-                if (user != null && name != null && gender != null && date != null && city != null) {
-                    user =
-                        user.copy(name = name, gender = gender, date = date, city = city, tg = tg, wa = wa, vk = vk)
-                    databaseRepository.insertUser(key = user.login, user = user)
-                    call.respondStatus(RequestStatus.UserUpdateSuccessful())
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
+                ?.let { userLogin ->
+                    var user: User? = databaseRepository.getUserByHashedKey(key = userLogin.session)
+                    val params = call.getParams().callIfNull(call = call, message = "No body")
+                    val name = call.getOrInvalidParameter(key = UserKey.NAME, params = params)
+                    val avatarId = call.getOrInvalidParameter(key = UserKey.AVATAR_ID, params = params)
+                    val gender = call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
+                    val date = call.getOrInvalidParameter(key = UserKey.DATE, params = params)
+                    val city = call.getOrInvalidParameter(key = UserKey.CITY, params = params)
+                    val tg = params?.get(key = UserKey.TG).removeAngryQuotes()
+                    val vk = params?.get(key = UserKey.VK).removeAngryQuotes()
+                    val wa = params?.get(key = UserKey.WA).removeAngryQuotes()
+                    if (user != null && avatarId != null && name != null && gender != null && date != null && city != null) {
+                        user =
+                            user.copy(
+                                name = name,
+                                avatarId = avatarId,
+                                gender = gender,
+                                date = date,
+                                city = city,
+                                tg = tg,
+                                wa = wa,
+                                vk = vk
+                            )
+                        databaseRepository.insertUser(key = user.login, user = user)
+                        call.respondStatus(RequestStatus.UserUpdateSuccessful())
+                    }
                 }
-            }
         }
 
         post("/adv/create") {
-            val userLogin = call.sessions.get<UserSession>().callIfNull(call = call, message = "Unauthorized")
-            val params = call.getParams().callIfNull(call = call, message = "No body")
-            val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
-            val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
-            val tags =
-                call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
-            if (userLogin != null &&
-                databaseRepository.getUserByHashedKey(key = userLogin.session) != null &&
-                title != null &&
-                text != null &&
-                tags != null
-            ) {
-                val newAdv = Advertisement(login = userLogin.session, title = title, text = text, tags = tags)
-                databaseRepository.insertAdvertisement(advertisement = newAdv)
-                call.respondStatus(RequestStatus.AdvertisementIsAddedSuccessful())
-            }
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
+                ?.let { userLogin ->
+                    val params = call.getParams().callIfNull(call = call, message = "No body")
+                    val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
+                    val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
+                    val colorHeader = call.getOrInvalidParameter(key = AdvertisementKey.colorHeader, params = params)
+                    val tags =
+                        call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
+                    if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null &&
+                        title != null &&
+                        text != null &&
+                        colorHeader != null &&
+                        tags != null
+                    ) {
+                        val newAdv = Advertisement(
+                            login = userLogin.session,
+                            title = title,
+                            text = text,
+                            colorHeader = colorHeader,
+                            tags = tags
+                        )
+                        databaseRepository.insertAdvertisement(advertisement = newAdv)
+                        call.respondStatus(RequestStatus.AdvertisementIsAddedSuccessful())
+                    }
+                }
         }
 
         post("/login") {
             val params = call.getParams().callIfNull(call = call, message = "No body")
-            val login = call.getOrInvalidParameter(key = UserKey.login, params = params)
-            val password = call.getOrInvalidParameter(key = UserKey.password, params = params)
+            val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
+            val password = call.getOrInvalidParameter(key = UserKey.PASSWORD, params = params)
             if (login != null && password != null) {
                 val user = databaseRepository.getUserByHashedKey(key = login.createSaltedHash())
                 when {
@@ -108,8 +160,8 @@ fun Application.configureRouting() {
 
         post("/reg") {
             val params = call.getParams().callIfNull(call = call, message = "No body")
-            val login = call.getOrInvalidParameter(key = UserKey.login, params = params)
-            val password = call.getOrInvalidParameter(key = UserKey.password, params = params)
+            val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
+            val password = call.getOrInvalidParameter(key = UserKey.PASSWORD, params = params)
 
             if (login != null && password != null) {
                 if (databaseRepository.getUserByHashedKey(key = login.createSaltedHash()) == null) {

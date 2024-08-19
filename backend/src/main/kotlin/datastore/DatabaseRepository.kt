@@ -8,7 +8,7 @@ import java.io.File
 
 
 class DatabaseRepository {
-    private val file = File("database.json")
+    private val file = File("${DatabaseInfo.NAME}.json")
     private var database = getDatabaseAsDB()
 
     init {
@@ -42,7 +42,7 @@ class DatabaseRepository {
     }
 
     fun getUserByHashedKey(key: String): User? = database.users.get(key = key)
-
+    fun getAllUsers(): List<User> = database.users.map { it.value }
 
     fun insertAdvertisement(advertisement: Advertisement) {
         database.advertisements.add(advertisement)
