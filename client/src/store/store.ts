@@ -3,6 +3,7 @@ import { rememberEnhancer, rememberReducer } from "redux-remember";
 import { userReducer } from "./reducers/user/userSlice";
 import { userInfoReducer } from "./reducers/user/userInfoSlice";
 import { userApi } from "./reducers/user/userApi";
+import { filtersReducer } from "./reducers/user/filtersSlice";
 
 const rememberedReducers = [
     ""
@@ -11,7 +12,8 @@ const rememberedReducers = [
 const rootReducer = combineReducers({
     userReducer,
     userInfoReducer,
-    [userApi.reducerPath]: userApi.reducer
+    filtersReducer,
+    [userApi.reducerPath]: userApi.reducer,
 });
 
 const rememberedReducer = rememberReducer(rootReducer);

@@ -3,10 +3,18 @@ import locationImg from "../../icons/svg/location.svg";
 import tgImg from "../../icons/svg/tg.svg";
 import waImg from "../../icons/svg/wa.svg";
 import vkImg from "../../icons/svg/vk.svg";
+import { getGenderUser } from "../../helpers/getGenderUser";
+import { UserInfoProps } from "../../../store/reducers/user/userInfoSlice";
+
+interface ProfileInfoProps {
+    info: UserInfoProps
+}
 
 const homeLink = "/user/home";
 
-export default function ProfileInfo() {
+export default function ProfileInfo({ info }: ProfileInfoProps) {
+    const { name, date, city, gender } = info;
+
     return (
         <ProfileInfoWrapper>
             <ProfileBackLink to={homeLink}>Назад</ProfileBackLink>
@@ -14,14 +22,17 @@ export default function ProfileInfo() {
             <ProfileInfoContent>
                 <ProfileInfoAvatar></ProfileInfoAvatar>
                 <ContactDetails>
-                    <ContactName>Emilia Lin</ContactName>
+                    <ContactName>{name}</ContactName>
                     <ContactItems>
                         <ContactItem>
                             <ContactItemIcon src={locationImg} />
-                            <ContactItemText>Москва</ContactItemText>
+                            <ContactItemText>{city}</ContactItemText>
                         </ContactItem>
                         <ContactItem>
-                            <ContactItemText>Возраст: 18</ContactItemText>
+                            <ContactItemText>Возраст: {date}</ContactItemText>
+                        </ContactItem>
+                        <ContactItem>
+                            <ContactItemText>Пол: {getGenderUser(gender)}</ContactItemText>
                         </ContactItem>
                     </ContactItems>
                     <ContactItem>

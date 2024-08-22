@@ -6,7 +6,8 @@ export const colors = {
     blackTransparent: "rgba(0, 0, 0, 0.5)",
     totalBlack: "rgba(0, 0, 0, 1)",
     totalWhite: "rgba(255, 255, 255, 1)",
-    red: 'red'
+    red: 'red',
+    accentChoice: 'rgba(190,253,115, 1)',
 }
 
 export const borders = {
