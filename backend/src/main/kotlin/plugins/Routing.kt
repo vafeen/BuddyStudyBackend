@@ -62,21 +62,33 @@ fun Application.configureRouting() {
                 }
         }
 
-
         get("/user/info/get") {
-            call.getSessionOrCallUnauthorized()?.let {
-                val params = call.getParams().callIfNull(call = call, message = "No body")
-                val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
-                if (login != null) {
-                    databaseRepository.getUserByHashedKey(key = login.createSaltedHash()).let { user ->
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
+                ?.let {
+                    val params = call.getParams().callIfNull(call = call, message = "No body")
+                    val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
+                    if (login != null) {
+                        databaseRepository.getUserByHashedKey(key = login.createSaltedHash()).let { user ->
+                            if (user != null) call.respond(user.createResponseData())
+                            else call.respondStatus(RequestStatus.UserNotFound())
+                        }
+                    }
+                }
+        }
+
+        get("/profile/info/get") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
+                ?.let { userLogin ->
+                    databaseRepository.getUserByHashedKey(key = userLogin.session).let { user ->
                         if (user != null) call.respond(user.createResponseData())
                         else call.respondStatus(RequestStatus.UserNotFound())
                     }
                 }
-            }
         }
 
-        post("/user/info/fill") {
+        post("/profile/info/fill") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let { userLogin ->
