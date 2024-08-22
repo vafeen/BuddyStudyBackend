@@ -125,12 +125,12 @@ fun Application.configureRouting() {
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let { userLogin ->
                     val params = call.getParams().callIfNull(call = call, message = "No body")
-                    val name = call.getOrInvalidParameter(key = AdvertisementKey.name, params = params)
-                    val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
-                    val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
-                    val colorHeader = call.getOrInvalidParameter(key = AdvertisementKey.colorHeader, params = params)
+                    val name = call.getOrInvalidParameter(key = AdvertisementKey.NAME, params = params)
+                    val title = call.getOrInvalidParameter(key = AdvertisementKey.TITLE, params = params)
+                    val text = call.getOrInvalidParameter(key = AdvertisementKey.TEXT, params = params)
+                    val colorHeader = call.getOrInvalidParameter(key = AdvertisementKey.COLOR_HEADER, params = params)
                     val tags =
-                        call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
+                        call.getOrInvalidParameter(key = AdvertisementKey.TAGS, params = params)?.parseJsonArrayToList()
                     if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null &&
                         name != null &&
                         title != null &&
