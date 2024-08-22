@@ -57,7 +57,7 @@ fun Application.configureRouting() {
                                                 substr in tags
                                             } == true
                                 } else true)
-                    }
+                    }.map { it.createResponseData() }
                     call.respond(filteredAds)
                 }
         }
@@ -68,7 +68,7 @@ fun Application.configureRouting() {
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let { userLogin ->
                     databaseRepository.getUserByHashedKey(key = userLogin.session).let { user ->
-                        if (user != null) call.respond(user.createResponseUserData())
+                        if (user != null) call.respond(user.createResponseData())
                         else call.respondStatus(RequestStatus.UserNotFound())
                     }
                 }
@@ -111,12 +111,14 @@ fun Application.configureRouting() {
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let { userLogin ->
                     val params = call.getParams().callIfNull(call = call, message = "No body")
+                    val name = call.getOrInvalidParameter(key = AdvertisementKey.name, params = params)
                     val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
                     val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
                     val colorHeader = call.getOrInvalidParameter(key = AdvertisementKey.colorHeader, params = params)
                     val tags =
                         call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
                     if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null &&
+                        name != null &&
                         title != null &&
                         text != null &&
                         colorHeader != null &&
@@ -124,6 +126,7 @@ fun Application.configureRouting() {
                     ) {
                         val newAdv = Advertisement(
                             login = userLogin.session,
+                            name = name,
                             title = title,
                             text = text,
                             colorHeader = colorHeader,
