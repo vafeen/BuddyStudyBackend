@@ -8,6 +8,6 @@ fun Map<String, Advertisement>.createRandomID(): String {
     var randomID: String
     do {
         randomID = "${Random.nextInt()}"
-    } while (randomID !in list)
+    } while (randomID in list)
     return randomID
 }
