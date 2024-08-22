@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponseUserData(
-    val login: String,
     val name: String? = null,
+    val avatarId: String? = null,
     val gender: String? = null,
     val city: String? = null,
     val date: String? = null,

@@ -46,6 +46,12 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
         status: HttpStatusCode = HttpStatusCode.Unauthorized,
         message: String = "Unauthorized"
     ) : RequestStatus(status = status, message = message)
+
+    class AdvertisementNotFound(
+        status: HttpStatusCode = HttpStatusCode.NotFound,
+        message: String = "Не найдено объявление с таким ID"
+    ) : RequestStatus(status = status, message = message)
+
 }
 
 

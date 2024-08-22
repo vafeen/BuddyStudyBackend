@@ -7,7 +7,7 @@ import ru.vafeen.datastore.entity.User
 @Serializable
 class Database {
     var users: MutableMap<String, User> = mutableMapOf()
-    var advertisements: MutableList<Advertisement> = mutableListOf()
+    var advertisements: MutableMap<String, Advertisement> = mutableMapOf()
     override fun toString(): String {
         return "Database(users = $users, advs = $advertisements)"
     }

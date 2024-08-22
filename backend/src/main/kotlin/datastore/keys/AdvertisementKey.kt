@@ -1,9 +1,10 @@
 package ru.vafeen.datastore.keys
 
 object AdvertisementKey {
-    const val login: String = "login"
-    const val title: String = "title"
-    const val text: String = "text"
-    const val colorHeader: String = "colorHeader"
-    const val tags: String = "tags"
+    const val ID: String = "id"
+    const val NAME: String = "name"
+    const val TITLE: String = "title"
+    const val TEXT: String = "text"
+    const val COLOR_HEADER: String = "colorHeader"
+    const val TAGS: String = "tags"
 }
