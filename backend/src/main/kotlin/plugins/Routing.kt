@@ -35,7 +35,19 @@ fun Application.configureRouting() {
             val params = call.getParams()
             call.respond(params.toString())
         }
-
+        get("/adv/info/{id}") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
+                    val id = call.parameters["id"]
+                    if (id != null) {
+                        val adv = databaseRepository.getAdvertisements().get(key = id)
+                        if (adv != null)
+                            call.respond(adv.createResponseData())
+                        else
+                            call.respondStatus(RequestStatus.AdvertisementNotFound())
+                    }
+                }
+        }
         get("/ads/all") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
@@ -57,7 +69,7 @@ fun Application.configureRouting() {
                                                 substr in tags
                                             } == true
                                 } else true)
-                    }.map { it.createResponseData() }
+                    }.map { it.createResponsePreviewData() }
                     call.respond(filteredAds)
                 }
         }
@@ -70,7 +82,7 @@ fun Application.configureRouting() {
                     val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
                     if (login != null) {
                         databaseRepository.getUserByHashedKey(key = login.createSaltedHash()).let { user ->
-                            if (user != null) call.respond(user.createResponseData())
+                            if (user != null) call.respond(user.createResponsePreviewData())
                             else call.respondStatus(RequestStatus.UserNotFound())
                         }
                     }
@@ -82,7 +94,7 @@ fun Application.configureRouting() {
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let { userLogin ->
                     databaseRepository.getUserByHashedKey(key = userLogin.session).let { user ->
-                        if (user != null) call.respond(user.createResponseData())
+                        if (user != null) call.respond(user.createResponsePreviewData())
                         else call.respondStatus(RequestStatus.UserNotFound())
                     }
                 }

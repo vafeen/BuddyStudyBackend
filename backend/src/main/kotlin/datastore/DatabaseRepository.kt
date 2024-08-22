@@ -4,7 +4,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.vafeen.datastore.entity.Advertisement
 import ru.vafeen.datastore.entity.User
-import ru.vafeen.utils.createRandomID
 import java.io.File
 
 
@@ -46,8 +45,7 @@ class DatabaseRepository {
     fun getAllUsers(): List<User> = database.users.map { it.value }
 
     fun insertAdvertisement(advertisement: Advertisement) {
-        val id = database.advertisements.createRandomID()
-        database.advertisements.set(key = id, value = advertisement)
+        database.advertisements.set(key = advertisement.id, value = advertisement)
         saveDatabase()
     }
 
