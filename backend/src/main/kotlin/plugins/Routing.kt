@@ -49,7 +49,7 @@ fun Application.configureRouting() {
                         (if (gender != null) it.gender == gender else true) &&
                                 (if (city != null) it.city == city else true)
                     }.map { it.login }
-                    val filteredAds = databaseRepository.getAdvertisements().filter { adv ->
+                    val filteredAds = databaseRepository.getAdvertisements().values.filter { adv ->
                         adv.login in filteredUsers &&
                                 (if (substr != null) {
                                     adv.title.contains(other = substr) || adv.text.contains(other = substr) ||
@@ -64,14 +64,16 @@ fun Application.configureRouting() {
 
 
         get("/user/info/get") {
-            call.getSessionOrCallUnauthorized()
-                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
-                ?.let { userLogin ->
-                    databaseRepository.getUserByHashedKey(key = userLogin.session).let { user ->
+            call.getSessionOrCallUnauthorized()?.let {
+                val params = call.getParams().callIfNull(call = call, message = "No body")
+                val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
+                if (login != null) {
+                    databaseRepository.getUserByHashedKey(key = login.createSaltedHash()).let { user ->
                         if (user != null) call.respond(user.createResponseData())
                         else call.respondStatus(RequestStatus.UserNotFound())
                     }
                 }
+            }
         }
 
         post("/user/info/fill") {
@@ -125,6 +127,7 @@ fun Application.configureRouting() {
                         tags != null
                     ) {
                         val newAdv = Advertisement(
+                            id = databaseRepository.getAdvertisements().createRandomID(),
                             login = userLogin.session,
                             name = name,
                             title = title,

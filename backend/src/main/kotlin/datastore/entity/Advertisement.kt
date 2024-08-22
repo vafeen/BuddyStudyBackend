@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Advertisement(
+    val id: String,
     val login: String,
     val name: String,
     val title: String,

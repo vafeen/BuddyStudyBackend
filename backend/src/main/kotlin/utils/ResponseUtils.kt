@@ -6,7 +6,6 @@ import ru.vafeen.frontend.response_entity.ResponseAdvertisementData
 import ru.vafeen.frontend.response_entity.ResponseUserData
 
 fun User.createResponseData(): ResponseUserData = ResponseUserData(
-    login = login,
     name = name,
     avatarId = avatarId,
     gender = gender,
@@ -14,5 +13,10 @@ fun User.createResponseData(): ResponseUserData = ResponseUserData(
 )
 
 fun Advertisement.createResponseData(): ResponseAdvertisementData = ResponseAdvertisementData(
-    name = name, title = title, text = text, colorHeader = colorHeader, tags = tags
+    id = id,
+    name = name,
+    title = title,
+    text = text,
+    colorHeader = colorHeader,
+    tags = tags
 )
