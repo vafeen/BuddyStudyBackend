@@ -35,7 +35,19 @@ fun Application.configureRouting() {
             val params = call.getParams()
             call.respond(params.toString())
         }
-
+        get("/adv/info/{id}") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
+                    val id = call.parameters["id"]
+                    if (id != null) {
+                        val adv = databaseRepository.getAdvertisements().get(key = id)
+                        if (adv != null)
+                            call.respond(adv.createResponseData())
+                        else
+                            call.respondStatus(RequestStatus.AdvertisementNotFound())
+                    }
+                }
+        }
         get("/ads/all") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
@@ -49,7 +61,7 @@ fun Application.configureRouting() {
                         (if (gender != null) it.gender == gender else true) &&
                                 (if (city != null) it.city == city else true)
                     }.map { it.login }
-                    val filteredAds = databaseRepository.getAdvertisements().filter { adv ->
+                    val filteredAds = databaseRepository.getAdvertisements().values.filter { adv ->
                         adv.login in filteredUsers &&
                                 (if (substr != null) {
                                     adv.title.contains(other = substr) || adv.text.contains(other = substr) ||
@@ -57,24 +69,38 @@ fun Application.configureRouting() {
                                                 substr in tags
                                             } == true
                                 } else true)
-                    }
+                    }.map { it.createResponsePreviewData() }
                     call.respond(filteredAds)
                 }
         }
 
-
         get("/user/info/get") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
+                ?.let {
+                    val params = call.getParams().callIfNull(call = call, message = "No body")
+                    val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
+                    if (login != null) {
+                        databaseRepository.getUserByHashedKey(key = login.createSaltedHash()).let { user ->
+                            if (user != null) call.respond(user.createResponsePreviewData())
+                            else call.respondStatus(RequestStatus.UserNotFound())
+                        }
+                    }
+                }
+        }
+
+        get("/profile/info/get") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let { userLogin ->
                     databaseRepository.getUserByHashedKey(key = userLogin.session).let { user ->
-                        if (user != null) call.respond(user.createResponseUserData())
+                        if (user != null) call.respond(user.createResponsePreviewData())
                         else call.respondStatus(RequestStatus.UserNotFound())
                     }
                 }
         }
 
-        post("/user/info/fill") {
+        post("/profile/info/fill") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let { userLogin ->
@@ -111,19 +137,23 @@ fun Application.configureRouting() {
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let { userLogin ->
                     val params = call.getParams().callIfNull(call = call, message = "No body")
-                    val title = call.getOrInvalidParameter(key = AdvertisementKey.title, params = params)
-                    val text = call.getOrInvalidParameter(key = AdvertisementKey.text, params = params)
-                    val colorHeader = call.getOrInvalidParameter(key = AdvertisementKey.colorHeader, params = params)
+                    val name = call.getOrInvalidParameter(key = AdvertisementKey.NAME, params = params)
+                    val title = call.getOrInvalidParameter(key = AdvertisementKey.TITLE, params = params)
+                    val text = call.getOrInvalidParameter(key = AdvertisementKey.TEXT, params = params)
+                    val colorHeader = call.getOrInvalidParameter(key = AdvertisementKey.COLOR_HEADER, params = params)
                     val tags =
-                        call.getOrInvalidParameter(key = AdvertisementKey.tags, params = params)?.parseJsonArrayToList()
+                        call.getOrInvalidParameter(key = AdvertisementKey.TAGS, params = params)?.parseJsonArrayToList()
                     if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null &&
+                        name != null &&
                         title != null &&
                         text != null &&
                         colorHeader != null &&
                         tags != null
                     ) {
                         val newAdv = Advertisement(
+                            id = databaseRepository.getAdvertisements().createRandomID(),
                             login = userLogin.session,
+                            name = name,
                             title = title,
                             text = text,
                             colorHeader = colorHeader,

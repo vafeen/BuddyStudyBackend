@@ -31,7 +31,7 @@ class DatabaseRepository {
         return database.users
     }
 
-    private fun selectAllAdvertisements(): MutableList<Advertisement> {
+    private fun selectAllAdvertisements(): MutableMap<String, Advertisement> {
         database = getDatabaseAsDB()
         return database.advertisements
     }
@@ -45,9 +45,9 @@ class DatabaseRepository {
     fun getAllUsers(): List<User> = database.users.map { it.value }
 
     fun insertAdvertisement(advertisement: Advertisement) {
-        database.advertisements.add(advertisement)
+        database.advertisements.set(key = advertisement.id, value = advertisement)
         saveDatabase()
     }
 
-    fun getAdvertisements(): List<Advertisement> = database.advertisements
+    fun getAdvertisements(): Map<String, Advertisement> = database.advertisements
 }
