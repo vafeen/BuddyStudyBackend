@@ -16,6 +16,7 @@ export default function UserInfoWindow() {
     const [location, setLocation] = useState('');
     const [gender, setGender] = useState<GenderType>('male');
     const [contacts, setContacts] = useState<ContactsLinks>({ tg: '', wa: '', vk: '' });
+    const [avatarId, setAvatarId] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [sendUserInfo] = useSendUserInfoMutation();
     const { setAuthStatus } = useActions();
@@ -27,6 +28,7 @@ export default function UserInfoWindow() {
             date: date,
             city: location,
             gender: gender,
+            avatarId: avatarId,
             tg: contacts.tg,
             wa: contacts.wa,
             vk: contacts.vk,
@@ -67,7 +69,7 @@ export default function UserInfoWindow() {
                             <ContactsInput contacts={contacts} setContacts={setContacts} />
                             <FormItem>
                                 <FormLabel htmlFor='avatar'>Выберите аватарку</FormLabel>
-                                <ChoiseAvatars />
+                                <ChoiseAvatars setAvatarId={setAvatarId} />
                             </FormItem>
                         </UserInfoWindowContent>
                         <ErrorMessage>{error}</ErrorMessage>

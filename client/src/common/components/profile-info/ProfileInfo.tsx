@@ -5,6 +5,7 @@ import waImg from "../../icons/svg/wa.svg";
 import vkImg from "../../icons/svg/vk.svg";
 import { getGenderUser } from "../../helpers/getGenderUser";
 import { UserInfoProps } from "../../../store/reducers/user/userInfoSlice";
+import AvatarComponent from "../choice-avatars/AvatarComponent";
 
 interface ProfileInfoProps {
     info: UserInfoProps
@@ -13,14 +14,16 @@ interface ProfileInfoProps {
 const homeLink = "/user/home";
 
 export default function ProfileInfo({ info }: ProfileInfoProps) {
-    const { name, date, city, gender } = info;
+    const { name, date, city, gender, avatarId } = info;
 
     return (
         <ProfileInfoWrapper>
             <ProfileBackLink to={homeLink}>Назад</ProfileBackLink>
             <ProfileBanner />
             <ProfileInfoContent>
-                <ProfileInfoAvatar></ProfileInfoAvatar>
+                <ProfileInfoAvatar>
+                    <AvatarComponent id={avatarId} size={'auto'} />
+                </ProfileInfoAvatar>
                 <ContactDetails>
                     <ContactName>{name}</ContactName>
                     <ContactItems>

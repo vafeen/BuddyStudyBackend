@@ -24,9 +24,9 @@ display: flex;
 gap: 5px;
 `;
 
-export const HeaderAvatar = styled(Link)`
-height: 30px;
-width: 30px;
+export const HeaderAvatarWrapper = styled(Link)``;
+
+export const HeaderAvatar = styled('img')`
 border: ${borders.border.defaultFrame};
 border-radius: ${borders.radius.circle};
 `;
