@@ -59,9 +59,12 @@ fun Application.configureRouting() {
                     val city = params?.get(key = UserKey.CITY)
                         .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.CITY, params = params)
                     val substr = params?.get(key = AdsGettingKey.SUBSTR).removeAngryQuotes()
+                    val minYear = params?.get(key = AdsGettingKey.MIN_YEAR).removeAngryQuotes()?.toIntOrNull()
+                    val maxYear = params?.get(key = AdsGettingKey.MAX_YEAR).removeAngryQuotes()?.toIntOrNull()
                     val filteredUsers = databaseRepository.getAllUsers().filter {
                         (if (gender != null) it.gender == gender else true) &&
-                                (if (city != null) it.city == city else true)
+                                (if (city != null) it.city == city else true) &&
+                                it.date?.isDateInThisDiapason(start = minYear, end = maxYear) == true
                     }.map { it.login }
                     val filteredAds = databaseRepository.getAdvertisements().values.filter { adv ->
                         adv.login in filteredUsers &&

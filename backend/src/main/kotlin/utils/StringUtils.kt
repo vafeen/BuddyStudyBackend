@@ -24,3 +24,7 @@ fun String?.removeAngryQuotes(): String? {
 }
 
 fun String?.replaceAngryQuotes(): String? = this?.removeSubStr("\"")
+
+fun String?.isDateInThisDiapason(start: Int?, end: Int?): Boolean =
+    if (start != null && end != null) this?.substringBefore("-")?.toIntOrNull() in start..end
+    else true
