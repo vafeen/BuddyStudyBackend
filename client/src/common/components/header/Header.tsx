@@ -21,7 +21,7 @@ export default function Header() {
                     <CreateButton onClick={() => setIsCreate(true)}>Создать</CreateButton>
                     <HeaderDetailsProfile>
                         <HeaderAvatarWrapper to={profileLink}>
-                            <AvatarComponent id={avatarId} size={'40px'} />
+                            <AvatarComponent id={avatarId} size={'30px'} />
                         </HeaderAvatarWrapper>
                         <HeadetButtonExit>выход</HeadetButtonExit>
                     </HeaderDetailsProfile>

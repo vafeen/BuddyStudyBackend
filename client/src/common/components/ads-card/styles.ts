@@ -16,15 +16,19 @@ overflow: hidden;
 export const AdsCardHeader = styled('div')`
 padding: 15px;
 border-radius: 0 0 ${borders.radius.medium} 0;
-background-color: lavender;
 height: 90px;
 margin-bottom: 5px;
 `;
 
-export const AdsCardTitle = styled('p')`
+export const AdsCardTitle = styled('div')`
+display: -webkit-box;
 font-size: ${fonts.sizes.main};
 font-weight: ${fonts.weights.semiBold};
 margin-bottom: 10px;
+
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 2;
+overflow: hidden;
 `;
 
 export const AdsCardAuthor = styled('div')`
@@ -36,13 +40,6 @@ export const AdsCardAuthorName = styled('p')`
 margin: auto 0;
 font-size: ${fonts.sizes.small};
 font-weight: ${fonts.weights.regular};
-`;
-
-export const AdsCardAvatar = styled('div')`
-width: 20px;
-height: 20px;
-background-color: ${colors.grayDark};
-border-radius: ${borders.radius.circle};
 `;
 
 export const AdsCardTags = styled('div')`

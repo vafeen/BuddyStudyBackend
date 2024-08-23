@@ -19,8 +19,6 @@ cursor: pointer;
 `;
 
 export const DefaultAvatarImg = styled('img')`
-width: auto;
-height: auto;
-border: ${borders.border.defaultFrameBig};
+border: ${borders.border.defaultFrame};
 border-radius: ${borders.radius.circle};
 `;

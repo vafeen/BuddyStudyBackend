@@ -1,5 +1,5 @@
-import { getAvatarPath } from "../../helpers/getAvatarPath"
-import { DefaultAvatarImg } from "./styles"
+import { getAvatarPath } from "../../helpers/getAvatarPath";
+import { DefaultAvatarImg } from "./styles";
 
 interface AvatarComponentProps {
     size: string,

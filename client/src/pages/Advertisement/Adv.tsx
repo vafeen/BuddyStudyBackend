@@ -1,14 +1,10 @@
-import ProfileInfo from "../../common/components/profile-info/ProfileInfo";
-import Responses from "../../common/components/responses/Responses";
-import { SubTitleChapter } from "../../common/styles";
-import { AdvDescText, AdvDescTitle, AdvDescWrapper, AdvTitleWrapper, AdvWrapper } from "./styles";
-import { textDesc } from "./text";
-
+import { AdvWrapper } from "./styles";
 
 export default function Adv() {
     return (
+        // ToDO
         <AdvWrapper>
-            <ProfileInfo />
+            {/* <ProfileInfo />
             <AdvTitleWrapper>
                 <SubTitleChapter>Ищу напарника по геймдизайну</SubTitleChapter>
             </AdvTitleWrapper>
@@ -18,7 +14,7 @@ export default function Adv() {
                     {textDesc}
                 </AdvDescText>
             </AdvDescWrapper>
-            <Responses />
+            <Responses /> */}
         </AdvWrapper>
     )
 }

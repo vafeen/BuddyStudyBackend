@@ -1,12 +1,13 @@
+import { useGetAdsQuery } from "../../../store/reducers/ads/adsApi";
 import AdsCard from "../ads-card/AdsCard";
 import { AdsGridWrapper } from "./styles";
 
-const list = [...Array(40).keys()]
-
 export default function AdsGrid() {
+    const {data: ads} = useGetAdsQuery();
+
     return (
         <AdsGridWrapper>
-            {list.map((elem) => <AdsCard key={elem} />)}
+            {ads && ads.map((elem) => <AdsCard key={elem.id} adv={elem} />)}
         </AdsGridWrapper>
     )
 }

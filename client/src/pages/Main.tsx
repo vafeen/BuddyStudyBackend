@@ -21,7 +21,6 @@ export default function Main() {
         } else {
             setAuthStatus({isAuth: true, isInfo: false})
         }
-        console.log(info?.avatarId)
     }, [info, error]);
 
     return (

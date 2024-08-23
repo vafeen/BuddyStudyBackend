@@ -4,6 +4,7 @@ import { userReducer } from "./reducers/user/userSlice";
 import { userInfoReducer } from "./reducers/user/userInfoSlice";
 import { userApi } from "./reducers/user/userApi";
 import { filtersReducer } from "./reducers/user/filtersSlice";
+import { adsApi } from "./reducers/ads/adsApi";
 
 const rememberedReducers = [
     ""
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     userInfoReducer,
     filtersReducer,
     [userApi.reducerPath]: userApi.reducer,
+    [adsApi.reducerPath]: adsApi.reducer
 });
 
 const rememberedReducer = rememberReducer(rootReducer);
@@ -22,7 +24,8 @@ export const store = configureStore({
     reducer: rememberedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
-            .concat(userApi.middleware),
+            .concat(userApi.middleware)
+            .concat(adsApi.middleware),
     enhancers: (getDefaultEnhancer) =>
         getDefaultEnhancer().concat(
             rememberEnhancer(window.localStorage, rememberedReducers)

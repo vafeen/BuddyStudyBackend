@@ -6,6 +6,7 @@ import vkImg from "../../icons/svg/vk.svg";
 import { getGenderUser } from "../../helpers/getGenderUser";
 import { UserInfoProps } from "../../../store/reducers/user/userInfoSlice";
 import AvatarComponent from "../choice-avatars/AvatarComponent";
+import { getUserAge } from "../../helpers/getUserAge";
 
 interface ProfileInfoProps {
     info: UserInfoProps
@@ -32,7 +33,7 @@ export default function ProfileInfo({ info }: ProfileInfoProps) {
                             <ContactItemText>{city}</ContactItemText>
                         </ContactItem>
                         <ContactItem>
-                            <ContactItemText>Возраст: {date}</ContactItemText>
+                            <ContactItemText>Возраст: {getUserAge(date)}</ContactItemText>
                         </ContactItem>
                         <ContactItem>
                             <ContactItemText>Пол: {getGenderUser(gender)}</ContactItemText>

@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { TagsAddTag, TagsInput, TagsInputWrapper, TagsTitle, TagsWrapper } from './styles';
 
-export default function TagsComponent() {
-    const [tags, setTags] = useState<string[]>([]);
+interface TagsComponentProps {
+    tags: string[],
+    setTags: (arg: string[]) => void
+}
+
+export default function TagsComponent({tags, setTags}: TagsComponentProps) {
     const [tag, setTag] = useState('');
 
     return (
