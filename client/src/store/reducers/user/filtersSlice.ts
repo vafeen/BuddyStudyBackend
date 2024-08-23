@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GenderType } from "./userInfoSlice";
 
 export interface FiltersSliceProps {
-    gender: GenderType,
+    gender: GenderType | null,
     ages: number[],
     tags: string[]
 }

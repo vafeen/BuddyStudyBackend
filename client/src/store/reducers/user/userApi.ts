@@ -31,7 +31,7 @@ export const userApi = createApi({
         }),
         sendUserInfo: build.mutation<void, UserInfoProps>({
             query: (userInfo) => ({
-                url: '/user/info/fill',
+                url: '/profile/info/fill',
                 method: 'POST',
                 body: userInfo,
             }),
@@ -39,7 +39,7 @@ export const userApi = createApi({
         }),
         getUserInfo: build.query<UserInfoProps, void>({
             query: () => ({
-                url: '/user/info/get',
+                url: '/profile/info/get',
                 method: 'GET',
             }),
             providesTags: ['TOKEN'],

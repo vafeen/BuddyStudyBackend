@@ -5,6 +5,8 @@ import waImg from "../../icons/svg/wa.svg";
 import vkImg from "../../icons/svg/vk.svg";
 import { getGenderUser } from "../../helpers/getGenderUser";
 import { UserInfoProps } from "../../../store/reducers/user/userInfoSlice";
+import AvatarComponent from "../choice-avatars/AvatarComponent";
+import { getUserAge } from "../../helpers/getUserAge";
 
 interface ProfileInfoProps {
     info: UserInfoProps
@@ -13,14 +15,16 @@ interface ProfileInfoProps {
 const homeLink = "/user/home";
 
 export default function ProfileInfo({ info }: ProfileInfoProps) {
-    const { name, date, city, gender } = info;
+    const { name, date, city, gender, avatarId } = info;
 
     return (
         <ProfileInfoWrapper>
             <ProfileBackLink to={homeLink}>Назад</ProfileBackLink>
             <ProfileBanner />
             <ProfileInfoContent>
-                <ProfileInfoAvatar></ProfileInfoAvatar>
+                <ProfileInfoAvatar>
+                    <AvatarComponent id={avatarId} size={'auto'} />
+                </ProfileInfoAvatar>
                 <ContactDetails>
                     <ContactName>{name}</ContactName>
                     <ContactItems>
@@ -29,7 +33,7 @@ export default function ProfileInfo({ info }: ProfileInfoProps) {
                             <ContactItemText>{city}</ContactItemText>
                         </ContactItem>
                         <ContactItem>
-                            <ContactItemText>Возраст: {date}</ContactItemText>
+                            <ContactItemText>Возраст: {getUserAge(date)}</ContactItemText>
                         </ContactItem>
                         <ContactItem>
                             <ContactItemText>Пол: {getGenderUser(gender)}</ContactItemText>

@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type GenderType = 'male' | 'female' | null;
+export type GenderType = 'male' | 'female';
 
 export interface UserInfoProps {
     name: string,
     city: string,
     gender: GenderType,
     date: string,
+    avatarId: number | null,
     tg: string,
     wa: string,
     vk: string
@@ -23,6 +24,7 @@ const iniialState: UserInfoProps = {
     city: '',
     gender: 'male',
     date: '',
+    avatarId: null,
     tg: '',
     wa: '',
     vk: ''
