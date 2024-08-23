@@ -17,9 +17,7 @@ fun Advertisement.createResponseData(): ResponseAdvertisementData = ResponseAdve
     id = id,
     name = name,
     title = title,
-    text = text,
-    colorHeader = colorHeader,
-    tags = tags
+    text = text
 )
 
 fun Advertisement.createResponsePreviewData(): ResponseAdvertisementPreviewData = ResponseAdvertisementPreviewData(

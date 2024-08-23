@@ -8,6 +8,4 @@ data class ResponseAdvertisementData(
     val name: String,
     val title: String,
     val text: String,
-    val colorHeader: String,
-    val tags: List<String>? = null,
 )

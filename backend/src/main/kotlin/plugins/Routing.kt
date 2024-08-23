@@ -35,6 +35,7 @@ fun Application.configureRouting() {
             val params = call.getParams()
             call.respond(params.toString())
         }
+
         get("/adv/info/{id}") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
@@ -48,6 +49,7 @@ fun Application.configureRouting() {
                     }
                 }
         }
+
         get("/ads/all") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
