@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const AdsGridWrapper = styled('div')`
 display: grid;
+padding-bottom: 10px;
 grid-template-columns: repeat(4, auto);
 justify-content: space-between;
 gap: 20px;

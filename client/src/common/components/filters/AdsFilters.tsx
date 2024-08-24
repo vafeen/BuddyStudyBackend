@@ -1,34 +1,53 @@
-import DualRange from "../dual-range/DualRange";
+import { AdsContentFilters, AdsFiltersButton, AdsFiltersButtons, AdsFiltersWrapper, AdsMainFilters, AdsTagsFilters, AdsTitleFilters, AdsTitleFiltersImg, AdsTitleFiltersWrapper } from "./styles";
+import GenderFilter from "./components/GenderFilter";
+import AgeFilter from "./components/AgeFilter";
 import TagsComponent from "../tags/TagsComponent";
-import { AdsContentFilters, AdsFiltersButton, AdsFiltersButtons, AdsFiltersOption, AdsFiltersSelect, AdsFiltersWrapper, AdsItemFilters, AdsMainFilters, AdsSubTitleFilters, AdsTagsFilters, AdsTitleFilters } from "./styles";
+import Tags from "../tags/Tags";
+import { useActions } from "../../../store/actions";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { useState } from "react";
+import arrowDown from "../../icons/svg/arrow-down.svg";
 
 export default function AdsFilters() {
+    const { tags } = useAppSelector(state => state.filtersReducer);
+    const { resetFilters, setTagsFilter } = useActions();
+
+    const [isShow, setIsShow] = useState(false);
+
+    const handleReset = () => {
+        resetFilters();
+    }
+
+    const handleShow = () => {
+        setIsShow(prev => !prev);
+    }
+
     return (
         <AdsFiltersWrapper>
-            <AdsTitleFilters>Фильтры</AdsTitleFilters>
-            <AdsContentFilters>
-                <AdsMainFilters>
-                    <AdsItemFilters>
-                        <AdsSubTitleFilters>Пол:</AdsSubTitleFilters>
-                        <AdsFiltersSelect>
-                            <AdsFiltersOption>Не указан</AdsFiltersOption>
-                            <AdsFiltersOption>Мужской</AdsFiltersOption>
-                            <AdsFiltersOption>Женский</AdsFiltersOption>
-                        </AdsFiltersSelect>
-                    </AdsItemFilters>
-                    <AdsItemFilters>
-                        <AdsSubTitleFilters>Возраст:</AdsSubTitleFilters>
-                        <DualRange />
-                    </AdsItemFilters>
-                </AdsMainFilters>
-                <AdsTagsFilters>
-                    <TagsComponent />
-                </AdsTagsFilters>
-            </AdsContentFilters>
-            <AdsFiltersButtons>
-                <AdsFiltersButton>Очистить</AdsFiltersButton>
-                <AdsFiltersButton>Применить</AdsFiltersButton>
-            </AdsFiltersButtons>
+            <AdsTitleFiltersWrapper >
+                <AdsTitleFilters>Фильтры</AdsTitleFilters>
+                <AdsTitleFiltersImg
+                    style={{ transform: isShow ? 'rotateX(180deg)' : 'none' }}
+                    src={arrowDown}
+                    onClick={handleShow} />
+            </AdsTitleFiltersWrapper>
+            {isShow &&
+                <>
+                    <AdsContentFilters>
+                        <AdsMainFilters>
+                            <GenderFilter />
+                            <AgeFilter />
+                        </AdsMainFilters>
+                        <AdsTagsFilters>
+                            <TagsComponent tags={tags} setTags={setTagsFilter} />
+                            <Tags tags={tags} />
+                        </AdsTagsFilters>
+                    </AdsContentFilters>
+                    <AdsFiltersButtons>
+                        <AdsFiltersButton onClick={handleReset}>Очистить</AdsFiltersButton>
+                    </AdsFiltersButtons>
+                </>
+            }
         </AdsFiltersWrapper>
     )
 }
