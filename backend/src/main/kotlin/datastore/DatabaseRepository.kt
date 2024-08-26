@@ -36,8 +36,8 @@ class DatabaseRepository {
         return database.advertisements
     }
 
-    fun insertUser(key: String, user: User) {
-        database.users[key] = user
+    fun insertUser(user: User) {
+        database.users[user.login] = user
         saveDatabase()
     }
 
@@ -50,4 +50,5 @@ class DatabaseRepository {
     }
 
     fun getAdvertisements(): Map<String, Advertisement> = database.advertisements
+    fun getAdvertisementByHashedKey(key: String): Advertisement? = database.advertisements.get(key = key)
 }

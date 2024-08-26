@@ -14,6 +14,7 @@ import ru.vafeen.datastore.keys.AdvertisementKey
 import ru.vafeen.datastore.keys.UserKey
 import ru.vafeen.errors.RequestStatus
 import ru.vafeen.errors.respondStatus
+import ru.vafeen.frontend.response_entity.ResponseAdvertisementPreviewData
 import ru.vafeen.utils.*
 import ru.vafeen.web.UserSession
 import utils.callIfNull
@@ -23,8 +24,9 @@ import utils.getParams
 fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
-
     routing {
+
+
         get("/info") {
             call.respondText { "Сервер для бэка, какой браузер!?" }
         }
@@ -36,10 +38,67 @@ fun Application.configureRouting() {
             call.respond(params.toString())
         }
 
+        get("/ads/my") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userSession ->
+                    val user = databaseRepository.getUserByHashedKey(key = userSession.session)
+                        .callIfNull(call = call, message = "User not found")
+                    if (user != null) {
+                        val myAdsId = user.ads
+                        val myAds = mutableListOf<ResponseAdvertisementPreviewData>()
+                        for (id in myAdsId) {
+                            databaseRepository.getAdvertisementByHashedKey(key = id)
+                                ?.let { myAds.add(it.createResponsePreviewData()) }
+                        }
+                        call.respond(myAds)
+                    }
+                }
+        }
+
+        get("/favourites/{id}") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userSession ->
+                    val id =
+                        call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
+                    if (id != null) {
+                        val user = databaseRepository.getUserByHashedKey(key = userSession.session)
+                            .callIfNull(call = call, message = "User not found")
+                        val favourites = user?.favourites
+                        val adv = databaseRepository.getAdvertisementByHashedKey(key = id)
+                            .callIfNull(call = call, message = "Adv with this id not found")
+                        if (user != null && favourites != null && adv != null) {
+                            if (adv.id !in favourites) {
+                                favourites.add(adv.id)
+                                databaseRepository.insertUser(user.copy(favourites = favourites))
+                                call.respondStatus(RequestStatus.AddingAdvertisementToFavouritesSuccessful())
+                            } else call.respondStatus(RequestStatus.AdvertisementIsAlreadyInFavourites())
+                        } else call.respondStatus(RequestStatus.AddingAdvertisementToFavouritesFailed())
+                    }
+                }
+        }
+
+        get("/favourites/all") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userSession ->
+                    val user = databaseRepository.getUserByHashedKey(key = userSession.session)
+                        .callIfNull(call = call, message = "User not found")
+                    if (user != null) {
+                        val favouritesId = user.favourites
+                        val favourites = mutableListOf<ResponseAdvertisementPreviewData>()
+                        for (id in favouritesId) {
+                            databaseRepository.getAdvertisementByHashedKey(key = id)
+                                ?.let { favourites.add(it.createResponsePreviewData()) }
+                        }
+                        call.respond(favourites)
+                    }
+                }
+        }
+
         get("/adv/info/{id}") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
-                    val id = call.parameters["id"]
+                    val id =
+                        call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
                     if (id != null) {
                         val adv = databaseRepository.getAdvertisements().get(key = id)
                         if (adv != null)
@@ -50,7 +109,7 @@ fun Application.configureRouting() {
                 }
         }
 
-        get("/ads/all") {
+        post("/ads/all") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
                     val params = call.getParams()//.callIfNull(call = call, message = "No body")
@@ -79,7 +138,7 @@ fun Application.configureRouting() {
                 }
         }
 
-        get("/user/info/get") {
+        get("/user/info") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
                 ?.let {
@@ -131,7 +190,7 @@ fun Application.configureRouting() {
                                 wa = wa,
                                 vk = vk
                             )
-                        databaseRepository.insertUser(key = user.login, user = user)
+                        databaseRepository.insertUser(user = user)
                         call.respondStatus(RequestStatus.UserUpdateSuccessful())
                     }
                 }
@@ -148,12 +207,14 @@ fun Application.configureRouting() {
                     val colorHeader = call.getOrInvalidParameter(key = AdvertisementKey.COLOR_HEADER, params = params)
                     val tags =
                         call.getOrInvalidParameter(key = AdvertisementKey.TAGS, params = params)?.parseJsonArrayToList()
+                    val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
                     if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null &&
                         name != null &&
                         title != null &&
                         text != null &&
                         colorHeader != null &&
-                        tags != null
+                        tags != null &&
+                        user != null
                     ) {
                         val newAdv = Advertisement(
                             id = databaseRepository.getAdvertisements().createRandomID(),
@@ -165,6 +226,9 @@ fun Application.configureRouting() {
                             tags = tags
                         )
                         databaseRepository.insertAdvertisement(advertisement = newAdv)
+                        val ads = user.ads
+                        ads.add(newAdv.id)
+                        databaseRepository.insertUser(user.copy(ads = ads))
                         call.respondStatus(RequestStatus.AdvertisementIsAddedSuccessful())
                     }
                 }
@@ -202,7 +266,7 @@ fun Application.configureRouting() {
                 if (databaseRepository.getUserByHashedKey(key = login.createSaltedHash()) == null) {
                     val newUser = User(login = login.createSaltedHash(), password = password.createSaltedHash())
                     call.sessions.set(UserSession(session = login.createSaltedHash()))
-                    databaseRepository.insertUser(key = login.createSaltedHash(), user = newUser)
+                    databaseRepository.insertUser(user = newUser)
                     call.respondStatus(RequestStatus.SuccessfulSignUP())
                 } else call.respondStatus(RequestStatus.UserLoginExists())
             }
