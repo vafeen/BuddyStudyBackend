@@ -6,24 +6,24 @@ import { useState } from "react";
 import { useCreateAdvMutation } from "../../../store/reducers/ads/adsApi";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import Tags from "../tags/Tags";
+import Palette from "../palette/Palette";
+
 
 interface CreateAdvProps {
     setIsCreate: (arg: boolean) => void
 }
 
-// ToDO {добавить палитру}
-const colorHeader = 'yellow';
-
 export default function CreateAdv({ setIsCreate }: CreateAdvProps) {
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
     const [tags, setTags] = useState<string[]>([]);
+    const [colorHeader, setColorHeader] = useState('#ffffff');
     const [createAdv] = useCreateAdvMutation();
 
-    const {name} = useAppSelector(state => state.userInfoReducer)
+    const { name } = useAppSelector(state => state.userInfoReducer)
 
     const handleClick = () => {
-        createAdv({name, title, colorHeader, text, tags});
+        createAdv({ name, title, colorHeader, text, tags });
         setIsCreate(false);
     }
 
@@ -52,6 +52,7 @@ export default function CreateAdv({ setIsCreate }: CreateAdvProps) {
                         placeholder="Опишите кого и для чего вы ищете"
                     />
                 </FormItem>
+                <Palette colorHeader={colorHeader} setColorHeader={setColorHeader} />
                 <TagsComponent tags={tags} setTags={setTags} />
                 <Tags tags={tags} />
                 <FormButton onClick={handleClick}>Создать</FormButton>

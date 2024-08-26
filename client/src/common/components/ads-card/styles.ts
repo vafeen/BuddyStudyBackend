@@ -16,6 +16,7 @@ overflow: hidden;
 export const AdsCardHeader = styled('div')`
 padding: 15px;
 border-radius: 0 0 ${borders.radius.medium} 0;
+border-bottom: ${borders.border.defaultFrame};
 height: 90px;
 margin-bottom: 5px;
 `;
@@ -26,6 +27,7 @@ font-size: ${fonts.sizes.main};
 font-weight: ${fonts.weights.semiBold};
 margin-bottom: 10px;
 
+word-wrap:break-word;
 -webkit-box-orient: vertical;
 -webkit-line-clamp: 2;
 overflow: hidden;

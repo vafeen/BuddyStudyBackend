@@ -9,12 +9,17 @@ interface TagsComponentProps {
 export default function TagsComponent({tags, setTags}: TagsComponentProps) {
     const [tag, setTag] = useState('');
 
+    const handleClick = () => {
+        setTags([...tags, tag]);
+        setTag('');
+    }
+
     return (
         <TagsWrapper>
             <TagsTitle>Теги</TagsTitle>
             <TagsInputWrapper>
                 <TagsInput value={tag} onChange={(e) => setTag(e.target.value)} placeholder="Введите тег..." />
-                <TagsAddTag onClick={() => setTags([...tags, tag])}>Добавить</TagsAddTag>
+                <TagsAddTag onClick={handleClick}>Добавить</TagsAddTag>
             </TagsInputWrapper>
         </TagsWrapper>
     )

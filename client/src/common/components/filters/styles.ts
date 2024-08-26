@@ -24,10 +24,23 @@ justify-content: space-between;
 gap: 5px;
 `;
 
+export const AdsTitleFiltersWrapper = styled('div')`
+display: flex;
+gap: 5px;
+margin-bottom: 10px;
+`;
+
 export const AdsTitleFilters = styled('p')`
+margin: auto 0;
 font-size: ${fonts.sizes.subTitle};
 font-weight: ${fonts.weights.semiBold};
-margin-bottom: 10px;
+`;
+
+export const AdsTitleFiltersImg = styled('img')`
+margin: auto 0;
+cursor: pointer;
+width: 15px;
+height: 15px;
 `;
 
 export const AdsSubTitleFilters = styled('p')`

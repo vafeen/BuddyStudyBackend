@@ -16,12 +16,14 @@ export interface AdvProps {
 export const adsApi = createApi({
     reducerPath: "adsApi",
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl, credentials: 'include' }),
+    tagTypes: ['CREATE'],
     endpoints: (build) => ({
         getAds: build.query<AdvProps[], void>({
             query: () => ({
                 url: '/ads/all',
                 method: 'GET',
             }),
+            providesTags: ['CREATE']
         }),
         createAdv: build.mutation<void, AdvProps>({
             query: (adv) => ({
@@ -29,6 +31,7 @@ export const adsApi = createApi({
                 method: 'POST',
                 body: adv
             }),
+            invalidatesTags: ['CREATE']
         })
     }),
 });
