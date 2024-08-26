@@ -23,8 +23,9 @@ import utils.getParams
 fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
-
     routing {
+
+
         get("/info") {
             call.respondText { "Сервер для бэка, какой браузер!?" }
         }
@@ -50,7 +51,7 @@ fun Application.configureRouting() {
                 }
         }
 
-        get("/ads/all") {
+        post("/ads/all") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
                     val params = call.getParams()//.callIfNull(call = call, message = "No body")
