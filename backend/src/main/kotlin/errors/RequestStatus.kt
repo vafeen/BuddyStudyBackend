@@ -52,6 +52,20 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
         message: String = "Не найдено объявление с таким ID"
     ) : RequestStatus(status = status, message = message)
 
+    class AddingAdvertisementToFavouritesFailed(
+        status: HttpStatusCode = HttpStatusCode.BadRequest,
+        message: String = "Ошибка добавления объявления в избранное"
+    ) : RequestStatus(status = status, message = message)
+
+    class AdvertisementIsAlreadyInFavourites(
+        status: HttpStatusCode = HttpStatusCode.BadRequest,
+        message: String = "Объявление уже в избранном"
+    ) : RequestStatus(status = status, message = message)
+
+    class AddingAdvertisementToFavouritesSuccessful(
+        status: HttpStatusCode = HttpStatusCode.OK,
+        message: String = "Объявление успешно добавлено в избранное"
+    ) : RequestStatus(status = status, message = message)
 }
 
 
