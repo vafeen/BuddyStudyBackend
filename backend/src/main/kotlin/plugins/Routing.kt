@@ -55,7 +55,7 @@ fun Application.configureRouting() {
                 }
         }
 
-        get("/favourites/{id}") {
+        post("/favourites/{id}") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userSession ->
                     val id =
