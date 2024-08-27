@@ -114,12 +114,16 @@ fun Application.configureRouting() {
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
                     val params = call.getParams()//.callIfNull(call = call, message = "No body")
                     val gender = params?.get(key = UserKey.GENDER)
-                        .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
+                        .removeAngryQuotes()
+                        .makeNullIfNull()  //call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
                     val city = params?.get(key = UserKey.CITY)
-                        .removeAngryQuotes()    //call.getOrInvalidParameter(key = UserKey.CITY, params = params)
-                    val substr = params?.get(key = AdsGettingKey.SUBSTR).removeAngryQuotes()
-                    val minYear = params?.get(key = AdsGettingKey.MIN_YEAR).removeAngryQuotes()?.toIntOrNull()
-                    val maxYear = params?.get(key = AdsGettingKey.MAX_YEAR).removeAngryQuotes()?.toIntOrNull()
+                        .removeAngryQuotes()
+                        .makeNullIfNull()    //call.getOrInvalidParameter(key = UserKey.CITY, params = params)
+                    val substr = params?.get(key = AdsGettingKey.SUBSTR).removeAngryQuotes().makeNullIfNull()
+                    val minYear =
+                        params?.get(key = AdsGettingKey.MIN_YEAR).removeAngryQuotes().makeNullIfNull()?.toIntOrNull()
+                    val maxYear =
+                        params?.get(key = AdsGettingKey.MAX_YEAR).removeAngryQuotes().makeNullIfNull()?.toIntOrNull()
                     val filteredUsers = databaseRepository.getAllUsers().filter {
                         (if (gender != null) it.gender == gender else true) &&
                                 (if (city != null) it.city == city else true) &&
@@ -170,14 +174,14 @@ fun Application.configureRouting() {
                 ?.let { userLogin ->
                     var user: User? = databaseRepository.getUserByHashedKey(key = userLogin.session)
                     val params = call.getParams().callIfNull(call = call, message = "No body")
-                    val name = call.getOrInvalidParameter(key = UserKey.NAME, params = params)
-                    val avatarId = call.getOrInvalidParameter(key = UserKey.AVATAR_ID, params = params)
-                    val gender = call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
-                    val date = call.getOrInvalidParameter(key = UserKey.DATE, params = params)
-                    val city = call.getOrInvalidParameter(key = UserKey.CITY, params = params)
-                    val tg = params?.get(key = UserKey.TG).removeAngryQuotes()
-                    val vk = params?.get(key = UserKey.VK).removeAngryQuotes()
-                    val wa = params?.get(key = UserKey.WA).removeAngryQuotes()
+                    val name = call.getOrInvalidParameter(key = UserKey.NAME, params = params).makeNullIfNull()
+                    val avatarId = call.getOrInvalidParameter(key = UserKey.AVATAR_ID, params = params).makeNullIfNull()
+                    val gender = call.getOrInvalidParameter(key = UserKey.GENDER, params = params).makeNullIfNull()
+                    val date = call.getOrInvalidParameter(key = UserKey.DATE, params = params).makeNullIfNull()
+                    val city = call.getOrInvalidParameter(key = UserKey.CITY, params = params).makeNullIfNull()
+                    val tg = params?.get(key = UserKey.TG).removeAngryQuotes().makeNullIfNull()
+                    val vk = params?.get(key = UserKey.VK).removeAngryQuotes().makeNullIfNull()
+                    val wa = params?.get(key = UserKey.WA).removeAngryQuotes().makeNullIfNull()
                     if (user != null && avatarId != null && name != null && gender != null && date != null && city != null) {
                         user =
                             user.copy(
@@ -192,7 +196,7 @@ fun Application.configureRouting() {
                             )
                         databaseRepository.insertUser(user = user)
                         call.respondStatus(RequestStatus.UserUpdateSuccessful())
-                    }
+                    } else call.respondStatus(RequestStatus.AddingUserFailed())
                 }
         }
 

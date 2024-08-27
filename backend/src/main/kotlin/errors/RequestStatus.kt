@@ -66,6 +66,11 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
         status: HttpStatusCode = HttpStatusCode.OK,
         message: String = "Объявление успешно добавлено в избранное"
     ) : RequestStatus(status = status, message = message)
+
+    class AddingUserFailed(
+        status: HttpStatusCode = HttpStatusCode.BadRequest,
+        message: String = "Ошибка добавлкения пользователя: какой-то параметр null"
+    ) : RequestStatus(status = status, message = message)
 }
 
 
