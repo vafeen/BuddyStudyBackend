@@ -1,11 +1,11 @@
 import { AdsContentFilters, AdsFiltersButton, AdsFiltersButtons, AdsFiltersWrapper, AdsMainFilters, AdsTagsFilters, AdsTitleFilters, AdsTitleFiltersImg, AdsTitleFiltersWrapper } from "./styles";
+import { useActions } from "../../../store/actions";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { useState } from "react";
 import GenderFilter from "./components/GenderFilter";
 import AgeFilter from "./components/AgeFilter";
 import TagsComponent from "../tags/TagsComponent";
 import Tags from "../tags/Tags";
-import { useActions } from "../../../store/actions";
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { useState } from "react";
 import arrowDown from "../../icons/svg/arrow-down.svg";
 
 export default function AdsFilters() {

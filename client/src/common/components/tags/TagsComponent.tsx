@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { TagsAddTag, TagsInput, TagsInputWrapper, TagsTitle, TagsWrapper } from './styles';
 
 interface TagsComponentProps {
-    tags: string[],
+    tags: string[] | null,
     setTags: (arg: string[]) => void
 }
 
@@ -10,7 +10,7 @@ export default function TagsComponent({tags, setTags}: TagsComponentProps) {
     const [tag, setTag] = useState('');
 
     const handleClick = () => {
-        setTags([...tags, tag]);
+        setTags(tags ? [...tags, tag] : [tag]);
         setTag('');
     }
 

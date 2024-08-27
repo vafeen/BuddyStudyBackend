@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { FiltersSliceProps } from "../filters/filtersSlice";
 
 // потом убрать в отдельный файл
 const baseUrl: string = "http://localhost:8080";
@@ -16,14 +17,13 @@ export interface AdvProps {
 export const adsApi = createApi({
     reducerPath: "adsApi",
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl, credentials: 'include' }),
-    tagTypes: ['CREATE'],
     endpoints: (build) => ({
-        getAds: build.query<AdvProps[], void>({
-            query: () => ({
+        getAdsApi: build.mutation<AdvProps[], FiltersSliceProps>({
+            query: (filters) => ({
                 url: '/ads/all',
-                method: 'GET',
+                method: 'POST',
+                body: filters
             }),
-            providesTags: ['CREATE']
         }),
         createAdv: build.mutation<void, AdvProps>({
             query: (adv) => ({
@@ -31,12 +31,11 @@ export const adsApi = createApi({
                 method: 'POST',
                 body: adv
             }),
-            invalidatesTags: ['CREATE']
         })
     }),
 });
 
 export const {
-    useGetAdsQuery,
+    useGetAdsApiMutation,
     useCreateAdvMutation
 } = adsApi;
