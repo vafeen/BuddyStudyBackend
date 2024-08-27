@@ -3,7 +3,7 @@ package ru.vafeen.cryptography
 import java.security.MessageDigest
 
 
-fun String.createSaltedHash(): String = Hasher(salt = "salt").passwordToHash(password = this)
+fun String.createSaltedHash(): String = this//Hasher(salt = "salt").passwordToHash(password = this)
 
 
 /**
