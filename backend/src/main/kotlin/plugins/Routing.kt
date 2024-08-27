@@ -101,10 +101,8 @@ fun Application.configureRouting() {
                         call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
                     if (id != null) {
                         val adv = databaseRepository.getAdvertisements().get(key = id)
-                        if (adv != null)
-                            call.respond(adv.createResponseData())
-                        else
-                            call.respondStatus(RequestStatus.AdvertisementNotFound())
+                        if (adv != null) call.respond(adv.createResponseData())
+                        else call.respondStatus(RequestStatus.AdvertisementNotFound())
                     }
                 }
         }
@@ -113,30 +111,28 @@ fun Application.configureRouting() {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
                     val params = call.getParams()//.callIfNull(call = call, message = "No body")
-                    val gender = params?.get(key = UserKey.GENDER)
-                        .removeAngryQuotes()
+                    val gender = params?.get(key = UserKey.GENDER).removeAngryQuotes()
                         .makeNullIfNull()  //call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
-                    val city = params?.get(key = UserKey.CITY)
-                        .removeAngryQuotes()
+                    val city = params?.get(key = UserKey.CITY).removeAngryQuotes()
                         .makeNullIfNull()    //call.getOrInvalidParameter(key = UserKey.CITY, params = params)
                     val substr = params?.get(key = AdsGettingKey.SUBSTR).removeAngryQuotes().makeNullIfNull()
                     val minYear =
                         params?.get(key = AdsGettingKey.MIN_YEAR).removeAngryQuotes().makeNullIfNull()?.toIntOrNull()
                     val maxYear =
                         params?.get(key = AdsGettingKey.MAX_YEAR).removeAngryQuotes().makeNullIfNull()?.toIntOrNull()
+                    val tags = params?.get(key = AdvertisementKey.TAGS).makeNullIfNull()?.parseJsonArrayToList()
                     val filteredUsers = databaseRepository.getAllUsers().filter {
-                        (if (gender != null) it.gender == gender else true) &&
-                                (if (city != null) it.city == city else true) &&
-                                it.date?.isDateInThisDiapason(start = minYear, end = maxYear) == true
+                        (if (gender != null) it.gender == gender else true) && (if (city != null) it.city == city else true) && it.date?.isDateInThisDiapason(
+                            start = minYear,
+                            end = maxYear
+                        ) == true
                     }.map { it.login }
                     val filteredAds = databaseRepository.getAdvertisements().values.filter { adv ->
-                        adv.login in filteredUsers &&
-                                (if (substr != null) {
-                                    adv.title.contains(other = substr) || adv.text.contains(other = substr) ||
-                                            adv.tags?.let { tags ->
-                                                substr in tags
-                                            } == true
-                                } else true)
+                        adv.login in filteredUsers && (if (substr != null) {
+                            adv.title.contains(other = substr) || adv.text.contains(other = substr) || adv.tags?.let { tags ->
+                                substr in tags
+                            } == true
+                        } else true) && (if (tags != null && adv.tags != null) adv.tags.containsAll(tags) else true)
                     }.map { it.createResponsePreviewData() }
                     call.respond(filteredAds)
                 }
@@ -144,8 +140,7 @@ fun Application.configureRouting() {
 
         get("/user/info") {
             call.getSessionOrCallUnauthorized()
-                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
-                ?.let {
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
                     val params = call.getParams().callIfNull(call = call, message = "No body")
                     val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
                     if (login != null) {
@@ -159,8 +154,7 @@ fun Application.configureRouting() {
 
         get("/profile/info/get") {
             call.getSessionOrCallUnauthorized()
-                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
-                ?.let { userLogin ->
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
                     databaseRepository.getUserByHashedKey(key = userLogin.session).let { user ->
                         if (user != null) call.respond(user.createResponsePreviewData())
                         else call.respondStatus(RequestStatus.UserNotFound())
@@ -170,8 +164,7 @@ fun Application.configureRouting() {
 
         post("/profile/info/fill") {
             call.getSessionOrCallUnauthorized()
-                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
-                ?.let { userLogin ->
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
                     var user: User? = databaseRepository.getUserByHashedKey(key = userLogin.session)
                     val params = call.getParams().callIfNull(call = call, message = "No body")
                     val name = call.getOrInvalidParameter(key = UserKey.NAME, params = params).makeNullIfNull()
@@ -183,17 +176,16 @@ fun Application.configureRouting() {
                     val vk = params?.get(key = UserKey.VK).removeAngryQuotes().makeNullIfNull()
                     val wa = params?.get(key = UserKey.WA).removeAngryQuotes().makeNullIfNull()
                     if (user != null && avatarId != null && name != null && gender != null && date != null && city != null) {
-                        user =
-                            user.copy(
-                                name = name,
-                                avatarId = avatarId,
-                                gender = gender,
-                                date = date,
-                                city = city,
-                                tg = tg,
-                                wa = wa,
-                                vk = vk
-                            )
+                        user = user.copy(
+                            name = name,
+                            avatarId = avatarId,
+                            gender = gender,
+                            date = date,
+                            city = city,
+                            tg = tg,
+                            wa = wa,
+                            vk = vk
+                        )
                         databaseRepository.insertUser(user = user)
                         call.respondStatus(RequestStatus.UserUpdateSuccessful())
                     } else call.respondStatus(RequestStatus.AddingUserFailed())
@@ -202,8 +194,7 @@ fun Application.configureRouting() {
 
         post("/adv/create") {
             call.getSessionOrCallUnauthorized()
-                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)
-                ?.let { userLogin ->
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
                     val params = call.getParams().callIfNull(call = call, message = "No body")
                     val name = call.getOrInvalidParameter(key = AdvertisementKey.NAME, params = params)
                     val title = call.getOrInvalidParameter(key = AdvertisementKey.TITLE, params = params)
@@ -212,14 +203,7 @@ fun Application.configureRouting() {
                     val tags =
                         call.getOrInvalidParameter(key = AdvertisementKey.TAGS, params = params)?.parseJsonArrayToList()
                     val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
-                    if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null &&
-                        name != null &&
-                        title != null &&
-                        text != null &&
-                        colorHeader != null &&
-                        tags != null &&
-                        user != null
-                    ) {
+                    if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null && name != null && title != null && text != null && colorHeader != null && tags != null && user != null) {
                         val newAdv = Advertisement(
                             id = databaseRepository.getAdvertisements().createRandomID(),
                             login = userLogin.session,
