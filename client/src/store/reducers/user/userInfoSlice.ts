@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type GenderType = 'male' | 'female';
+export type GenderType = 'male' | 'female' | null;
 
 export interface UserInfoProps {
     name: string,
