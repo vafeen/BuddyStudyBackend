@@ -74,7 +74,7 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
 
     class NotOwnerOfAdvertisement(
         status: HttpStatusCode = HttpStatusCode.NotModified,
-        message: String = "Пользователь не является хозяином объявдения"
+        message: String = "Пользователь не является хозяином объявления"
     ) : RequestStatus(status = status, message = message)
 
     class AdvertisementIsDeletedSuccessful(
