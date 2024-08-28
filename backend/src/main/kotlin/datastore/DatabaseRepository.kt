@@ -54,10 +54,12 @@ class DatabaseRepository {
         owner.ads.remove(advertisement.id) // remove from user ads
         for (user in database.users.values) // remove from others favourites
             if (advertisement.id in user.favourites) user.favourites.remove(advertisement.id)
+        saveDatabase()
     }
 
     fun removeAdvertisementFromFavourites(owner: User, advertisement: Advertisement) {
         owner.favourites.remove(advertisement.id)
+        saveDatabase()
     }
 
 
