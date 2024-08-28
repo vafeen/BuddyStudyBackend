@@ -38,6 +38,38 @@ fun Application.configureRouting() {
             call.respond(params.toString())
         }
 
+        delete("/adv/delete/{id}") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
+                    val id =
+                        call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
+                    val adv = id?.let { databaseRepository.getAdvertisementByHashedKey(key = it) }
+                        .callIfNull(call = call, message = "Advertisement not found")
+                    val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
+                        .callIfNull(call = call, message = "User not found")
+                    if (adv != null && user != null && adv.id in user.ads) {
+                        databaseRepository.deleteAdvertisement(owner = user, advertisement = adv)
+                        call.respondStatus(RequestStatus.AdvertisementIsDeletedSuccessful())
+                    } else call.respondStatus(RequestStatus.NotOwnerOfAdvertisement())
+                }
+        }
+
+        delete("/favourites/delete/{id}") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
+                    val id =
+                        call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
+                    val adv = id?.let { databaseRepository.getAdvertisementByHashedKey(key = it) }
+                        .callIfNull(call = call, message = "Advertisement not found")
+                    val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
+                        .callIfNull(call = call, message = "User not found")
+                    if (adv != null && user != null && adv.id in user.favourites) {
+                        databaseRepository.removeAdvertisementFromFavourites(owner = user, advertisement = adv)
+                        call.respondStatus(RequestStatus.AdvertisementIsRemovedFromFavouritesSuccessful())
+                    } else call.respondStatus(RequestStatus.AdvertisementIsNotInFavourites())
+                }
+        }
+
         get("/ads/my") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userSession ->
