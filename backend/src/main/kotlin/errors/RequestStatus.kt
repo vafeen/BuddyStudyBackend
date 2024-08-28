@@ -83,7 +83,7 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
     ) : RequestStatus(status = status, message = message)
 
     class AdvertisementIsNotInFavourites(
-        status: HttpStatusCode = HttpStatusCode.OK,
+        status: HttpStatusCode = HttpStatusCode.NotFound,
         message: String = "Объявление не в избранном"
     ) : RequestStatus(status = status, message = message)
 
