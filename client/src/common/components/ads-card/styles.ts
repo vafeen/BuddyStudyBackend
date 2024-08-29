@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import { DefaultFrame } from "../../styles";
 import { borders, colors, fonts } from "../../styleConstants";
-import { Link } from "react-router-dom";
-
-export const AdsCardLink = styled(Link)``;
 
 export const AdsCardWrapper = styled(DefaultFrame)`
+position: relative;
 cursor: pointer;
 width: 250px;
 height: 150px;
@@ -13,7 +11,7 @@ border-radius: ${borders.radius.medium};
 overflow: hidden;
 `;
 
-export const AdsCardHeader = styled('div')`
+export const AdsCardHeaderWrapper = styled('div')`
 padding: 15px;
 border-radius: 0 0 ${borders.radius.medium} 0;
 border-bottom: ${borders.border.defaultFrame};
@@ -53,4 +51,11 @@ color: ${colors.grayDark};
 font-size: ${fonts.sizes.smallExtra};
 font-weight: ${fonts.weights.regular};
 margin-bottom: 5px;
+`;
+
+export const AdsCardAction = styled('div')`
+display: inline-block;
+position: absolute;
+bottom: 5px;
+right: 5px;
 `;

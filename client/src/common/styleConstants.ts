@@ -3,6 +3,8 @@ export const colors = {
     grayDark: "rgba(122, 122, 122, 1)",
     main: "rgba(0, 0, 0, 1)",
     blue: "rgba(78, 121, 255, 1)",
+
+    grayAccentTransparent: "rgba(235, 235, 235, 0.5)",
     blackTransparent: "rgba(0, 0, 0, 0.5)",
     totalBlack: "rgba(0, 0, 0, 1)",
     totalWhite: "rgba(255, 255, 255, 1)",
@@ -51,4 +53,5 @@ export const fonts = {
 
 export const transitions = {
     fast: "all 0.2s ease",
+    medium: "all 0.4s ease"
 }
