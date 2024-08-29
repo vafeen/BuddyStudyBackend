@@ -1,0 +1,259 @@
+{
+  "users": {
+    "login1": {
+      "login": "login1",
+      "password": "password1",
+      "name": "name1",
+      "avatarId": "avatarId1",
+      "gender": "gender1",
+      "city": "city1",
+      "date": "2001",
+      "vk": "vk",
+      "favourites": [
+        "adv2"
+      ],
+      "ads": [
+        "adv1"
+      ]
+    },
+    "login2": {
+      "login": "login2",
+      "password": "password2",
+      "name": "name2",
+      "avatarId": "avatarId2",
+      "gender": "gender2",
+      "city": "city2",
+      "date": "2002",
+      "vk": "vk",
+      "ads": [
+        "adv2"
+      ]
+    },
+    "login3": {
+      "login": "login3",
+      "password": "password3",
+      "name": "name3",
+      "avatarId": "avatarId3",
+      "gender": "gender3",
+      "city": "city3",
+      "date": "2003",
+      "vk": "vk",
+      "ads": [
+        "adv3"
+      ]
+    },
+    "login4": {
+      "login": "login4",
+      "password": "password4",
+      "name": "name4",
+      "avatarId": "avatarId4",
+      "gender": "gender4",
+      "city": "city4",
+      "date": "2004",
+      "vk": "vk",
+      "ads": [
+        "adv4"
+      ]
+    },
+    "login5": {
+      "login": "login5",
+      "password": "password5",
+      "name": "name5",
+      "avatarId": "avatarId5",
+      "gender": "gender5",
+      "city": "city5",
+      "date": "2005",
+      "vk": "vk",
+      "ads": [
+        "adv5"
+      ]
+    },
+    "login6": {
+      "login": "login6",
+      "password": "password6",
+      "name": "name6",
+      "avatarId": "avatarId6",
+      "gender": "gender6",
+      "city": "city6",
+      "date": "2006",
+      "vk": "vk",
+      "ads": [
+        "adv6"
+      ]
+    },
+    "login7": {
+      "login": "login7",
+      "password": "password7",
+      "name": "name7",
+      "avatarId": "avatarId7",
+      "gender": "gender7",
+      "city": "city7",
+      "date": "2007",
+      "vk": "vk",
+      "ads": [
+        "adv7"
+      ]
+    },
+    "login8": {
+      "login": "login8",
+      "password": "password8",
+      "name": "name8",
+      "avatarId": "avatarId8",
+      "gender": "gender8",
+      "city": "city8",
+      "date": "2008",
+      "vk": "vk",
+      "ads": [
+        "adv8"
+      ]
+    },
+    "login9": {
+      "login": "login9",
+      "password": "password9",
+      "name": "name9",
+      "avatarId": "avatarId9",
+      "gender": "gender9",
+      "city": "city9",
+      "date": "2009",
+      "vk": "vk",
+      "ads": [
+        "adv9"
+      ]
+    },
+    "login10": {
+      "login": "login10",
+      "password": "password10",
+      "name": "name10",
+      "avatarId": "avatarId10",
+      "gender": "gender10",
+      "city": "city10",
+      "date": "2010",
+      "vk": "vk",
+      "ads": [
+        "adv10"
+      ]
+    }
+  },
+  "advertisements": {
+    "adv1": {
+      "id": "adv1",
+      "login": "login1",
+      "name": "name1",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "red",
+      "tags": [
+        "английский",
+        "французский"
+      ]
+    },
+    "adv2": {
+      "id": "adv2",
+      "login": "login2",
+      "name": "name2",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "blue",
+      "tags": [
+        "английский",
+        "итальянский"
+      ]
+    },
+    "adv3": {
+      "id": "adv3",
+      "login": "login3",
+      "name": "name3",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "green",
+      "tags": [
+        "итальянский",
+        "португальский"
+      ]
+    },
+    "adv4": {
+      "id": "adv4",
+      "login": "login4",
+      "name": "name4",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "yellow",
+      "tags": [
+        "китайский",
+        "японский"
+      ]
+    },
+    "adv5": {
+      "id": "adv5",
+      "login": "login5",
+      "name": "name5",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "purple",
+      "tags": [
+        "корейский",
+        "вьетнамский"
+      ]
+    },
+    "adv6": {
+      "id": "adv6",
+      "login": "login6",
+      "name": "name6",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "orange",
+      "tags": [
+        "арабский",
+        "турецкий"
+      ]
+    },
+    "adv7": {
+      "id": "adv7",
+      "login": "login7",
+      "name": "name7",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "pink",
+      "tags": [
+        "греческий",
+        "латинский"
+      ]
+    },
+    "adv8": {
+      "id": "adv8",
+      "login": "login8",
+      "name": "name8",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "brown",
+      "tags": [
+        "хинди",
+        "бенгальский"
+      ]
+    },
+    "adv9": {
+      "id": "adv9",
+      "login": "login9",
+      "name": "name9",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "gray",
+      "tags": [
+        "урду",
+        "персидский"
+      ]
+    },
+    "adv10": {
+      "id": "adv10",
+      "login": "login10",
+      "name": "name10",
+      "title": "title",
+      "text": "text",
+      "colorHeader": "black",
+      "tags": [
+        "суахили",
+        "зулу"
+      ]
+    }
+  }
+}

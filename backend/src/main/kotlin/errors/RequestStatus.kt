@@ -71,6 +71,26 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
         status: HttpStatusCode = HttpStatusCode.BadRequest,
         message: String = "Ошибка добавлкения пользователя: какой-то параметр null"
     ) : RequestStatus(status = status, message = message)
+
+    class NotOwnerOfAdvertisement(
+        status: HttpStatusCode = HttpStatusCode.NotModified,
+        message: String = "Пользователь не является хозяином объявления"
+    ) : RequestStatus(status = status, message = message)
+
+    class AdvertisementIsDeletedSuccessful(
+        status: HttpStatusCode = HttpStatusCode.OK,
+        message: String = "Объявление удалено успешно"
+    ) : RequestStatus(status = status, message = message)
+
+    class AdvertisementIsNotInFavourites(
+        status: HttpStatusCode = HttpStatusCode.NotFound,
+        message: String = "Объявление не в избранном"
+    ) : RequestStatus(status = status, message = message)
+
+    class AdvertisementIsRemovedFromFavouritesSuccessful(
+        status: HttpStatusCode = HttpStatusCode.OK,
+        message: String = "Объявление удалено из избранного успешно"
+    ) : RequestStatus(status = status, message = message)
 }
 
 
