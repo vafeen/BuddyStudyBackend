@@ -27,6 +27,7 @@ fun server(): NettyApplicationEngine {
             allowHeader(HttpHeaders.ContentType)
             allowMethod(HttpMethod.Get)
             allowMethod(HttpMethod.Post)
+            allowMethod(HttpMethod.Delete)
         }
         install(ContentNegotiation) {
             json()
