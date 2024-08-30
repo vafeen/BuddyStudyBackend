@@ -15,7 +15,7 @@ fun User.createResponsePreviewData(): ResponseUserData = ResponseUserData(
 
 fun Advertisement.createResponseData(): ResponseAdvertisementData = ResponseAdvertisementData(
     id = id,
-    name = name,
+    login = login,
     title = title,
     text = text
 )
