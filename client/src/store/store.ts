@@ -6,6 +6,7 @@ import { userApi } from "./reducers/user/userApi";
 import { filtersReducer } from "./reducers/filters/filtersSlice";
 import { adsApi } from "./reducers/ads/adsApi";
 import { adsReducer } from "./reducers/ads/adsSlice";
+import { favouritesApi } from "./reducers/favourites/favouritesApi";
 
 const rememberedReducers = [
     ""
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     filtersReducer,
     adsReducer,
     [userApi.reducerPath]: userApi.reducer,
+    [favouritesApi.reducerPath]: favouritesApi.reducer,
     [adsApi.reducerPath]: adsApi.reducer
 });
 
@@ -27,6 +29,7 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
             .concat(userApi.middleware)
+            .concat(favouritesApi.middleware)
             .concat(adsApi.middleware),
     enhancers: (getDefaultEnhancer) =>
         getDefaultEnhancer().concat(

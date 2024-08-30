@@ -8,9 +8,27 @@ left: 50%;
 transform: translate(-50%, -50%);
 `;
 
+export const flexCenter = css`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+`;
+
 export const defaultHover = css`
 &:hover {
     background-color: ${colors.grayAccent};
+}
+`;
+
+export const blurHover = css`
+&:hover
+{
+    -webkit-filter: blur(1px);
+    -moz-filter: blur(1px);
+    -o-filter: blur(1px);
+    -ms-filter: blur(1px);
+    filter: blur(1px);
 }
 `;
 
