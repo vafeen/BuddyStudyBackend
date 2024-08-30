@@ -7,14 +7,14 @@ const baseUrl: string = "http://localhost:8080";
 export const favouritesApi = createApi({
     reducerPath: "favouritesApi",
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl, credentials: 'include' }),
-    tagTypes: ['CREATE'],
+    tagTypes: ['CREATE', 'DELETE'],
     endpoints: (build) => ({
         getFavouritesApi: build.query<AdvProps[], void>({
             query: () => ({
                 url: '/favourites/all',
                 method: 'GET',
             }),
-            providesTags: ['CREATE']
+            providesTags: ['CREATE', 'DELETE']
         }),
         addFavourites: build.mutation<void, string>({
             query: (id) => ({
@@ -22,11 +22,19 @@ export const favouritesApi = createApi({
                 method: 'POST',
             }),
             invalidatesTags: ['CREATE']
-        })
+        }),
+        removeFavourites: build.mutation<void, string>({
+            query: (id) => ({
+                url: `/favourites/delete/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['DELETE']
+        }),
     }),
 });
 
 export const {
     useGetFavouritesApiQuery,
-    useAddFavouritesMutation
+    useAddFavouritesMutation,
+    useRemoveFavouritesMutation
 } = favouritesApi;

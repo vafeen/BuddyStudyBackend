@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AdvActionImg, AdvActionWrapper } from './styles';
 import { useLocation } from 'react-router-dom';
-import { useAddFavouritesMutation } from '../../../store/reducers/favourites/favouritesApi';
+import { useAddFavouritesMutation, useRemoveFavouritesMutation } from '../../../store/reducers/favourites/favouritesApi';
 import heartImg from '../../icons/svg/heart.svg';
 import heartRedImg from '../../icons/svg/heart-red.svg';
 import binImg from '../../icons/svg/bin.svg';
@@ -16,6 +16,7 @@ interface FavouriteButtonProps {
 export default function AdvAction({ id }: FavouriteButtonProps) {
     const [isAdd, setIsAdd] = useState(false);
     const [addFavourites] = useAddFavouritesMutation();
+    const [removeFavourites] = useRemoveFavouritesMutation();
     const { pathname } = useLocation();
 
     const handleFavourite = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
@@ -26,7 +27,7 @@ export default function AdvAction({ id }: FavouriteButtonProps) {
 
     const handleRemove = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
         e.stopPropagation();
-        //remove
+        removeFavourites(id)
     }
 
     return (
