@@ -170,11 +170,10 @@ fun Application.configureRouting() {
                 }
         }
 
-        get("/user/info") {
+        get("/user/info/{login}") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
-                    val params = call.getParams().callIfNull(call = call, message = "No body")
-                    val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
+                    val login = call.parameters["login"]
                     if (login != null) {
                         databaseRepository.getUserByHashedKey(key = login.createSaltedHash()).let { user ->
                             if (user != null) call.respond(user.createResponsePreviewData())
