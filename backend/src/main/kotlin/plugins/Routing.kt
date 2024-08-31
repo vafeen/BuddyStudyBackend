@@ -139,7 +139,7 @@ fun Application.configureRouting() {
                 }
         }
 
-        post("/ads/all") {
+        get("/ads/all") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
                     val params = call.getParams()//.callIfNull(call = call, message = "No body")
@@ -152,7 +152,7 @@ fun Application.configureRouting() {
                         params?.get(key = AdsGettingKey.MIN_YEAR).removeAngryQuotes().makeNullIfNull()?.toIntOrNull()
                     val maxYear =
                         params?.get(key = AdsGettingKey.MAX_YEAR).removeAngryQuotes().makeNullIfNull()?.toIntOrNull()
-                    val tags = params?.get(key = AdvertisementKey.TAGS).makeNullIfNull()?.parseJsonArrayToList()
+                    val tags = params?.get(key = AdvertisementKey.TAGS).makeNullIfNull()?.split("+")
                     val filteredUsers = databaseRepository.getAllUsers().filter {
                         (if (gender != null) it.gender == gender else true) && (if (city != null) it.city == city else true) && it.date?.isDateInThisDiapason(
                             start = minYear,
