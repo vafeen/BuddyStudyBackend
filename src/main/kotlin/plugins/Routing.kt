@@ -5,6 +5,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import io.ktor.server.websocket.*
+import io.ktor.websocket.*
 import ru.vafeen.cryptography.createSaltedHash
 import ru.vafeen.datastore.DatabaseRepository
 import ru.vafeen.datastore.entity.Advertisement
@@ -20,13 +22,46 @@ import ru.vafeen.web.UserSession
 import utils.callIfNull
 import utils.getParams
 
-
 fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
     routing {
+        webSocket(
+            path = "/chat"
+        ) {
+            println("Подключение установлено: ${this.call.request.local.remoteHost}")
+            send("Привет, клиент!")
 
+            for (frame in incoming) {
+                when (frame) {
+                    is Frame.Text -> {
+                        val receivedText = frame.readText()
+                        println("Получено сообщение: $receivedText")
+                        send("Сообщение получено: $receivedText")
+                    }
 
+                    else -> Unit
+                }
+            }
+        }
+        webSocket(
+            path = "chat"
+        ) {
+            println("Подключение установлено: ${this.call.request.local.remoteHost}")
+            send("Привет, клиент!")
+
+            for (frame in incoming) {
+                when (frame) {
+                    is Frame.Text -> {
+                        val receivedText = frame.readText()
+                        println("Получено сообщение: $receivedText")
+                        send("Сообщение получено: $receivedText")
+                    }
+
+                    else -> Unit
+                }
+            }
+        }
         get("/info") {
             call.respondText { "Сервер для бэка, какой браузер!?" }
         }
@@ -292,3 +327,4 @@ fun Application.configureRouting() {
         }
     }
 }
+
