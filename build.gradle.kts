@@ -26,6 +26,17 @@ dependencies {
     implementation("io.ktor:ktor-server-sessions:2.0.0")
     //gson
     implementation("com.google.code.gson:gson:2.8.9")
+    //sockets
+    implementation("io.ktor:ktor-websockets:$ktor_version")
+    implementation("io.ktor:ktor-network:2.0.0") // Замените на актуальную версию
+    implementation("io.ktor:ktor-server-core:$ktor_version")
+    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-network:$ktor_version")
+    implementation("io.ktor:ktor-websockets:$ktor_version")
+//    implementation("io.ktor:ktor-socket-io:$ktor_version")
+    implementation("io.ktor:ktor-server-core:$ktor_version")
+    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-server-websockets:$ktor_version")
 }
 application.mainClass = "ru.vafeen.MainKt"
 

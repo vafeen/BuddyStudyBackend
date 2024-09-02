@@ -8,6 +8,7 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.sessions.*
+import io.ktor.server.websocket.*
 import ru.vafeen.plugins.configureRouting
 import ru.vafeen.utils.findAvailablePort
 import ru.vafeen.web.UserSession
@@ -29,6 +30,7 @@ fun server(): NettyApplicationEngine {
             allowMethod(HttpMethod.Post)
             allowMethod(HttpMethod.Delete)
         }
+        install(WebSockets)
         install(ContentNegotiation) {
             json()
         }
