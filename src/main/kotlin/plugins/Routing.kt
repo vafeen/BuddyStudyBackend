@@ -44,24 +44,7 @@ fun Application.configureRouting() {
                 }
             }
         }
-        webSocket(
-            path = "chat"
-        ) {
-            println("Подключение установлено: ${this.call.request.local.remoteHost}")
-            send("Привет, клиент!")
 
-            for (frame in incoming) {
-                when (frame) {
-                    is Frame.Text -> {
-                        val receivedText = frame.readText()
-                        println("Получено сообщение: $receivedText")
-                        send("Сообщение получено: $receivedText")
-                    }
-
-                    else -> Unit
-                }
-            }
-        }
         get("/info") {
             call.respondText { "Сервер для бэка, какой браузер!?" }
         }
@@ -175,35 +158,28 @@ fun Application.configureRouting() {
         }
 
         get("/ads/all") {
-            call.getSessionOrCallUnauthorized()
-                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let {
-                    val params = call.getParams()//.callIfNull(call = call, message = "No body")
-                    val gender = params?.get(key = UserKey.GENDER).removeAngryQuotes()
-                        .makeNullIfNull()  //call.getOrInvalidParameter(key = UserKey.GENDER, params = params)
-                    val city = params?.get(key = UserKey.CITY).removeAngryQuotes()
-                        .makeNullIfNull()    //call.getOrInvalidParameter(key = UserKey.CITY, params = params)
-                    val substr = params?.get(key = AdsGettingKey.SUBSTR).removeAngryQuotes().makeNullIfNull()
-                    val minYear =
-                        params?.get(key = AdsGettingKey.MIN_YEAR).removeAngryQuotes().makeNullIfNull()?.toIntOrNull()
-                    val maxYear =
-                        params?.get(key = AdsGettingKey.MAX_YEAR).removeAngryQuotes().makeNullIfNull()?.toIntOrNull()
-                    val tags = params?.get(key = AdvertisementKey.TAGS).makeNullIfNull()?.split("+")
-                    val filteredUsers = databaseRepository.getAllUsers().filter {
-                        (if (gender != null) it.gender == gender else true) && (if (city != null) it.city == city else true) && it.date?.isDateInThisDiapason(
-                            start = minYear,
-                            end = maxYear
-                        ) == true
-                    }.map { it.login }
-                    val filteredAds = databaseRepository.getAdvertisements().values.filter { adv ->
-                        adv.login in filteredUsers && (if (substr != null) {
-                            adv.title.contains(other = substr) || adv.text.contains(other = substr) || adv.tags?.let { tags ->
-                                substr in tags
-                            } == true
-                        } else true) && (if (tags != null && adv.tags != null) adv.tags.containsAll(tags) else true)
-                    }.map { it.createResponsePreviewData() }
-                    call.respond(filteredAds)
-                }
+            val params = call.parameters
+            val gender = params.get(name = UserKey.GENDER).removeAngryQuotes().makeNullIfNull()
+            val city = params.get(name = UserKey.CITY).removeAngryQuotes().makeNullIfNull()
+            val substr = params.get(name = AdsGettingKey.SUBSTR).removeAngryQuotes().makeNullIfNull()
+            val minYear = params.get(name = AdsGettingKey.MIN_YEAR).removeAngryQuotes().makeNullIfNull()?.toInt()
+            val maxYear = params.get(name = AdsGettingKey.MAX_YEAR).removeAngryQuotes().makeNullIfNull()?.toInt()
+            val tags = params.get(name = AdvertisementKey.TAGS).makeNullIfNull()?.split("+")
+            val filteredUsers = databaseRepository.getAllUsers().filter {
+                (gender == null || it.gender == gender) && (city == null || it.city == city) && it.date?.isDateInThisDiapason(
+                    start = minYear, end = maxYear
+                ) == true
+            }.map { it.login }
+            val filteredAds = databaseRepository.getAdvertisements().values.filter { adv ->
+                adv.login in filteredUsers && (if (substr != null) {
+                    adv.title.contains(other = substr) || adv.text.contains(other = substr) || adv.tags?.let { tags ->
+                        substr in tags
+                    } == true
+                } else true) && (if (tags != null && adv.tags != null) adv.tags.containsAll(tags) else true)
+            }.map { it.createResponsePreviewData() }
+            call.respond(filteredAds)
         }
+
 
         get("/user/info/{login}") {
             call.getSessionOrCallUnauthorized()
