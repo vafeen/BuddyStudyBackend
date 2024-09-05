@@ -7,6 +7,10 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
+import kotlinx.coroutines.isActive
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import ru.vafeen.cryptography.createSaltedHash
 import ru.vafeen.datastore.DatabaseRepository
 import ru.vafeen.datastore.entity.Advertisement
@@ -21,22 +25,63 @@ import ru.vafeen.utils.*
 import ru.vafeen.web.UserSession
 import utils.callIfNull
 import utils.getParams
+import java.util.*
+
+fun parseMessage(message: String): Pair<String, String> {
+    val json = kotlinx.serialization.json.Json.parseToJsonElement(message).jsonObject
+    val room = json["room"]?.jsonPrimitive?.content ?: ""
+    val text = json["text"]?.jsonPrimitive?.content ?: ""
+    return Pair(room, text)
+}
+
+fun serializeMessage(room: String, text: String): String {
+    return kotlinx.serialization.json.Json.encodeToString(mapOf("room" to room, "text" to text))
+}
 
 fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
     routing {
+        val rooms = Collections.synchronizedMap(mutableMapOf<String, MutableSet<DefaultWebSocketSession>>())
+        webSocket(path = "/chat") {
+            println("Клиент подключен")
+
+            for (frame in incoming) {
+                if (frame is Frame.Text) {
+                    val message = frame.readText()
+                    println(message)
+                    val (room, text) = parseMessage(message)
+
+                    if (!rooms.containsKey(room)) {
+                        rooms[room] = LinkedHashSet()
+                    }
+
+                    rooms[room]?.add(this)
+
+                    rooms[room]?.forEach { client ->
+                        if (client.isActive) {
+                            client.send(Frame.Text(serializeMessage(room, text)))
+                        }
+                    }
+                }
+            }
+
+//            close(CloseReason(CloseReason.Codes.NORMAL, "Client disconnected"))
+//            println("Клиент отключен")
+//            rooms.values.forEach { it.remove(this) }
+//            rooms.entries.removeIf { it.value.isEmpty() }
+        }
         webSocket(
-            path = "/chat"
+            path = "/im/{chatId}"
         ) {
             println("Подключение установлено: ${this.call.request.local.remoteHost}")
-            send("Привет, клиент!")
+            val chatId = call.parameters["chatId"].callIfNull(call = call, message = "Invalid parameter: chatId")
 
             for (frame in incoming) {
                 when (frame) {
                     is Frame.Text -> {
                         val receivedText = frame.readText()
-                        println("Получено сообщение: $receivedText")
+                        println("Получено сообщение, и сразу отправлено: $receivedText")
                         send("Сообщение получено: $receivedText")
                     }
 
