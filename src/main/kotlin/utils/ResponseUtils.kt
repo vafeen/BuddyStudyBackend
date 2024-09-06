@@ -8,6 +8,7 @@ import ru.vafeen.frontend.response_entity.ResponseUserData
 
 fun User.createResponsePreviewData(): ResponseUserData = ResponseUserData(
     name = name,
+    login = login,
     avatarId = avatarId,
     gender = gender,
     city = city, date = date, tg = tg, vk = vk, wa = wa
