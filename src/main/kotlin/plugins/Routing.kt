@@ -46,18 +46,21 @@ fun Application.configureRouting() {
     routing {
         get("/responses/all") {
             call.respond(databaseRepository.getResponsesOnAdvertisement().values.map {
-                it.createResponseResponseOnAdvertisementPreviewData()
+                it.createResponseResponseOnAdvertisementData()
             })
         }
-        get("/response/info/{id}") {
+
+        get("/response/all/{id}") {
             val id =
                 call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
-            val response = databaseRepository.getResponsesOnAdvertisementById(id = id).callIfNull(
-                call = call,
-                message = "Response not found"
-            )
-            if (response != null) {
-                call.respond(response.createResponseResponseOnAdvertisementData())
+
+            if (id != null) {
+                val filteredResponses = databaseRepository.getResponsesOnAdvertisement().values.filter {
+                    it.advId == id
+                }.map {
+                    it.createResponseResponseOnAdvertisementData()
+                }
+                call.respond(filteredResponses)
             }
         }
 
@@ -363,6 +366,8 @@ fun Application.configureRouting() {
             val params = call.getParams().callIfNull(call = call, message = "No body")
             val login = call.getOrInvalidParameter(key = UserKey.LOGIN, params = params)
             val password = call.getOrInvalidParameter(key = UserKey.PASSWORD, params = params)
+            println(login)
+            println(password)
             if (login != null && password != null) {
                 val user = databaseRepository.getUserByHashedKey(key = login.createSaltedHash())
                 when {

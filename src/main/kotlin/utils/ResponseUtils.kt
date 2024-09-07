@@ -3,7 +3,10 @@ package ru.vafeen.utils
 import ru.vafeen.datastore.entity.Advertisement
 import ru.vafeen.datastore.entity.ResponseOnAdvertisement
 import ru.vafeen.datastore.entity.User
-import ru.vafeen.frontend.response_entity.*
+import ru.vafeen.frontend.response_entity.ResponseAdvertisementData
+import ru.vafeen.frontend.response_entity.ResponseAdvertisementPreviewData
+import ru.vafeen.frontend.response_entity.ResponseResponseOnAdvertisementData
+import ru.vafeen.frontend.response_entity.ResponseUserData
 
 fun User.createResponsePreviewData(): ResponseUserData = ResponseUserData(
     name = name,
@@ -29,12 +32,6 @@ fun Advertisement.createResponsePreviewData(): ResponseAdvertisementPreviewData 
     tags = tags
 )
 
-fun ResponseOnAdvertisement.createResponseResponseOnAdvertisementPreviewData():
-        ResponseResponseOnAdvertisementPreviewData = ResponseResponseOnAdvertisementPreviewData(
-    id = id,
-    avatarId = avatarId,
-    name = name
-)
 
 fun ResponseOnAdvertisement.createResponseResponseOnAdvertisementData():
         ResponseResponseOnAdvertisementData = ResponseResponseOnAdvertisementData(

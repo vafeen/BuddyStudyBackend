@@ -27,7 +27,6 @@ class DatabaseRepository {
         Database()
     }
 
-
     private fun selectAllUsers(): MutableMap<String, User> {
         database = getDatabaseAsDB()
         return database.users

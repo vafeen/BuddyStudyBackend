@@ -11,7 +11,4 @@ class Database {
     val advertisements: MutableMap<String, Advertisement> = mutableMapOf()
     val responses: MutableMap<String, ResponseOnAdvertisement> = mutableMapOf()
     val ids: MutableMap<String, String> = mutableMapOf()
-    override fun toString(): String {
-        return "Database(users = $users, advs = $advertisements)"
-    }
 }
