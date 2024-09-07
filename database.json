@@ -3,143 +3,269 @@
     "login1": {
       "login": "login1",
       "password": "password1",
-      "name": "name1",
-      "avatarId": "avatarId1",
-      "gender": "gender1",
-      "city": "city1",
-      "date": "2001",
-      "vk": "vk",
+      "name": "Alice",
+      "avatarId": "avatar1",
+      "gender": "Female",
+      "city": "New York",
+      "date": "1990-01-01",
+      "tg": "alice_tg",
+      "vk": "alice_vk",
+      "wa": "alice_wa",
       "favourites": [
-        "adv2"
+        "adv1",
+        "adv3"
       ],
       "ads": [
-        "adv1"
+        "adv1",
+        "adv2"
+      ],
+      "responsesOnAdvs": [
+        {
+          "id": "response1",
+          "advId": "adv2",
+          "senderLogin": "login1",
+          "avatarId": "avatar1",
+          "name": "Alice",
+          "text": "Interested in your ad!"
+        },
+        {
+          "id": "983296076",
+          "advId": "adv1",
+          "senderLogin": "login2",
+          "avatarId": "avatar2",
+          "name": "Bob",
+          "text": "ФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФ"
+        }
       ]
     },
     "login2": {
       "login": "login2",
       "password": "password2",
-      "name": "name2",
-      "avatarId": "avatarId2",
-      "gender": "gender2",
-      "city": "city2",
-      "date": "2002",
-      "vk": "vk",
+      "name": "Bob",
+      "avatarId": "avatar2",
+      "gender": "Male",
+      "city": "Los Angeles",
+      "date": "1985-05-05",
+      "tg": "bob_tg",
+      "vk": "bob_vk",
+      "wa": "bob_wa",
+      "favourites": [
+        "adv2",
+        "adv4"
+      ],
       "ads": [
-        "adv2"
+        "adv3",
+        "adv4"
       ],
       "responsesOnAdvs": [
         {
-          "id": "-136840393",
-          "senderLogin": "login1",
-          "avatarId": "avatarId1",
-          "name": "name1",
-          "text": "Hello!"
+          "id": "response2",
+          "advId": "adv4",
+          "senderLogin": "login2",
+          "avatarId": "avatar2",
+          "name": "Bob",
+          "text": "Can you provide more details?"
         }
       ]
     },
     "login3": {
       "login": "login3",
       "password": "password3",
-      "name": "name3",
-      "avatarId": "avatarId3",
-      "gender": "gender3",
-      "city": "city3",
-      "date": "2003",
-      "vk": "vk",
+      "name": "Charlie",
+      "avatarId": "avatar3",
+      "gender": "Male",
+      "city": "Chicago",
+      "date": "1992-03-03",
+      "tg": "charlie_tg",
+      "vk": "charlie_vk",
+      "wa": "charlie_wa",
+      "favourites": [
+        "adv1",
+        "adv5"
+      ],
       "ads": [
-        "adv3"
+        "adv5",
+        "adv6"
       ]
     },
     "login4": {
       "login": "login4",
       "password": "password4",
-      "name": "name4",
-      "avatarId": "avatarId4",
-      "gender": "gender4",
-      "city": "city4",
-      "date": "2004",
-      "vk": "vk",
+      "name": "Diana",
+      "avatarId": "avatar4",
+      "gender": "Female",
+      "city": "Miami",
+      "date": "1988-07-07",
+      "tg": "diana_tg",
+      "vk": "diana_vk",
+      "wa": "diana_wa",
+      "favourites": [
+        "adv6",
+        "adv7"
+      ],
       "ads": [
-        "adv4"
+        "adv7",
+        "adv8"
+      ],
+      "responsesOnAdvs": [
+        {
+          "id": "response3",
+          "advId": "adv8",
+          "senderLogin": "login4",
+          "avatarId": "avatar4",
+          "name": "Diana",
+          "text": "I would like to know more."
+        }
       ]
     },
     "login5": {
       "login": "login5",
       "password": "password5",
-      "name": "name5",
-      "avatarId": "avatarId5",
-      "gender": "gender5",
-      "city": "city5",
-      "date": "2005",
-      "vk": "vk",
+      "name": "Ethan",
+      "avatarId": "avatar5",
+      "gender": "Male",
+      "city": "Houston",
+      "date": "1995-09-09",
+      "tg": "ethan_tg",
+      "vk": "ethan_vk",
+      "wa": "ethan_wa",
+      "favourites": [
+        "adv2",
+        "adv8"
+      ],
       "ads": [
-        "adv5"
+        "adv9",
+        "adv10"
       ]
     },
     "login6": {
       "login": "login6",
       "password": "password6",
-      "name": "name6",
-      "avatarId": "avatarId6",
-      "gender": "gender6",
-      "city": "city6",
-      "date": "2006",
-      "vk": "vk",
+      "name": "Fiona",
+      "avatarId": "avatar6",
+      "gender": "Female",
+      "city": "Seattle",
+      "date": "1993-12-12",
+      "tg": "fiona_tg",
+      "vk": "fiona_vk",
+      "wa": "fiona_wa",
+      "favourites": [
+        "adv1",
+        "adv10"
+      ],
       "ads": [
-        "adv6"
+        "adv11",
+        "adv12"
+      ],
+      "responsesOnAdvs": [
+        {
+          "id": "response4",
+          "advId": "adv12",
+          "senderLogin": "login6",
+          "avatarId": "avatar6",
+          "name": "Fiona",
+          "text": "Looking forward to your reply!"
+        }
       ]
     },
     "login7": {
       "login": "login7",
       "password": "password7",
-      "name": "name7",
-      "avatarId": "avatarId7",
-      "gender": "gender7",
-      "city": "city7",
-      "date": "2007",
-      "vk": "vk",
-      "ads": [
+      "name": "George",
+      "avatarId": "avatar7",
+      "gender": "Male",
+      "city": "Phoenix",
+      "date": "1980-02-02",
+      "tg": "george_tg",
+      "vk": "george_vk",
+      "wa": "george_wa",
+      "favourites": [
+        "adv3",
         "adv7"
+      ],
+      "ads": [
+        "adv13",
+        "adv14"
       ]
     },
     "login8": {
       "login": "login8",
       "password": "password8",
-      "name": "name8",
-      "avatarId": "avatarId8",
-      "gender": "gender8",
-      "city": "city8",
-      "date": "2008",
-      "vk": "vk",
+      "name": "Hannah",
+      "avatarId": "avatar8",
+      "gender": "Female",
+      "city": "San Diego",
+      "date": "1991-04-04",
+      "tg": "hannah_tg",
+      "vk": "hannah_vk",
+      "wa": "hannah_wa",
+      "favourites": [
+        "adv5",
+        "adv9"
+      ],
       "ads": [
-        "adv8"
+        "adv15",
+        "adv16"
+      ],
+      "responsesOnAdvs": [
+        {
+          "id": "response5",
+          "advId": "adv15",
+          "senderLogin": "login8",
+          "avatarId": "avatar8",
+          "name": "Hannah",
+          "text": "Is this still available?"
+        }
       ]
     },
     "login9": {
       "login": "login9",
       "password": "password9",
-      "name": "name9",
-      "avatarId": "avatarId9",
-      "gender": "gender9",
-      "city": "city9",
-      "date": "2009",
-      "vk": "vk",
+      "name": "Ian",
+      "avatarId": "avatar9",
+      "gender": "Male",
+      "city": "Dallas",
+      "date": "1987-08-08",
+      "tg": "ian_tg",
+      "vk": "ian_vk",
+      "wa": "ian_wa",
+      "favourites": [
+        "adv4",
+        "adv6"
+      ],
       "ads": [
-        "adv9"
+        "adv17",
+        "adv18"
       ]
     },
     "login10": {
       "login": "login10",
       "password": "password10",
-      "name": "name10",
-      "avatarId": "avatarId10",
-      "gender": "gender10",
-      "city": "city10",
-      "date": "2010",
-      "vk": "vk",
-      "ads": [
+      "name": "Julia",
+      "avatarId": "avatar10",
+      "gender": "Female",
+      "city": "Austin",
+      "date": "1994-11-11",
+      "tg": "julia_tg",
+      "vk": "julia_vk",
+      "wa": "julia_wa",
+      "favourites": [
+        "adv8",
         "adv10"
+      ],
+      "ads": [
+        "adv19",
+        "adv20"
+      ],
+      "responsesOnAdvs": [
+        {
+          "id": "response6",
+          "advId": "adv20",
+          "senderLogin": "login10",
+          "avatarId": "avatar10",
+          "name": "Julia",
+          "text": "I am very interested!"
+        }
       ]
     }
   },
@@ -147,135 +273,255 @@
     "adv1": {
       "id": "adv1",
       "login": "login1",
-      "name": "name1",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "red",
+      "name": "Ad 1",
+      "title": "Great Product",
+      "text": "This is a great product that you will love.",
+      "colorHeader": "#FF5733",
       "tags": [
-        "английский",
-        "французский"
+        "product",
+        "great"
       ]
     },
     "adv2": {
       "id": "adv2",
-      "login": "login2",
-      "name": "name2",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "blue",
+      "login": "login1",
+      "name": "Ad 2",
+      "title": "Amazing Service",
+      "text": "We offer amazing services just for you.",
+      "colorHeader": "#33FF57",
       "tags": [
-        "английский",
-        "итальянский"
+        "service",
+        "amazing"
       ]
     },
     "adv3": {
       "id": "adv3",
-      "login": "login3",
-      "name": "name3",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "green",
+      "login": "login2",
+      "name": "Ad 3",
+      "title": "Discounted Item",
+      "text": "Get this item at a discounted price!",
+      "colorHeader": "#3357FF",
       "tags": [
-        "итальянский",
-        "португальский"
+        "discount",
+        "item"
       ]
     },
     "adv4": {
       "id": "adv4",
-      "login": "login4",
-      "name": "name4",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "yellow",
+      "login": "login2",
+      "name": "Ad 4",
+      "title": "Limited Time Offer",
+      "text": "Don't miss out on this limited time offer!",
+      "colorHeader": "#FF33A1",
       "tags": [
-        "китайский",
-        "японский"
+        "offer",
+        "limited"
       ]
     },
     "adv5": {
       "id": "adv5",
-      "login": "login5",
-      "name": "name5",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "purple",
+      "login": "login3",
+      "name": "Ad 5",
+      "title": "New Arrival",
+      "text": "Check out our new arrivals in store.",
+      "colorHeader": "#FFC300",
       "tags": [
-        "корейский",
-        "вьетнамский"
+        "new",
+        "arrival"
       ]
     },
     "adv6": {
       "id": "adv6",
-      "login": "login6",
-      "name": "name6",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "orange",
+      "login": "login3",
+      "name": "Ad 6",
+      "title": "Best Seller",
+      "text": "This is our best seller product.",
+      "colorHeader": "#DAF7A6",
       "tags": [
-        "арабский",
-        "турецкий"
+        "best",
+        "seller"
       ]
     },
     "adv7": {
       "id": "adv7",
-      "login": "login7",
-      "name": "name7",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "pink",
+      "login": "login4",
+      "name": "Ad 7",
+      "title": "Exclusive Offer",
+      "text": "Get this exclusive offer today!",
+      "colorHeader": "#FFC0CB",
       "tags": [
-        "греческий",
-        "латинский"
+        "exclusive",
+        "offer"
       ]
     },
     "adv8": {
       "id": "adv8",
-      "login": "login8",
-      "name": "name8",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "brown",
+      "login": "login4",
+      "name": "Ad 8",
+      "title": "Flash Sale",
+      "text": "Flash sale happening now!",
+      "colorHeader": "#FF4500",
       "tags": [
-        "хинди",
-        "бенгальский"
+        "flash",
+        "sale"
       ]
     },
     "adv9": {
       "id": "adv9",
-      "login": "login9",
-      "name": "name9",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "gray",
+      "login": "login5",
+      "name": "Ad 9",
+      "title": "Seasonal Sale",
+      "text": "Don't miss our seasonal sale!",
+      "colorHeader": "#8A2BE2",
       "tags": [
-        "урду",
-        "персидский"
+        "seasonal",
+        "sale"
       ]
     },
     "adv10": {
       "id": "adv10",
-      "login": "login10",
-      "name": "name10",
-      "title": "title",
-      "text": "text",
-      "colorHeader": "black",
+      "login": "login5",
+      "name": "Ad 10",
+      "title": "Clearance Items",
+      "text": "Check out our clearance items!",
+      "colorHeader": "#7FFF00",
       "tags": [
-        "суахили",
-        "зулу"
+        "clearance",
+        "items"
+      ]
+    },
+    "adv11": {
+      "id": "adv11",
+      "login": "login6",
+      "name": "Ad 11",
+      "title": "Hot Deal",
+      "text": "Grab this hot deal while it lasts!",
+      "colorHeader": "#FF6347",
+      "tags": [
+        "deal",
+        "hot"
+      ]
+    },
+    "adv12": {
+      "id": "adv12",
+      "login": "login6",
+      "name": "Ad 12",
+      "title": "Limited Stock",
+      "text": "Limited stock available for this item.",
+      "colorHeader": "#4682B4",
+      "tags": [
+        "stock",
+        "limited"
+      ]
+    },
+    "adv13": {
+      "id": "adv13",
+      "login": "login7",
+      "name": "Ad 13",
+      "title": "Bargain Price",
+      "text": "Get it at a bargain price!",
+      "colorHeader": "#FFD700",
+      "tags": [
+        "bargain",
+        "price"
+      ]
+    },
+    "adv14": {
+      "id": "adv14",
+      "login": "login7",
+      "name": "Ad 14",
+      "title": "Special Discount",
+      "text": "Special discount available for a limited time.",
+      "colorHeader": "#20B2AA",
+      "tags": [
+        "discount",
+        "special"
+      ]
+    },
+    "adv15": {
+      "id": "adv15",
+      "login": "login8",
+      "name": "Ad 15",
+      "title": "Exclusive Item",
+      "text": "This item is exclusive to our store.",
+      "colorHeader": "#FF69B4",
+      "tags": [
+        "exclusive",
+        "item"
+      ]
+    },
+    "adv16": {
+      "id": "adv16",
+      "login": "login8",
+      "name": "Ad 16",
+      "title": "New Collection",
+      "text": "Explore our new collection now!",
+      "colorHeader": "#B0E0E6",
+      "tags": [
+        "collection",
+        "new"
+      ]
+    },
+    "adv17": {
+      "id": "adv17",
+      "login": "login9",
+      "name": "Ad 17",
+      "title": "Best Deals",
+      "text": "Best deals of the season!",
+      "colorHeader": "#FF8C00",
+      "tags": [
+        "deals",
+        "best"
+      ]
+    },
+    "adv18": {
+      "id": "adv18",
+      "login": "login9",
+      "name": "Ad 18",
+      "title": "Limited Edition",
+      "text": "Don't miss our limited edition items.",
+      "colorHeader": "#7B68EE",
+      "tags": [
+        "limited",
+        "edition"
+      ]
+    },
+    "adv19": {
+      "id": "adv19",
+      "login": "login10",
+      "name": "Ad 19",
+      "title": "Mega Sale",
+      "text": "Mega sale happening now!",
+      "colorHeader": "#FF1493",
+      "tags": [
+        "mega",
+        "sale"
+      ]
+    },
+    "adv20": {
+      "id": "adv20",
+      "login": "login10",
+      "name": "Ad 20",
+      "title": "Clearance Sale",
+      "text": "Hurry up! Clearance sale ongoing.",
+      "colorHeader": "#00FA9A",
+      "tags": [
+        "clearance",
+        "sale"
       ]
     }
   },
   "responses": {
-    "-136840393": {
-      "id": "-136840393",
-      "senderLogin": "login1",
-      "avatarId": "avatarId1",
-      "name": "name1",
-      "text": "Hello!"
+    "983296076": {
+      "id": "983296076",
+      "advId": "adv1",
+      "senderLogin": "login2",
+      "avatarId": "avatar2",
+      "name": "Bob",
+      "text": "ФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФФ"
     }
   },
   "ids": {
-    "703883584": "703883584",
-    "-136840393": "-136840393"
+    "983296076": "983296076"
   }
 }
