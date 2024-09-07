@@ -16,7 +16,7 @@ suspend fun ApplicationCall.getParams(): Map<String, String>? {
     return try {
         val newMap = mutableMapOf<String, String>()
         receive<JsonObject>().toMap().entries.forEach {
-            newMap[it.key] = it.value.toString()
+            newMap[it.key] = it.value.toString().replace("\"", "")
         }
         newMap
     } catch (e: Exception) {

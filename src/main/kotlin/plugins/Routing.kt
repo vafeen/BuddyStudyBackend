@@ -75,15 +75,15 @@ fun Application.configureRouting() {
                     val recipientUser = databaseRepository.getUserByHashedKey(key = recipientLogin ?: "")
                         .callIfNull(call = call, message = "Recipient user not found")
                     if (recipientLogin != null && recipientUser != null && advId != null && text != null && senderUser != null) {
-                        recipientUser.responsesOnAdvs.add(
-                            ResponseOnAdvertisement(
-                                id = databaseRepository.createIndividualID(),
-                                senderLogin = senderUser.login,
-                                avatarId = senderUser.avatarId,
-                                name = senderUser.name,
-                                text = text
-                            )
+                        val newResponseOnAdvertisement = ResponseOnAdvertisement(
+                            id = databaseRepository.createIndividualID(),
+                            senderLogin = senderUser.login,
+                            avatarId = senderUser.avatarId,
+                            name = senderUser.name,
+                            text = text
                         )
+                        recipientUser.responsesOnAdvs.add(element = newResponseOnAdvertisement)
+                        databaseRepository.insertResponseOnAdvertisement(responseOnAdvertisement = newResponseOnAdvertisement)
                         databaseRepository.insertUser(user = recipientUser)
                         call.respondStatus(RequestStatus.ResponseAddedSuccessful())
                     }

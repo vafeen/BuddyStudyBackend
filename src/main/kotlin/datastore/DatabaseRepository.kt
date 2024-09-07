@@ -43,7 +43,12 @@ class DatabaseRepository {
         saveDatabase()
     }
 
-    fun getUserByHashedKey(key: String): User? = database.users.get(key = key)
+    fun getUserByHashedKey(key: String): User? {
+
+        println(database.users)
+        return database.users.get(key = key)
+    }
+
     fun getAllUsers(): List<User> = database.users.map { it.value }
 
     fun insertAdvertisement(advertisement: Advertisement) {
