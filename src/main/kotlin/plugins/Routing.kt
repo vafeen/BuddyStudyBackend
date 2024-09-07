@@ -14,9 +14,11 @@ import kotlinx.serialization.json.jsonPrimitive
 import ru.vafeen.cryptography.createSaltedHash
 import ru.vafeen.datastore.DatabaseRepository
 import ru.vafeen.datastore.entity.Advertisement
+import ru.vafeen.datastore.entity.ResponseOnAdvertisement
 import ru.vafeen.datastore.entity.User
 import ru.vafeen.datastore.keys.AdsGettingKey
 import ru.vafeen.datastore.keys.AdvertisementKey
+import ru.vafeen.datastore.keys.ResponseKey
 import ru.vafeen.datastore.keys.UserKey
 import ru.vafeen.errors.RequestStatus
 import ru.vafeen.errors.respondStatus
@@ -42,6 +44,53 @@ fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
     routing {
+        get("/responses/all") {
+            call.respond(databaseRepository.getResponsesOnAdvertisement().values.map {
+                it.createResponseResponseOnAdvertisementPreviewData()
+            })
+        }
+        get("/response/info/{id}") {
+            val id =
+                call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
+            val response = databaseRepository.getResponsesOnAdvertisementById(id = id).callIfNull(
+                call = call,
+                message = "Response not found"
+            )
+            if (response != null) {
+                call.respond(response.createResponseResponseOnAdvertisementData())
+            }
+        }
+
+        post("/responses/create") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
+                    val bodyParams = call.getParams().callIfNull(call = call, message = "No body")
+                    val recipientLogin = bodyParams?.get(key = ResponseKey.RECIPIENT_LOGIN)
+                        .callIfNull(call = call, message = "Invalid parameter: ${ResponseKey.RECIPIENT_LOGIN}")
+                    val advId = bodyParams?.get(key = ResponseKey.ADV_ID)
+                        .callIfNull(call = call, message = "Invalid parameter: ${ResponseKey.ADV_ID}")
+                    val text = bodyParams?.get(key = ResponseKey.TEXT)
+                        .callIfNull(call = call, message = "Invalid parameter: ${ResponseKey.TEXT}")
+                    val senderUser = databaseRepository.getUserByHashedKey(key = userLogin.session)
+                    val recipientUser = databaseRepository.getUserByHashedKey(key = recipientLogin ?: "")
+                        .callIfNull(call = call, message = "Recipient user not found")
+                    if (recipientLogin != null && recipientUser != null && advId != null && text != null && senderUser != null) {
+                        recipientUser.responsesOnAdvs.add(
+                            ResponseOnAdvertisement(
+                                id = databaseRepository.createIndividualID(),
+                                senderLogin = senderUser.login,
+                                avatarId = senderUser.avatarId,
+                                name = senderUser.name,
+                                text = text
+                            )
+                        )
+                        databaseRepository.insertUser(user = recipientUser)
+                        call.respondStatus(RequestStatus.ResponseAddedSuccessful())
+                    }
+                }
+        }
+
+
         val rooms = Collections.synchronizedMap(mutableMapOf<String, MutableSet<DefaultWebSocketSession>>())
         webSocket(path = "/chat") {
             println("Клиент подключен")
@@ -292,7 +341,7 @@ fun Application.configureRouting() {
                     val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
                     if (databaseRepository.getUserByHashedKey(key = userLogin.session) != null && name != null && title != null && text != null && colorHeader != null && tags != null && user != null) {
                         val newAdv = Advertisement(
-                            id = databaseRepository.getAdvertisements().createRandomID(),
+                            id = databaseRepository.createIndividualID(),
                             login = userLogin.session,
                             name = name,
                             title = title,

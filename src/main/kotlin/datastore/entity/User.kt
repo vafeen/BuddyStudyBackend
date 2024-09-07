@@ -16,6 +16,7 @@ data class User(
     val wa: String? = null,
     val favourites: MutableList<String> = mutableListOf(),
     val ads: MutableList<String> = mutableListOf(),
+    val responsesOnAdvs: MutableList<ResponseOnAdvertisement> = mutableListOf()
 ) {
     override fun toString(): String {
         return "User(login=$login password=$password name=$name gender=$gender date=$date tg=$tg vk=$vk wa=$wa)"

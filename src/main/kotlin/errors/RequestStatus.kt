@@ -91,6 +91,16 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
         status: HttpStatusCode = HttpStatusCode.OK,
         message: String = "Объявление удалено из избранного успешно"
     ) : RequestStatus(status = status, message = message)
+
+    class ResponseAddedSuccessful(
+        status: HttpStatusCode = HttpStatusCode.OK,
+        message: String = "Отклик добавлен успешно"
+    ) : RequestStatus(status = status, message = message)
+
+    class ResponseNotAdded(
+        status: HttpStatusCode = HttpStatusCode.OK,
+        message: String = "Отклик не добавлен"
+    ) : RequestStatus(status = status, message = message)
 }
 
 

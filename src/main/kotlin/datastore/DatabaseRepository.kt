@@ -3,8 +3,10 @@ package ru.vafeen.datastore
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.vafeen.datastore.entity.Advertisement
+import ru.vafeen.datastore.entity.ResponseOnAdvertisement
 import ru.vafeen.datastore.entity.User
 import java.io.File
+import kotlin.random.Random
 
 
 class DatabaseRepository {
@@ -65,4 +67,21 @@ class DatabaseRepository {
 
     fun getAdvertisements(): Map<String, Advertisement> = database.advertisements
     fun getAdvertisementByHashedKey(key: String): Advertisement? = database.advertisements.get(key = key)
+
+    fun insertResponseOnAdvertisement(responseOnAdvertisement: ResponseOnAdvertisement) {
+        database.responses[responseOnAdvertisement.id] = responseOnAdvertisement
+        saveDatabase()
+    }
+
+    fun getResponsesOnAdvertisement(): Map<String, ResponseOnAdvertisement> = database.responses
+    fun getResponsesOnAdvertisementById(id: String?): ResponseOnAdvertisement? = database.responses.get(key = id)
+
+    fun createIndividualID(): String {
+        var randomID: String
+        do {
+            randomID = "${Random.nextInt()}"
+        } while (database.ids[randomID] != null)
+        database.ids[randomID] = randomID
+        return randomID
+    }
 }

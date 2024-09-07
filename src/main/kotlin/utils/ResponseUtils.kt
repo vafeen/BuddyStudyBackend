@@ -1,10 +1,9 @@
 package ru.vafeen.utils
 
 import ru.vafeen.datastore.entity.Advertisement
+import ru.vafeen.datastore.entity.ResponseOnAdvertisement
 import ru.vafeen.datastore.entity.User
-import ru.vafeen.frontend.response_entity.ResponseAdvertisementData
-import ru.vafeen.frontend.response_entity.ResponseAdvertisementPreviewData
-import ru.vafeen.frontend.response_entity.ResponseUserData
+import ru.vafeen.frontend.response_entity.*
 
 fun User.createResponsePreviewData(): ResponseUserData = ResponseUserData(
     name = name,
@@ -28,4 +27,20 @@ fun Advertisement.createResponsePreviewData(): ResponseAdvertisementPreviewData 
     title = title,
     colorHeader = colorHeader,
     tags = tags
+)
+
+fun ResponseOnAdvertisement.createResponseResponseOnAdvertisementPreviewData():
+        ResponseResponseOnAdvertisementPreviewData = ResponseResponseOnAdvertisementPreviewData(
+    id = id,
+    avatarId = avatarId,
+    name = name
+)
+
+fun ResponseOnAdvertisement.createResponseResponseOnAdvertisementData():
+        ResponseResponseOnAdvertisementData = ResponseResponseOnAdvertisementData(
+    id = id,
+    login = senderLogin,
+    avatarId = avatarId,
+    name = name,
+    text = text
 )
