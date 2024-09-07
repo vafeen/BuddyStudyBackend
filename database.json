@@ -27,6 +27,15 @@
       "vk": "vk",
       "ads": [
         "adv2"
+      ],
+      "responsesOnAdvs": [
+        {
+          "id": "-136840393",
+          "senderLogin": "login1",
+          "avatarId": "avatarId1",
+          "name": "name1",
+          "text": "Hello!"
+        }
       ]
     },
     "login3": {
@@ -255,5 +264,18 @@
         "зулу"
       ]
     }
+  },
+  "responses": {
+    "-136840393": {
+      "id": "-136840393",
+      "senderLogin": "login1",
+      "avatarId": "avatarId1",
+      "name": "name1",
+      "text": "Hello!"
+    }
+  },
+  "ids": {
+    "703883584": "703883584",
+    "-136840393": "-136840393"
   }
 }

@@ -77,6 +77,7 @@ fun Application.configureRouting() {
                     if (recipientLogin != null && recipientUser != null && advId != null && text != null && senderUser != null) {
                         val newResponseOnAdvertisement = ResponseOnAdvertisement(
                             id = databaseRepository.createIndividualID(),
+                            advId = advId,
                             senderLogin = senderUser.login,
                             avatarId = senderUser.avatarId,
                             name = senderUser.name,
