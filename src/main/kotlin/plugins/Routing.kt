@@ -44,6 +44,26 @@ fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
     routing {
+
+        delete("/response/delete/{id}") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
+                    val id =
+                        call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
+                    val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
+                    val responseOnAdvertisement = databaseRepository.getResponsesOnAdvertisementById(id = id)
+
+                    if (user != null && responseOnAdvertisement != null && responseOnAdvertisement in user.responsesOnAdvs && user.responsesOnAdvs.remove(
+                            element = responseOnAdvertisement
+                        ) && databaseRepository.removeResponsesOnAdvertisementById(id = id) != null
+                    ) {
+                        databaseRepository.insertUser(user = user)
+                        call.respondStatus(RequestStatus.ResponseRemovedSuccessful())
+                    } else call.respondStatus(RequestStatus.ResponseRemovingFailed())
+                }
+        }
+
+
         get("/responses/all") {
             call.respond(databaseRepository.getResponsesOnAdvertisement().values.map {
                 it.createResponseResponseOnAdvertisementData()
@@ -51,8 +71,7 @@ fun Application.configureRouting() {
         }
 
         get("/response/all/{id}") {
-            val id =
-                call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
+            val id = call.parameters[AdvertisementKey.ID].callIfNull(call = call, message = "Invalid parameter: id")
 
             if (id != null) {
                 val filteredResponses = databaseRepository.getResponsesOnAdvertisement().values.filter {

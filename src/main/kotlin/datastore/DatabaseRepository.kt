@@ -79,7 +79,7 @@ class DatabaseRepository {
 
     fun getResponsesOnAdvertisement(): Map<String, ResponseOnAdvertisement> = database.responses
     fun getResponsesOnAdvertisementById(id: String?): ResponseOnAdvertisement? = database.responses.get(key = id)
-
+    fun removeResponsesOnAdvertisementById(id: String?): ResponseOnAdvertisement? = database.responses.remove(key = id)
     fun createIndividualID(): String {
         var randomID: String
         do {

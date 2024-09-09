@@ -98,9 +98,20 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
     ) : RequestStatus(status = status, message = message)
 
     class ResponseNotAdded(
-        status: HttpStatusCode = HttpStatusCode.OK,
+        status: HttpStatusCode = HttpStatusCode.BadRequest,
         message: String = "Отклик не добавлен"
     ) : RequestStatus(status = status, message = message)
+
+    class ResponseRemovedSuccessful(
+        status: HttpStatusCode = HttpStatusCode.OK,
+        message: String = "Отклик удален успешно"
+    ) : RequestStatus(status = status, message = message)
+
+    class ResponseRemovingFailed(
+        status: HttpStatusCode = HttpStatusCode.BadRequest,
+        message: String = "Ошибка удаления отклика"
+    ) : RequestStatus(status = status, message = message)
+
 }
 
 
