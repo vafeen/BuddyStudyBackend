@@ -43,6 +43,15 @@ fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
     routing {
+        get("chats/all") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
+                    val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
+                    if (user != null) call.respond(user.chats)
+                    else call.respondStatus(status = RequestStatus.UserNotFound())
+                }
+        }
+
         post("chats/create") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
