@@ -37,6 +37,8 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-server-websockets:$ktor_version")
+    //datetime serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 }
 application.mainClass = "ru.vafeen.MainKt"
 
