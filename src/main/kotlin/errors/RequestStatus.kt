@@ -122,6 +122,10 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
         message: String = "Ошибка создания чата"
     ) : RequestStatus(status = status, message = message)
 
+    class NoAccessForThisChat(
+        status: HttpStatusCode = HttpStatusCode.Locked,
+        message: String = "Нет доступа к этому чату"
+    ) : RequestStatus(status = status, message = message)
 
 }
 

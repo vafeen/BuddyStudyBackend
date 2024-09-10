@@ -14,10 +14,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import ru.vafeen.cryptography.createSaltedHash
 import ru.vafeen.datastore.DatabaseRepository
 import ru.vafeen.datastore.entity.*
-import ru.vafeen.datastore.keys.AdsGettingKey
-import ru.vafeen.datastore.keys.AdvertisementKey
-import ru.vafeen.datastore.keys.ResponseKey
-import ru.vafeen.datastore.keys.UserKey
+import ru.vafeen.datastore.keys.*
 import ru.vafeen.errors.RequestStatus
 import ru.vafeen.errors.respondStatus
 import ru.vafeen.frontend.response_entity.ResponseAdvertisementPreviewData
@@ -43,7 +40,21 @@ fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
     routing {
-        get("chats/all") {
+        get("/chats/messages/{chat_id}") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
+                    val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
+                        .callIfNull(call = call, message = "User not found")
+                    val chatID = call.parameters[ChatKey.CHAT_ID]
+                    val chat = databaseRepository.getChatById(id = chatID)
+                    if (user != null && chatID != null && chat != null) {
+                        if (chatID in user.chats.map { it.id }) call.respond(chat.messages)
+                        else call.respondStatus(status = RequestStatus.NoAccessForThisChat())
+                    }
+                }
+        }
+
+        get("/chats/all") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
                     val user = databaseRepository.getUserByHashedKey(key = userLogin.session)
@@ -52,7 +63,7 @@ fun Application.configureRouting() {
                 }
         }
 
-        post("chats/create") {
+        post("/chats/create") {
             call.getSessionOrCallUnauthorized()
                 ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
                     val params = call.getParams().callIfNull(call = call, message = "No body")
@@ -60,12 +71,10 @@ fun Application.configureRouting() {
                     val login2 = params?.get(key = UserKey.LOGIN)
                         .callIfNull(call = call, message = "Invalid parameter: ${UserKey.LOGIN}")
                     val user1 = databaseRepository.getUserByHashedKey(key = login1).callStatusIfNull(
-                        call = call,
-                        status = RequestStatus.UserNotFound()
+                        call = call, status = RequestStatus.UserNotFound()
                     )
                     val user2 = databaseRepository.getUserByHashedKey(key = login2 ?: "").callStatusIfNull(
-                        call = call,
-                        status = RequestStatus.UserNotFound()
+                        call = call, status = RequestStatus.UserNotFound()
                     )
                     if (user1 != null && user2 != null) {
                         val newIDForChat = databaseRepository.createIndividualID()
@@ -73,17 +82,12 @@ fun Application.configureRouting() {
                         databaseRepository.insertChat(chat = newChat)
                         user1.chats.add(
                             element = ChatPreview(
-                                id = newIDForChat,
-                                name = user2.name ?: "Undefined name",
-                                login = user2.login
+                                id = newIDForChat, name = user2.name ?: "Undefined name", login = user2.login
                             )
                         )
                         user2.chats.add(
-                            element =
-                            ChatPreview(
-                                id = newIDForChat,
-                                name = user1.name ?: "Undefined name",
-                                login = user1.login
+                            element = ChatPreview(
+                                id = newIDForChat, name = user1.name ?: "Undefined name", login = user1.login
                             )
                         )
                         call.respondStatus(status = RequestStatus.ChatAddedSuccessful())
