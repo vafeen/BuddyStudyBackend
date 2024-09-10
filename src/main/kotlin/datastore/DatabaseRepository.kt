@@ -3,6 +3,7 @@ package ru.vafeen.datastore
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.vafeen.datastore.entity.Advertisement
+import ru.vafeen.datastore.entity.Chat
 import ru.vafeen.datastore.entity.ResponseOnAdvertisement
 import ru.vafeen.datastore.entity.User
 import java.io.File
@@ -88,4 +89,8 @@ class DatabaseRepository {
         database.ids[randomID] = randomID
         return randomID
     }
+
+
+    fun insertChat(chat: Chat) = database.chats.set(key = chat.id, value = chat)
+    fun getChatById(id: String?): Chat? = database.chats.get(key = id)
 }

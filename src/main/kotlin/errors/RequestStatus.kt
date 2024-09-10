@@ -112,6 +112,17 @@ sealed class RequestStatus(val status: HttpStatusCode, val message: String) {
         message: String = "Ошибка удаления отклика"
     ) : RequestStatus(status = status, message = message)
 
+    class ChatAddedSuccessful(
+        status: HttpStatusCode = HttpStatusCode.OK,
+        message: String = "Чат добавлен успешно"
+    ) : RequestStatus(status = status, message = message)
+
+    class ChatAddingFailed(
+        status: HttpStatusCode = HttpStatusCode.BadRequest,
+        message: String = "Ошибка создания чата"
+    ) : RequestStatus(status = status, message = message)
+
+
 }
 
 

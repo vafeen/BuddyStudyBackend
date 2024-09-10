@@ -12,6 +12,12 @@ suspend fun <T> T?.callIfNull(call: ApplicationCall, message: String): T? = also
         call.respondStatus(RequestStatus.BadParameter(message = message))
 }
 
+suspend fun <T> T?.callStatusIfNull(call: ApplicationCall, status: RequestStatus): T? = also {
+    if (it == null)
+        call.respondStatus(status = status)
+}
+
+
 suspend fun ApplicationCall.getParams(): Map<String, String>? {
     return try {
         val newMap = mutableMapOf<String, String>()

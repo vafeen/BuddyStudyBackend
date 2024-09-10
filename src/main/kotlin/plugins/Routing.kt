@@ -13,9 +13,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import ru.vafeen.cryptography.createSaltedHash
 import ru.vafeen.datastore.DatabaseRepository
-import ru.vafeen.datastore.entity.Advertisement
-import ru.vafeen.datastore.entity.ResponseOnAdvertisement
-import ru.vafeen.datastore.entity.User
+import ru.vafeen.datastore.entity.*
 import ru.vafeen.datastore.keys.AdsGettingKey
 import ru.vafeen.datastore.keys.AdvertisementKey
 import ru.vafeen.datastore.keys.ResponseKey
@@ -26,6 +24,7 @@ import ru.vafeen.frontend.response_entity.ResponseAdvertisementPreviewData
 import ru.vafeen.utils.*
 import ru.vafeen.web.UserSession
 import utils.callIfNull
+import utils.callStatusIfNull
 import utils.getParams
 import java.util.*
 
@@ -44,6 +43,44 @@ fun Application.configureRouting() {
     val databaseRepository = DatabaseRepository()
 
     routing {
+        post("chats/create") {
+            call.getSessionOrCallUnauthorized()
+                ?.checkUserInDatabaseOrCallUserNotFound(db = databaseRepository, call = call)?.let { userLogin ->
+                    val params = call.getParams().callIfNull(call = call, message = "No body")
+                    val login1 = userLogin.session
+                    val login2 = params?.get(key = UserKey.LOGIN)
+                        .callIfNull(call = call, message = "Invalid parameter: ${UserKey.LOGIN}")
+                    val user1 = databaseRepository.getUserByHashedKey(key = login1).callStatusIfNull(
+                        call = call,
+                        status = RequestStatus.UserNotFound()
+                    )
+                    val user2 = databaseRepository.getUserByHashedKey(key = login2 ?: "").callStatusIfNull(
+                        call = call,
+                        status = RequestStatus.UserNotFound()
+                    )
+                    if (user1 != null && user2 != null) {
+                        val newIDForChat = databaseRepository.createIndividualID()
+                        val newChat = Chat(id = newIDForChat)
+                        databaseRepository.insertChat(chat = newChat)
+                        user1.chats.add(
+                            element = ChatPreview(
+                                id = newIDForChat,
+                                name = user2.name ?: "Undefined name",
+                                login = user2.login
+                            )
+                        )
+                        user2.chats.add(
+                            element =
+                            ChatPreview(
+                                id = newIDForChat,
+                                name = user1.name ?: "Undefined name",
+                                login = user1.login
+                            )
+                        )
+                        call.respondStatus(status = RequestStatus.ChatAddedSuccessful())
+                    } else call.respondStatus(status = RequestStatus.ChatAddingFailed())
+                }
+        }
 
         delete("/response/delete/{id}") {
             call.getSessionOrCallUnauthorized()
