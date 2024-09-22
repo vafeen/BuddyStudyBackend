@@ -16,10 +16,6 @@ In dir `%root%/buildConfig/`:
 
 `runBackend` - build && run release from dir `%root%/backend/build/install/` .
 
-To run release without build: run `%root%//backend/build/install/BuddyStudyBackend/bin/BuddyStudyBackend`
+To run release without build: run `%root%/backend/build/install/BuddyStudyBackend/bin/BuddyStudyBackend`
 
 `runBackendSources` - run debug without building release
-
-## Assembly && Running Client
-
-`runCLient` - run client
